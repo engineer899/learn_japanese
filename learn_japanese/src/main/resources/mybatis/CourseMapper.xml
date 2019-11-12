@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="courseMapper">
+
+    <select id="showTypes"  resultType="java.lang.Integer">
+     select course_type from tb_course group by  course_type
+    </select>
+
+
+    <select id="showByType" parameterType="java.lang.Integer" resultType="java.util.Map">
+     select id,course_url,course_name,date_format(add_time,"%Y-%m-%d %T") as add_time,browse_num,course_type,course_num from tb_course where course_type=${id}
+    </select>
+
+
+    <insert id="addCourse" parameterType="PageData" >
+     insert into tb_course(id,course_url,course_name,add_time,browse_num,course_type,course_num)
+     values (#{id},#{course_url},#{course_name},STR_TO_DATE(#{add_time},"%Y-%m-%d %T"),0,#{course_type},#{course_num})
+    </insert>
+
+</mapper>

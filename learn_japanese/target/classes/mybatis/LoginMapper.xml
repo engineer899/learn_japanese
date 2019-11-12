@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loginMapper">
+    <select id="findUser" parameterType="PageData" resultType="PageData" useCache="false">
+       select * from users where openid=#{openid}
+    </select>
+
+    <select id="userCount" resultType="java.lang.Integer" useCache="false">
+       select count(*) from users
+    </select>
+
+    <insert id="addUser" parameterType="PageData" >
+       insert into users(openid,session_key,nick_name,avatar_url) values(#{openid},#{session_key},#{nickName},#{avatarUrl})
+    </insert>
+
+    <update id="updateUser" parameterType="PageData" >
+       update  users SET session_key = #{session_key}, nick_name = #{nickName},avatar_url =#{avatarUrl}
+       WHERE openid=#{openid}
+    </update>
+
+
+</mapper>

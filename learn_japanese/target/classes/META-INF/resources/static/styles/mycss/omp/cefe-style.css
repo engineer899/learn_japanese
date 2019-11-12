@@ -1,0 +1,322 @@
+@charset "utf-8";
+/* CSS Document */
+/*css reset*/
+
+/*首页开始*/
+body{
+	margin:0;
+	padding:0;
+	font-family:"微软雅黑";
+	font-size:14px;
+	}
+	
+ul,li{
+	margin:0;
+	padding:0;
+	list-style:none;
+	}
+	
+img{
+	margin:0;
+	padding:0;
+	vertical-align: middle;
+	border:0;
+	outline:none;
+	}
+	
+.toubu{
+	width:auto;
+	height:auto;
+	margin-top:-4px;
+	}
+.top6{ min-width:1200px;}	
+.top{
+	width:auto;
+	height:38px;
+	background:#eeeeee;
+	}
+	
+.top_zi{
+	width:1200px;
+	height:38px;
+	margin:0 auto;
+	font-size:12px;
+	}
+	
+.top_zi_left{
+	width:410px;
+	height:38px;
+	color:#666;
+	line-height:38px;
+	float:left;
+	}
+	
+.top_zi_left span a{
+	color:#ed7777;
+	text-decoration:none;
+	}
+	
+.top_zi_left span a:hover{
+	color:#0186b8;
+	text-decoration:underline;
+	}
+	
+.top_zi_right{
+	width:386px;
+	height:38px;
+	color:#666;
+	line-height:38px;
+	float:right;
+	*width:386px;
+	}
+	
+.top_zi_right a img{
+	border:0;
+	}
+	
+.top_zi_right span a{
+	color:#666;
+	text-decoration:none;
+	}
+
+.top_zi_right span.a a img{
+	margin-top:-2px;
+	*margin-top:0;
+	}
+
+.top_zi_right span a:hover{
+	color:#0186b8;
+	text-decoration:underline;
+	}
+
+.top_zi_right span a b{
+	color:#0186b8;
+	text-decoration:none;
+	}
+
+.logo{
+	width:auto;
+	height:105px;
+	background:url(../images/cefe/bk_02.jpg) center top;
+	background-size:cover;
+	overflow:hidden;
+	}
+	
+.logo_a{
+	width:1200px;
+	margin:0 auto;
+	}
+	
+.nav{
+	width:auto;
+	height:46px;
+	background:#3fa2c7;
+	}
+	
+.navbody{
+	width:1200px;
+	height:46px;
+	line-height:46px;
+	margin:0 auto;
+	}
+	
+.navbody li{
+	float:left;
+	display:block;
+	}
+	
+.navbody li a{
+	display:block;
+	padding:0px 20px 0px 20px;
+	font-size:16px;
+	color:#fff;
+	text-decoration:none;
+	}
+	
+.navbody li a:hover{
+	background:#0186b8;
+	font-weight:bold;
+	}
+	
+.navbody li a.cur{
+	background:#0186b8;
+	font-weight:bold;
+	}
+
+.content{
+	width:1200px;
+	height:1530px;
+	margin:0 auto;
+	}
+	
+.left{
+	width:285px;
+	height:1530px;
+	float:left;
+	margin-right:17px;
+	}
+	
+.left1{
+	width:285px;
+	height:366px;
+	float:left;
+	margin-right:17px;
+	margin-top:12px;
+	}
+	
+.more{
+	width:285px;
+	height:36px;
+	background:url(../images/cefe/a_13.png);
+	line-height:36px;
+	background-size:cover;
+	}
+	
+.more span{
+	width:85px;
+	font-size:16px;
+	color:#fff;
+	font-weight:bold;
+	text-align:center;
+	display:block;
+	float:left;
+	}
+	
+.more_r{
+	float:right;
+	width:52px;
+	}
+	
+.more_r a{
+	font-size:14px;
+	color:#3fa2c7;
+	text-decoration:none;
+	}
+	
+.more_r a img{
+	margin-top:-2px;
+	*margin-top:0;
+	}
+	
+.more_r a:hover{
+	color:#ed7777;
+	}
+	
+.zhengce{
+	width:285px;
+	height:54px;
+	border-bottom:1px solid #eee;
+	line-height:54px;
+	}
+	
+.zhengce:hover{
+	background:#eee;
+	}
+	
+.zhengce img{
+	margin: 0 18px 0 20px;
+	}
+	
+.zhengce a{
+	color:#666;
+	text-decoration:none;
+	}
+	
+.left2{
+	width:283px;
+	height:544px;
+	border:1px solid #eee;
+	clear:both;
+	top:10px;
+	position:relative;
+	}
+/*导航修改*/
+.navbar>li{
+	position:relative;
+	float:left;
+	display:block；
+}
+
+.navbar>li>a{
+	color:#fff;
+}
+
+.navbar>li>a img{
+	margin-left:5px;
+}
+.navbar .dropdown-menu{
+	position:absolute;
+	left:3px;
+	top:100%;
+	margin-top:5px;
+	background:#fff;
+	border:1px solid #eee;
+	border-radius:3px;
+	z-index:999;
+	display:none;
+	width:96px;
+}
+
+.navbar .dropdown-menu a{
+	color:#fff;
+	font-size:14px;
+	height:35px;
+	line-height:35px;
+	color:#0186b8;
+}
+
+.navbar .dropdown-menu a:hover{
+	color:#fff;
+	font-size:14px;
+	height:35px;
+	line-height:35px;
+	background:#3fa2c7;
+}
+
+
+.navbar .dropdown-menu.animated{
+	-webkit-animation-duration:.3s;
+	animation-duration:.3s;
+	-webkit-animation-fill-mode:both;
+	animation-fill-mode:both
+}
+.animated.hinge{
+	-webkit-animation-duration:2s;
+	animation-duration:2s
+}@-webkit-keyframes fadeInUp{
+	0%{
+		opacity:0;
+		-webkit-transform:translate3d(0,100%,0);
+		transform:translate3d(0,100%,0)
+	}
+
+	100%{
+		opacity:1;
+		-webkit-transform:none;
+		transform:none
+	}
+
+}
+
+@keyframes fadeInUp{
+	0%{
+		opacity:0;
+		-webkit-transform:translate3d(0,100%,0);
+		-ms-transform:translate3d(0,100%,0);
+		transform:translate3d(0,100%,0)
+	}
+
+	100%{
+		opacity:1;
+		-webkit-transform:none;
+		-ms-transform:none;
+		transform:none
+	}
+
+}
+
+.fadeInUp{
+	-webkit-animation-name:fadeInUp;
+	animation-name:fadeInUp
+}
+	

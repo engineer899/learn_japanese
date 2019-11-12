@@ -1,0 +1,75 @@
+@charset "utf-8";
+/* CSS Document */
+*{ margin:0; padding:0; border:0;}
+.wape{ width:1000px; margin:0 auto;}
+body{ font-size:12px; font-family:"微软雅黑";}
+ul{ list-style:none;}
+.fl{ float:left;}
+.fr{ float:right;}
+.clear{ clear:both;}
+a{ color:#333; text-decoration:none;}
+a:hover{ color:#3399cc; text-decoration:underline;}
+/*客服*/
+.online-popbox{ background-color:transparent; position:fixed; bottom:5px; right:5px;}
+.online-box-btn{ width:26px; height:26px; position:fixed; bottom:8px; right:8px; z-index:1000px;}
+.online-box{ position:relative; background-color:#fff; width:900px; height:650px; overflow:hidden; border:0; -webkit-border-radius:4px; -moz-border-radius:4px; border-radius:4px; -webkit-box-shadow:#999 0px 0px 10px; -moz-box-shadow:#999 0px 0px 10px; box-shadow:#999 0px 0px 10px; behavior:url(ie-css3.htc); margin:5px auto;}
+.online-title{ background-color:#52b6e7; height:36px;}
+.online-title h3{ float:left; color:#fff; font-size:16px; line-height:36px; margin-left:12px;}
+.online-title .title-btn{ float:right;}
+.online-title .title-btn a{ display:inline-block; width:36px; height:36px;}
+.online-title .title-btn a:hover{ background-color:#d44027;}
+.online-title .title-btn .btn-mini{ background:url(../images/icon-mini.gif) center center no-repeat;}
+.online-title .title-btn .btn-mini:hover{ background-color:#2693c8;}
+.online-title .title-btn .btn-close{ background:url(../images/icon-close.gif) center center no-repeat;}
+.online-title .title-btn .btn-close:hover{ background-color:#d44027;}
+.online-userjk{ background-color:#fafafa; height:142px; overflow:hidden; border:#ccc solid 1px; border-top:0;}
+.userjk-title{ height:26px; overflow:hidden; line-height:26px; margin:5px 12px;}
+.online-main{ height:470px; border:#ccc solid 1px; border-top:0;}
+.online-main td{ vertical-align:top;}
+.online-main .main-userlist{ width:160px; height:470px; border-right:#ccc solid 1px;}
+.online-main .main-userlist h3{ background-color:#fafafa; border-bottom:#eee solid 1px; color:#888; font-size:12px; font-weight:normal; padding:6px 9px;}
+.online-main .main-userlist h3 span{ color:#ff4a00;}
+.online-main .main-userlist ul{ height:431px; overflow-x:hidden; overflow-y:auto; padding:5px 0;}
+.online-main .main-userlist li{ display:block; width:150px; height:36px; overflow:hidden; font-size:14px; line-height:36px; white-space:nowrap; margin:2px 5px; padding:5px; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; behavior:url(ie-css3.htc); cursor:pointer;}
+.online-main .main-userlist li .img{ float:left; width:36px; height:36px; overflow:hidden; margin-right:8px; -webkit-border-radius:4px; -moz-border-radius:4px; border-radius:4px; behavior:url(ie-css3.htc);}
+.online-main .main-userlist li:hover{ background-color:#f0f0f0;}
+.online-main .main-userlist li.cur{ background-color:#52b6e7!important; color:#fff;}
+.online-main .main-userlist li.active{ background-color:#e95d5e!important; color:#fff;}
+.online-main .main-chat{ width:auto; height:470px; border-right:#ccc solid 1px;}
+.online-main .main-chat .chat-list{ height:259px; border-bottom:#ccc solid 1px; padding:10px 15px;}
+.chat-side01,
+.chat-side02{ height:auto; overflow:hidden; clear:both; padding:5px 0;}
+.chat-side01 h3,
+.chat-side02 h3{ color:#999; font-size:12px; font-weight:normal; padding:0 0 5px;}
+.chat-side01 h3 b,
+.chat-side02 h3 b{ color:#555; padding-right:5px;}
+.chat-side01 h3{ text-align:left;}
+.chat-side02 h3{ text-align:right;}
+.chat-side01 .chat{ float:left; background-color:#effef5; width:auto; height:auto; overflow:hidden; border:#d2e0d6 solid 1px; padding:8px; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; -webkit-box-shadow:#aaa 0px 1px 1px; -moz-box-shadow:#aaa 0px 1px 1px; box-shadow:#aaa 0px 1px 1px; behavior:url(ie-css3.htc);}
+.chat-side02 .chat{ float:right; background-color:#effaff; width:auto; height:auto; overflow:hidden; border:#acc5db solid 1px; padding:8px; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; -webkit-box-shadow:#aaa 0px 1px 1px; -moz-box-shadow:#aaa 0px 1px 1px; box-shadow:#aaa 0px 1px 1px; behavior:url(ie-css3.htc);}
+.online-main .main-chat .chat-input{ height:140px;}
+.online-main .main-chat .chat-btnbar{ background-color:#f1f1f1; height:50px;}
+.online-main .main-chat .chat-btnbar .fl{ width:220px; color:#555; line-height:16px; margin:8px 0; padding-left:5px;}
+.online-main .main-chat .chat-btnbar .fr{ margin-right:3px;}
+.online-main .main-chat .chat-btnbar .fr a{ float:left; height:28px; font-size:14px; line-height:28px; margin:10px 5px;}
+.online-main .main-chat .chat-btnbar .btn-choose{ background-color:#fff; border:#bbb solid 1px; padding:0 12px; color:#555;}
+.online-main .main-chat .chat-btnbar .btn-choose:hover{ background-color:#fafafa;}
+.online-main .main-chat .chat-btnbar .btn-enter{ background:url(../images/icon-pop.gif) 48px center no-repeat #ff4a00; border:#ff4a00 solid 1px; color:#fff; padding:0 26px 0 14px;}
+.online-main .main-chat .chat-btnbar .btn-enter:hover{ background-color:#ef5415; border:#ef5415 solid 1px;}
+.online-main .main-info{ width:32%; height:470px;}
+.online-main .main-info .info-name{ height:100px; border-bottom:#ccc solid 1px; color:#999; padding:12px;}
+.online-main .main-info .info-name .img{ float:left; width:50px; height:50px; border:#eee solid 1px; margin-right:12px;}
+.online-main .main-info .info-name .img img{ width:50px; height:50px;}
+.online-main .main-info .info-name .name{ display:block; color:#333; font-size:14px; font-weight:bold; padding:5px 0;}
+.online-main .main-info .info-tab{ background-color:#52b6e7; height:32px; padding:4px 0 0 5px;}
+.online-main .main-info .info-tab li{ float:left; color:#fff; font-size:13px; line-height:30px; margin-top:2px;}
+.online-main .main-info .info-tab li a{ color:#fff; padding:0 11px;}
+.online-main .main-info .info-tab li.cur{ background-color:#fff; border-top:#40a1d0 solid 2px; margin-top:0;}
+.online-main .main-info .info-tab li.cur a{ color:#333;}
+.online-main .main-info .info-orderlist{ height:309px; overflow-x:hidden; overflow-y:auto;}
+.online-main .main-info .info-orderlist ul{ padding:5px 10px;}
+.online-main .main-info .info-orderlist li{ height:auto; overflow:hidden; border-bottom:#eee dotted 1px; clear:both; padding:10px;}
+.online-main .main-info .info-orderlist li .img{ float:left; width:45px; height:45px; border:#eee solid 1px; margin-right:15px;}
+.online-main .main-info .info-orderlist li .img img{ width:45px; height:45px;}
+.online-main .main-info .info-orderlist li .title{ display:block; color:#333; font-size:14px; margin-top:5px;}
+.online-main .main-info .info-orderlist li .time{ display:block; color:#aaa; font-size:13px;margin-top:3px;}
