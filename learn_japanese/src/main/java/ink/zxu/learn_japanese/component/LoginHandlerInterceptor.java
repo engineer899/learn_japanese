@@ -17,7 +17,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token=(String) request.getParameter("token");
+        String token= request.getParameter("token");
         HttpSession session= SessionManager.getSession(token);
         if(session!=null){
             return true;
