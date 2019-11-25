@@ -1,11 +1,11 @@
 package ink.zxu.learn_japanese.service;
 
 import ink.zxu.learn_japanese.dao.DaoSupport;
+import ink.zxu.learn_japanese.utils.Page;
 import ink.zxu.learn_japanese.utils.PageData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,4 +46,28 @@ public class VideoService {
         }
         return resultMap;
     }
+
+
+    /**
+     * 微课视频分页查询
+     * @param page
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> queryVideoInfoListPage(Page page) throws Exception {
+        return (List<PageData>) dao.findForList("videoMapper.queryVideoInfoListPage", page);
+    }
+
+    /**
+     * 查询视频by id
+     * @param page
+     * @return
+     * @throws Exception
+     */
+    public PageData queryVideoById(PageData pageData) throws Exception {
+        return (PageData) dao.findForObject("videoMapper.queryVideoById", pageData);
+    }
+
+
+
 }

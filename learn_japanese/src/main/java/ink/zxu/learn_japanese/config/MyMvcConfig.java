@@ -18,8 +18,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**")
-        .excludePathPatterns("/user/login","/image/**", "/static/**","/course/**","/video/**","/test/**","/communication/**");
+        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/123")
+        .excludePathPatterns("/**","/user/login","/manage/**","/image/**", "/static/**","/course/**","/video/**","/test/**","/communication/**");
 
     }
 
@@ -46,6 +46,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/pages/login");
 
     }
 

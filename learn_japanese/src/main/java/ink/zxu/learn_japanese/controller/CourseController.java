@@ -6,12 +6,14 @@ import ink.zxu.learn_japanese.service.UploadService;
 import ink.zxu.learn_japanese.utils.BaseController;
 import ink.zxu.learn_japanese.utils.PageData;
 import ink.zxu.learn_japanese.utils.UUIDUtil;
+import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,10 +47,9 @@ public class CourseController extends BaseController {
 
     @RequestMapping(value="/add")
     @ResponseBody
-    public String addCourse(HttpServletRequest request) throws Exception {
+    public String addCourse(MultipartHttpServletRequest request) throws Exception {
         Map<String,String> resultMap=new HashMap<>();
-        MultipartHttpServletRequest params=((MultipartHttpServletRequest) request);
-        List<MultipartFile> files = params.getFiles("file");
+        List<MultipartFile> files = request.getFiles("file");
         MultipartFile file = null;
         for (int i = 0; i < files.size(); ++i) {
             System.out.println("进入2"+files.size());
