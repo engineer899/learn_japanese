@@ -31,7 +31,6 @@
             </ul>
             <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
 
-
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
                     <a href="javascript:;" layadmin-event="theme">
                         <i class="layui-icon layui-icon-theme"></i>
@@ -69,7 +68,7 @@
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
                     <li data-name="get" class="layui-nav-item">
                     <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;" lay-tips="微课视频" lay-direction="2">
+                        <a href="${pageContext.request.contextPath}/manage/login" lay-tips="微课视频" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
                             <cite>微课视频</cite>
                         </a>
@@ -115,6 +114,19 @@
                             <dd data-name="progress">
                                 <a lay-href="data/jkrz.html">课程留言</a>
                             </dd>
+                        </dl>
+                    </li>
+
+                    <li data-name="component" class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;" lay-tips="公告" lay-direction="2">
+                            <i class="layui-icon layui-icon-component"></i>
+                            <cite>公告</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="nav">
+                                <a  href="${pageContext.request.contextPath}/manage/manageAnnController/ann_list">管理公告</a>
+                            </dd>
+                        </dl>
                     </li>
                 </ul>
             </div>
@@ -157,13 +169,15 @@
 </div>
 
 <script src="${pageContext.request.contextPath }/static/plugins/layuiadmin/layui/layui.js"></script>
-<script>
-    // layui.config({
-    //     base: '../layuiadmin/' //静态资源所在路径
-    // }).extend({
-    //     index: 'lib/index' //主入口模块
-    // }).use('index');
-</script>
+<%--<script>--%>
+<%--    // layui.config({--%>
+<%--    //     base: '../layuiadmin/' //静态资源所在路径--%>
+<%--    // }).extend({--%>
+<%--    //     index: 'lib/index' //主入口模块--%>
+<%--    // }).use('index');--%>
+<%--</script>--%>
+
+
 </body>
 </html>
 

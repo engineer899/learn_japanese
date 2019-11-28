@@ -152,6 +152,7 @@ public class ManageVideoController extends BaseController {
                     pageData.put("video_url",video_url);
                     pageData.put("video_type",Integer.parseInt(pageData.getString("video_type")));
                     pageData.put("video_num",Integer.parseInt(pageData.getString("video_num")));
+                    pageData.put("state","0");
                     Long nowtime=System.currentTimeMillis();
                     Date d=new Date(nowtime);
                     SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -174,7 +175,29 @@ public class ManageVideoController extends BaseController {
     }
 
 
-
-
-
+    /**
+     * 停用启用视频
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/enableORstopVideo", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String enableORstopVideo() throws Exception {
+        Map<String, String> resultMap = new HashMap<>();
+        PageData pageData=this.getPageData();
+        PageData result= videoService.queryVideoById(pageData);
+        if(result.getString("state").equals("1"))//如果state=1,则置为0，启用
+        {
+            pageData.remove("state");
+            pageData.put("state","0");
+            videoService.updateVideoState(pageData);
+            resultMap.put("status", "success");
+        }else{                                                      //如果state=0,则置为1，停用
+            pageData.remove("state");
+            pageData.put("state","1");
+            videoService.updateVideoState(pageData);
+            resultMap.put("status", "success");
+        }
+        return new Gson().toJson(resultMap);
+    }
 }

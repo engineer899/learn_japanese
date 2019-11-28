@@ -22,8 +22,8 @@
                 ,{field:'video_name',width:'15%', title: '视频名称'}
                 ,{field:'add_time',width:'15%', title: '添加时间'}
                 ,{field:'browse_num',width:'8%',  title: '观看次数'}
-                ,{field:'video_num',width:'8%',  title: '视频排序'}
                 ,{field:'video_type',width:'8%',  title: '视频类型',templet: '#AUDIT_STATUS'}
+                ,{field:'video_num',width:'8%',  title: '视频课时'}
                 ,{field:'state',width:'8%', title: '视频状态',templet: '#ENABLE_PLATFORM'}
                 ,{title:'操作',width:'14%',templet: '#caozuo', unresize: true}
             ]]
@@ -68,27 +68,29 @@
      <a class='layui-btn layui-btn-xs' onclick="queryVideoDetails('{{d.id }}')">详情</a>
      <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="updateVideo('{{d.id }}')">编辑</a>
      {{# if(d.state == '0'){ }}
-     <a class='layui-btn layui-btn-xs layui-btn-danger'  onclick="enableORstopVideo('{{d.id}}','off')">停用</a>
+     <a class='layui-btn layui-btn-xs layui-btn-danger'  onclick="enableORstopVideo('{{d.id}}','1')">停用</a>
      {{# }else{ }}
-     <a class='layui-btn layui-btn-xs' onclick="enableORstopVideo('{{d.id}}','on')">启用</a>
+     <a class='layui-btn layui-btn-xs' onclick="enableORstopVideo('{{d.id}}','0')">启用</a>
      {{# } }}
 
 </script>
 
 <script type="text/html" id="AUDIT_STATUS">
-    {{# if(d.AUDIT_STATUS == '2'){ }}
-    <span style="color: #cc0000;">审核不通过</span>
-    {{# }else if(d.AUDIT_STATUS == '3'){ }}
-    <span style="color: #339933;">审核通过</span>
-    {{# }else if(d.AUDIT_STATUS == '0'){ }}
-    <span style="color: #aaa;">未发布</span>
+    {{# if(d.video_type == '0'){ }}
+    <span style="color: #002828;">零基础</span>
+    {{# }else if(d.video_type == '1'){ }}
+    <span style="color: #46990c;">N1级别</span>
+    {{# }else if(d.video_type == '2'){ }}
+    <span style="color: #3838aa;">N2级别</span>
+    {{# }else if(d.video_type == '3'){ }}
+    <span style="color: #cc0000;">N3级别</span>
     {{# }else{ }}
     <span style="color: #aaa;">待审核</span>
     {{# } }}
 </script>
 
 <script type="text/html" id="ENABLE_PLATFORM">
-    {{# if(d.state == '0'){ }}
+    {{# if(d.state == '0'){ }}               <!--根据结果设置视频状态 -->
     <span style="color: #339933;">启用</span><br>
     {{# }else{ }}
     <span style="color: #cc0000;">停用</span><br>
@@ -105,15 +107,19 @@
                         <div class="demoTable" style="text-align: right;margin-bottom: 10px;">
                             <span>&nbsp;&nbsp;视频名称&nbsp;&nbsp;:</span>
                             <div class="layui-input-inline">
-                                <input  placeholder="请输入服务名称"  name="video_name" id="video_name" class="layui-input">
+                                <input  placeholder="请输入视频名称"  name="video_name" id="video_name" class="layui-input">
                             </div>
                             <span>&nbsp;&nbsp;视频类别&nbsp;&nbsp;:</span>
                             <div class="layui-input-inline" style="text-align: left;width:120px;">
                                 <select id="video_type" name="video_type">
                                     <option value="">请选择</option>
-                                    <c:forEach var="record" items="${video_type }">
-                                        <option value="${record.SERVICE_TYPE_CODE}">${record.SERVICE_TYPE_NAME}</option>
-                                    </c:forEach>
+<%--                                    <c:forEach var="record" items="${video_type}">--%>
+<%--                                        <option value="${record.SERVICE_TYPE_CODE}">${record.SERVICE_TYPE_NAME}</option>--%>
+<%--                                    </c:forEach>--%>
+                                    <option value="0">零基础</option>
+                                    <option value="1">N1</option>
+                                    <option value="2">N2</option>
+                                    <option value="3">N3</option>
                                 </select>
                             </div>
                             <span>&nbsp;&nbsp;视频状态&nbsp;&nbsp;:</span>

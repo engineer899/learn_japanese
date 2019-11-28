@@ -19,8 +19,8 @@
 
 
     <insert id="addVideo" parameterType="PageData" >
-     insert into tb_video(id,video_url,video_name,video_knowledge,add_time,browse_num,video_type,video_num)
-     values (#{id},#{video_url},#{video_name},#{video_knowledge},STR_TO_DATE(#{add_time},"%Y-%m-%d %T"),0,#{video_type},#{video_num})
+     insert into tb_video(id,video_url,video_name,video_knowledge,add_time,browse_num,video_type,video_num,state)
+     values (#{id},#{video_url},#{video_name},#{video_knowledge},STR_TO_DATE(#{add_time},"%Y-%m-%d %T"),0,#{video_type},#{video_num},#{state})
     </insert>
 
     <!--微课视频分页查询-->
@@ -47,6 +47,9 @@
         where id=#{id}
     </select>
 
-
+    <!--更新视频状态 -->
+    <select id="updateVideoState" parameterType="PageData">
+        UPDATE tb_video SET state = #{state} WHERE  id=#{id}
+    </select>
 
 </mapper>

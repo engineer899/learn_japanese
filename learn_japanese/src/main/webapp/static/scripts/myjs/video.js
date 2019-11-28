@@ -1,7 +1,7 @@
 //停用或启用视频
-function enableORstopVideo(id,flag){
-    layer.confirm('是否删除？', {icon: 3, title:'提示'}, function(index){
-        //执行删除
+function enableORstopVideo(id,state){
+    layer.confirm('是否启用？', {icon: 3, title:'提示'}, function(index){
+        //执行启用
         $.ajax({
             url : contextPath + '/manage/manageVideoController/enableORstopVideo',
             timeout : 300000,
@@ -9,16 +9,17 @@ function enableORstopVideo(id,flag){
             type : "post",
             data : {
                 "id" : id,
-                "flag": flag
+                "state": state
             },
             success : function(data) {
                 if(data.status == "success"){
-                    layer.alert("删除成功",{icon: 1,closeBtn: 0},function(index){
+                    layer.alert("操作成功",{icon: 1,closeBtn: 0},function(index){
                         setTimeout("location.reload()",100); //父页面刷新 必须在关闭iframe之前
                         layer.closeAll('iframe');//关闭弹窗
                     });
+                    //置为启用
                 }else{
-                    layer.alert("删除失败",{icon: 2,closeBtn: 0},function(index){
+                    layer.alert("操作失败",{icon: 2,closeBtn: 0},function(index){
                         setTimeout("location.reload()",100); //父页面刷新 必须在关闭iframe之前
                         layer.closeAll('iframe');//关闭弹窗
                     });
