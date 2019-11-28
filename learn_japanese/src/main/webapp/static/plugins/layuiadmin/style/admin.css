@@ -412,8 +412,8 @@ html{background-color: #f2f2f2; color: #666;}
 .layui-anim-rl{-webkit-animation-name: layui-rl; animation-name: layui-rl;}
 
 @-webkit-keyframes layui-lr{ /* 从右往左滑入 */
-  from {-webkit-transform: translate3d(0 0, 0); opacity: 1;}
-  to {-webkit-transform: translate3d(100%,, 0, 0); opacity: 1;}
+  from {-webkit-transform: translate3d(0, 0, 0); opacity: 1;}
+  to {-webkit-transform: translate3d(100%, 0, 0); opacity: 1;}
 }
 @keyframes layui-lr{
   from {transform: translate3d(0, 0, 0);}
