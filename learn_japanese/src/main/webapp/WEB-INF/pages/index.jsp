@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html >
 <html>
 <head>
     <meta charset="utf-8">
     <title>奇迹日语后台管理系统</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/static/plugins/layuiadmin/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/static/plugins/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/layuiadmin/style/admin.css" media="all">
+    <script>
+        /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
+    </script>
+    <script src="${pageContext.request.contextPath}/static/scripts/util/jquery-1.9.1.min.js"></script>				<!-- jquery插件 -->
+
+    <script src="${pageContext.request.contextPath}/static/layuiadmin/layui/layui.js"></script>
+
 </head>
 <body class="layui-layout-body">
 
@@ -67,19 +71,14 @@
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
                     <li data-name="get" class="layui-nav-item">
-                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+
+                    <li data-name="home" class="layui-nav-item ">
+
                         <a href="${pageContext.request.contextPath}/manage/login" lay-tips="微课视频" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
                             <cite>微课视频</cite>
                         </a>
-                        <dl class="layui-nav-child">
-                            <dd data-name="console" class="layui-this">
-                                <a lay-href="${pageContext.request.contextPath}/manage/manageVideoController/video_list">添加微课视频</a>
-                            </dd>
-                            <dd data-name="console" >
-                                <a lay-href="${pageContext.request.contextPath}/manage/manageVideoController/video_list">编辑微课视频</a>
-                            </dd>
-                        </dl>
+
 
                     </li>
                     <li data-name="component" class="layui-nav-item layui-nav-itemed">
@@ -124,7 +123,7 @@
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="nav">
-                                <a  href="${pageContext.request.contextPath}/manage/manageAnnController/ann_list">管理公告</a>
+                                <a  lay-href="${pageContext.request.contextPath}/manage/manageAnnController/ann_list">管理公告</a>
                             </dd>
                         </dl>
                     </li>
@@ -168,14 +167,14 @@
     </div>
 </div>
 
-<script src="${pageContext.request.contextPath }/static/plugins/layuiadmin/layui/layui.js"></script>
-<%--<script>--%>
-<%--    // layui.config({--%>
-<%--    //     base: '../layuiadmin/' //静态资源所在路径--%>
-<%--    // }).extend({--%>
-<%--    //     index: 'lib/index' //主入口模块--%>
-<%--    // }).use('index');--%>
-<%--</script>--%>
+<%--<script src="${pageContext.request.contextPath }/static/plugins/layuiadmin/layui/layui.js"></script>--%>
+<script>
+    layui.config({
+        base: '${pageContext.request.contextPath}/static/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use('index');
+</script>
 
 
 </body>

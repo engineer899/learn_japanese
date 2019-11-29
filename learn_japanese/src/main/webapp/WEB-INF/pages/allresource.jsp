@@ -19,10 +19,10 @@
 <!-- 引用css -->
 <link rel="stylesheet" href="${ctp}/static/plugins/layuiadmin/layui/css/layui.css" media="all">
 <link rel="stylesheet" href="${ctp}/static/plugins/layuiadmin/style/admin.css" media="all">
-<%--<link rel="stylesheet" href="${ctp}/static/plugins/layer-v2.4/layer.css">--%>
+<link rel="stylesheet" href="${ctp}/static/plugins/layer-v2.4/layer.css">
 <%--<link rel="stylesheet" href="${ctp }/static/plugins/zTree/css/metroStyle/metroStyle.css" type="text/css">--%>
 
-<script src="${ctp}/static/plugins/layuiadmin/layui/layui.js"></script>						<!-- layui插件 -->
+<script src="${ctp}/static/layuiadmin/layui/layui.js"></script>						<!-- layui插件 -->
 <script src="${ctp}/static/scripts/util/jquery-1.9.1.min.js"></script>				<!-- jquery插件 -->
 <script src="${ctp}/static/scripts/util/util.js"></script>
 <script src="${ctp}/static/plugins/layer-v2.4/layer.js"></script>

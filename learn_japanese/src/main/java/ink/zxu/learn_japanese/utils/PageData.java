@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- * @author o_0sky
+ * @author 张伟
  * @date 2019/9/14 22:40
  */
 public class PageData extends HashMap implements Map {
