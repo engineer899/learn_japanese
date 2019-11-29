@@ -68,6 +68,12 @@ public class VideoService {
         return (PageData) dao.findForObject("videoMapper.queryVideoById", pageData);
     }
 
+    /**
+     * 启用停用视频
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
     public int updateVideoState(PageData pageData) throws Exception {
         return (int) dao.update("videoMapper.updateVideoState",pageData);
     }

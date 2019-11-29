@@ -78,7 +78,7 @@
         <tr>
             <td class="tdleft"><span style="color:red;">*</span>课程知识点：</td>
             <td colspan="3">
-                <textarea id="video_knowledge" name="video_knowledge" style="width:100%;height:300px; ">${result.video_knowledge}</textarea>
+                <textarea id="video_knowledge" name="video_knowledge" readonly="readonly" style="width:100%;height:300px; ">${result.video_knowledge}</textarea>
             </td>
         </tr>
     </table>

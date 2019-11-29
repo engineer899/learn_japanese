@@ -74,11 +74,12 @@ public class ManageVideoController extends BaseController {
      * @throws Exception
      */
     @RequestMapping(value="/video_update")
-    public ModelAndView updateVideo(){
+    public ModelAndView updateVideo() throws Exception {
         ModelAndView mv = this.getModelAndView();
         PageData pd = this.getPageData();
+        PageData result=videoService.queryVideoById(pd);
         // 设置返回视图和配置项数据
-        mv.addObject("pd", pd);
+        mv.addObject("result",result);
         mv.setViewName("video/video_update");
         return mv;
     }
