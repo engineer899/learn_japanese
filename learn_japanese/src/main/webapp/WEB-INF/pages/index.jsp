@@ -70,20 +70,32 @@
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-                    <li data-name="get" class="layui-nav-item">
 
-                    <li data-name="home" class="layui-nav-item ">
-
-                        <a href="${pageContext.request.contextPath}/manage/login" lay-tips="微课视频" lay-direction="2">
-                            <i class="layui-icon layui-icon-home"></i>
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;" lay-tips="微课视频" >
+                            <i class="layui-icon layui-icon-component"></i>
                             <cite>微课视频</cite>
                         </a>
-
-
+                        <dl class="layui-nav-child">
+                            <dd data-name="nav">
+                                <a  lay-href="${pageContext.request.contextPath}/manage/videoController/video_list">视频管理</a>
+                            </dd>
+                        </dl>
                     </li>
-                    <li data-name="component" class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;" lay-tips="交流圈" lay-direction="2">
+                    <li data-name="component" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="单词测试" >
                             <i class="layui-icon layui-icon-component"></i>
+                            <cite>单词测试</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="button">
+                                <a  lay-href="${pageContext.request.contextPath}/manage/wordController/word_list">单词管理</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="component" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="交流圈" lay-direction="2">
+                            <i class="layui-icon layui-icon-component   "></i>
                             <cite>交流圈</cite>
                         </a>
                         <dl class="layui-nav-child">
@@ -98,7 +110,7 @@
                             </dd>
                         </dl>
                     </li>
-                    <li data-name="component" class="layui-nav-item layui-nav-itemed">
+                    <li data-name="component" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="日语课堂" lay-direction="2">
                             <i class="layui-icon layui-icon-component"></i>
                             <cite>日语课堂</cite>
@@ -116,14 +128,14 @@
                         </dl>
                     </li>
 
-                    <li data-name="component" class="layui-nav-item layui-nav-itemed">
+                    <li data-name="component" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="公告" lay-direction="2">
                             <i class="layui-icon layui-icon-component"></i>
                             <cite>公告</cite>
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="nav">
-                                <a  lay-href="${pageContext.request.contextPath}/manage/manageAnnController/ann_list">管理公告</a>
+                                <a  lay-href="${pageContext.request.contextPath}/manage/annController/ann_list">管理公告</a>
                             </dd>
                         </dl>
                     </li>
@@ -158,7 +170,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="${pageContext.request.contextPath}/manage/manageVideoController/video_list" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="${pageContext.request.contextPath}/manage/videoController/video_list" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 

@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-@RequestMapping(value = "/manage/manageAnnController",produces = "text/html;charset=UTF-8")
+@RequestMapping(value = "/manage/annController",produces = "text/html;charset=UTF-8")
 public class ManageAnnController extends  BaseController {
     @Resource
     AnnService annService;

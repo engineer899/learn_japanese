@@ -93,7 +93,7 @@
         }
         layer.load();
         $.ajax({
-            url: contextPath+'/manage/manageVideoController/addVideo',
+            url: contextPath+'/manage/videoController/addVideo',
             type: "post",
             data: formData,
             async: false,

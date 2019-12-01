@@ -24,8 +24,14 @@ public class UploadConfigure {
 
 
 
-    // 获取课程存放位置
-    private Map<String, String> Video_path;
+    // 获取音频存放位置
+    private Map<String, String> voice_path;
+
+
+
+
+    // 获取视频存放位置
+    private Map<String, String> video_path;
 
     // 单个文件大小
     private String maxFileSize;
@@ -45,11 +51,11 @@ public class UploadConfigure {
     }
 
     public Map<String, String> getVideo_path() {
-        return Video_path;
+        return video_path;
     }
 
     public void setVideo_path(Map<String, String> video_path) {
-        Video_path = video_path;
+        this.video_path = video_path;
     }
 
     public Map<String, String> getImage_path() {
@@ -63,6 +69,16 @@ public class UploadConfigure {
     public Map<String, String> getCourse_path() {
         return course_path;
     }
+
+    public void setVoice_path(Map<String, String> voice_path) {
+        this.voice_path = voice_path;
+    }
+
+
+    public Map<String, String> getVoice_path() {
+        return voice_path;
+    }
+
 
     public void setCourse_path(Map<String, String> course_path) {
         this.course_path = course_path;
@@ -115,6 +131,18 @@ public class UploadConfigure {
             path = this.getVideo_path().get("windows");
         } else {
             path = this.getVideo_path().get("linux");
+        }
+        return path;
+    }
+
+
+    public String getVoiceBasePath() {
+        String path;
+        String os = System.getProperty("os.name");
+        if(os.toLowerCase().startsWith("win")) {
+            path = this.getVoice_path().get("windows");
+        } else {
+            path = this.getVoice_path().get("linux");
         }
         return path;
     }

@@ -3,9 +3,9 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>微课视频</title>
+    <title>单词添加</title>
     <%@ include file="../allresource.jsp"%>
-    <script src="${ctp}/static/scripts/myjs/video.js"></script>
+    <script src="${ctp}/static/scripts/myjs/word.js"></script>
 </head>
 <script>
     layui.use(['table','form'], function(){
@@ -15,17 +15,17 @@
 
         table.render({
             elem: '#test'
-            ,url:'${ctp}/manage/videoController/queryVideoInfoJson'
+            ,url:'${ctp}/manage/wordController/queryWordInfoJson'
             ,cols: [[
                 {type:'numbers',width:'4%', title: '序号'}
-                ,{field:'video_url',width:'20%',  title: '视频URL'}
-                ,{field:'video_name',width:'15%', title: '视频名称'}
-                ,{field:'add_time',width:'15%', title: '添加时间'}
-                ,{field:'browse_num',width:'8%',  title: '观看次数'}
-                ,{field:'video_type',width:'8%',  title: '视频类型',templet: '#AUDIT_STATUS'}
-                ,{field:'video_num',width:'8%',  title: '视频课时'}
-                ,{field:'state',width:'8%', title: '视频状态',templet: '#ENABLE_PLATFORM'}
-                ,{title:'操作',width:'14%',templet: '#caozuo', unresize: true}
+                ,{field:'word_title',width:'10%',  title: '单词标题'}
+                ,{field:'japanese',width:'10%', title: '日语单词'}
+                ,{field:'kana',width:'10%', title: '假名'}
+                ,{field:'chinese',width:'10%',  title: '中文'}
+                ,{field:'attribute',width:'10%',  title: '词性',templet: '#AUDIT_STATUS'}
+                ,{field:'voice_url',width:'15%',  title: '音频url'}
+                ,{field:'add_time',width:'15%',  title: '添加时间'}
+                ,{title:'操作',width:'15%',templet: '#caozuo', unresize: true}
             ]]
             ,page: true //开启分页
             ,limit:10 //每页最大数
@@ -131,7 +131,7 @@
 
                                 </select>
                             </div>
-                            <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="addVideo()" style="float:left;"> <i class="layui-icon layui-icon-add-1"></i>新增</a>
+                            <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="addWord()" style="float:left;"> <i class="layui-icon layui-icon-add-1"></i>新增</a>
                             <button type="button" class="layui-btn layui-btn-sm " id="query" data-type="reload"><i class="layui-icon layui-icon-search"></i>查询</button>
                         </div>
                     </form>

@@ -7,10 +7,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author 张伟
@@ -105,13 +108,16 @@ public class UploadService {
         }
     }
 
-    public String videoUpload(MultipartFile file){
-        //基础路径  E:/springboot-upload/course/
-        String basePath = uploadConfigure.getVideoBasePath();
+
+    public Map<String,Object> voiceUpload(MultipartFile file){
+        Map<String,Object> resultMap=new HashMap<>();
+
+        //基础路径  E:/springboot-upload/voice/
+        String basePath = uploadConfigure.getVoiceBasePath();
         //获取文件保存路径 \20180608\113339\
         String folder = FileUtils.getFolder();
         // 获取前缀为"FL_" 长度为20 的文件名  FL_eUljOejPseMeDg86h.png
-        String fileName = FileUtils.getFileName("VL_") + FileUtils.getFileNameSub(file.getOriginalFilename());
+        String fileName = FileUtils.getFileName("VO_") + FileUtils.getFileNameSub(file.getOriginalFilename());
         try {
             // E:\springboot-upload\course\20180608\113339
             Path filePath = Files.createDirectories(Paths.get(basePath, folder));
@@ -125,8 +131,52 @@ public class UploadService {
 
             String urlSuffix=folder+fileName;
 
-            String url=uploadConfigure.getServerPrefix()+"/video"+urlSuffix.replaceAll("\\\\","/");
+            String url=uploadConfigure.getServerPrefix()+"/voice"+urlSuffix.replaceAll("\\\\","/");
 
+            resultMap.put("filePath",filePath);
+            resultMap.put("url",url);
+            System.out.println(resultMap);
+
+            return resultMap;
+
+
+
+        } catch (Exception e) {
+            Path path = Paths.get(basePath, folder);
+//            log.error("写入文件异常,删除文件。。。。", e);
+            try {
+                Files.deleteIfExists(path);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public String videoUpload(MultipartFile file){
+        //基础路径  E:/springboot-upload/course/
+        String basePath = uploadConfigure.getVideoBasePath();
+        //获取文件保存路径 \20180608\113339\
+        String folder = FileUtils.getFolder();
+        // 获取前缀为"FL_" 长度为20 的文件名  FL_eUljOejPseMeDg86h.png
+        String fileName = FileUtils.getFileName("VL_") + FileUtils.getFileNameSub(file.getOriginalFilename());
+        Path fullPath=null;
+        try {
+            // E:\springboot-upload\course\20180608\113339
+            Path filePath = Files.createDirectories(Paths.get(basePath, folder));
+//            log.info("path01-->{}", filePath);
+
+            //写入文件  E:\springboot-upload\course\20180608\113339\FL_eUljOejPseMeDg86h.png
+            fullPath = Paths.get(basePath, folder, fileName);
+//            log.info("fullPath-->{}", fullPath);
+            // E:\springboot-upload\course\20180608\113339\FL_eUljOejPseMeDg86h.png
+            Files.write(fullPath, file.getBytes(), StandardOpenOption.CREATE);
+
+            String urlSuffix=folder+fileName;
+
+            String url=uploadConfigure.getServerPrefix()+"/video"+urlSuffix.replaceAll("\\\\","/");
 
             System.out.println(url);
 

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wordMapper">
+
+    <insert id="addWord" parameterType="PageData" >
+     insert into tb_word(word_id,voice_id,analy_id,japanese,word_title,kana,add_time,state)
+     values (#{word_id},#{voice_id},#{analy_id},#{japanese},#{word_title},#{kana},STR_TO_DATE(#{add_time},"%Y-%m-%d %T"),#{state})
+    </insert>
+
+    <insert id="addAnaly" parameterType="PageData" >
+     insert into tb_analy(analy_id,word_id,chinese,attribute)
+     values (#{analy_id},#{word_id},#{chinese},#{attribute})
+    </insert>
+
+    <insert id="addVoice" parameterType="PageData" >
+     insert into tb_voice(voice_id,type,voice_url)
+     values (#{voice_id},#{type},#{voice_url})
+    </insert>
+
+    <insert id="addSentence" parameterType="PageData" >
+     insert into tb_word_eg(eg_id,word_id,voice_id,sentence,translate)
+     values (#{eg_id},#{word_id},#{voice_id},#{sentence},#{translate})
+    </insert>
+
+
+    <!--单词分页查询-->
+    <select id="queryWordInfoListPage" parameterType="Page" resultType="PageData">
+        select a.word_id,a.voice_id,a.analy_id,japanese,word_title,kana,date_format(add_time,"%Y-%m-%d %T") as add_time,state,chinese,attribute,type,voice_url,sentence,translate
+        from tb_word a join tb_analy b on a.analy_id=b.analy_id
+        join tb_voice c on a.voice_id=c.voice_id
+        join tb_word_eg d on a.word_id=d.word_id
+        where 1=1
+        <if test="pd.japanese!=null and pd.japanese !=''">
+            and japanese like concat('%', #{pd.japanese},'%')
+        </if>
+        <if test="pd.kana!=null and pd.kana !=''">
+            and kana like concat('%', #{pd.kana},'%')
+        </if>
+        <if test="pd.chinese!=null and pd.chinese !=''">
+            and chinese like concat('%', #{pd.chinese},'%')
+        </if>
+        <if test="pd.word_title!=null and pd.word_title !=''">
+            and word_title like concat('%', #{pd.word_title},'%')
+        </if>
+        <if test="pd.attribute!=null and pd.attribute !=''">
+            and attribute=#{pd.attribute}
+        </if>
+        <if test="pd.type!=null and pd.type !=''">
+            and video_type=#{pd.video_type}
+        </if>
+        <if test="pd.state!=null and pd.state !=''">
+            and state=#{pd.state}
+        </if>
+        order by add_time desc
+    </select>
+
+
+
+
+</mapper>

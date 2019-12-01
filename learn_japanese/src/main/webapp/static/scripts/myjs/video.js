@@ -3,7 +3,7 @@ function enableORstopVideo(id,state){
     layer.confirm('是否启用？', {icon: 3, title:'提示'}, function(index){
         //执行启用
         $.ajax({
-            url : contextPath + '/manage/manageVideoController/enableORstopVideo',
+            url : contextPath + '/manage/videoController/enableORstopVideo',
             timeout : 300000,
             dataType : "json",
             type : "post",
@@ -41,7 +41,7 @@ function addVideo(){
         shade: 0.5,  		//笼罩层透明度
         maxmin: false,		//是否显示最大化按钮
         area: ['100%', '100%'],  //大小
-        content: contextPath + '/manage/manageVideoController/video_add'
+        content: contextPath + '/manage/videoController/video_add'
     });
 }
 //打开修改视频页面
@@ -54,7 +54,7 @@ function updateVideo(id){
         shade: 0.5,  //笼罩层透明度
         maxmin: false,//是否显示最大化按钮
         area: ['100%', '100%'],  //大小
-        content:  contextPath + '/manage/manageVideoController/video_update?id='+id
+        content:  contextPath + '/manage/videoController/video_update?id='+id
     });
 }
 //打开视频详情页面
@@ -67,7 +67,7 @@ function queryVideoDetails(id){
         shade: 0.5,  		//笼罩层透明度
         maxmin: false,		//是否显示最大化按钮
         area: ['100%', '100%'],  //大小
-        content: contextPath + '/manage/manageVideoController/video_details?id='+id
+        content: contextPath + '/manage/videoController/video_details?id='+id
     });
 }
 
