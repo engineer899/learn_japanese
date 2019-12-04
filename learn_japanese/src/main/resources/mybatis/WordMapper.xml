@@ -24,6 +24,40 @@
     </insert>
 
 
+    <delete id="deleteWord" parameterType="PageData" >
+     delete from tb_word where word_id=#{word_id}
+    </delete>
+
+    <delete id="deleteAnaly" parameterType="PageData" >
+     delete from tb_analy where analy_id=#{analy_id}
+    </delete>
+
+    <delete id="deleteVoice" parameterType="PageData" >
+     delete from tb_voice where voice_id=#{voice_id}
+    </delete>
+
+    <delete id="deleteSentence" parameterType="PageData" >
+     delete from tb_word_eg where eg_id=#{eg_id}
+    </delete>
+
+
+
+    <delete id="deleteAnalyByWordId" parameterType="PageData" >
+     delete from tb_analy where word_id=#{word_id}
+    </delete>
+
+    <delete id="deleteSentenceByWordId" parameterType="PageData" >
+     delete from tb_word_eg where word_id=#{word_id}
+    </delete>
+
+    <delete id="deleteVoiceByWordId" parameterType="PageData" >
+    delete from tb_voice where voice_id in
+    (select c.* from (select b.voice_id from tb_word a join  tb_voice b on a.voice_id=b.voice_id where a.word_id=#{word_id}) c)
+    </delete>
+
+
+
+
     <!--单词分页查询-->
     <select id="queryWordInfoListPage" parameterType="Page" resultType="PageData">
         select a.word_id,a.voice_id,a.analy_id,japanese,word_title,kana,date_format(add_time,"%Y-%m-%d %T") as add_time,state,chinese,attribute,type,voice_url,sentence,translate
@@ -54,6 +88,19 @@
         </if>
         order by add_time desc
     </select>
+
+    <!--单词类别查询-->
+    <select id="queryWordTitle" parameterType="PageData" resultType="PageData">
+        select word_title,date_format(add_time,"%Y-%m-%d %T") as add_time
+        from tb_word a join tb_analy b on a.analy_id=b.analy_id
+        join tb_voice c on a.voice_id=c.voice_id
+        join tb_word_eg d on a.word_id=d.word_id
+        where 1=1
+        order by add_time desc
+    </select>
+
+
+
 
 
 

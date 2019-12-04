@@ -32,6 +32,44 @@ public class WordService {
     }
 
 
+    /**
+     * 微课视频分页查询
+     * @param
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> queryWordTitle(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("wordMapper.queryWordTitle", pageData);
+    }
+
+
+    /**
+     * 微课视频分页查询
+     * @param
+     * @return
+     * @throws Exception
+     */
+    public  int deleteWordById(PageData pageData) throws Exception {
+        int tb_word=0;
+        int tb_voice=0;
+        int tb_word_eg=0;
+        int tb_analy=0;
+        try{
+            tb_word=(int)dao.delete("wordMapper.deleteWord",pageData);
+            tb_voice=(int)dao.delete("wordMapper.deleteVoiceByWordId",pageData);
+            tb_word_eg=(int)dao.delete("wordMapper.deleteSentenceByWordId",pageData);
+            tb_analy=(int)dao.delete("wordMapper.deleteAnalyByWordId",pageData);
+        }catch(Exception e){
+            return 1;
+        }
+        if(tb_word+tb_voice+tb_word_eg+tb_analy>=4){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+
+
 
 
     public int addWord(PageData pageData) {
@@ -47,16 +85,16 @@ public class WordService {
         }catch(Exception e){
             try{
                 if(tb_word<1){
-                    dao.delete("wordMapper.addAnaly",pageData);
+                    dao.delete("wordMapper.deleteWord",pageData);
                 }
                 if(tb_voice<1){
-                    dao.delete("wordMapper.addAnaly",pageData);
+                    dao.delete("wordMapper.deleteVoice",pageData);
                 }
                 if(tb_word_eg<1){
-                    dao.delete("wordMapper.addAnaly",pageData);
+                    dao.delete("wordMapper.deleteSentence",pageData);
                 }
                 if(tb_analy<1){
-                    dao.delete("wordMapper.addAnaly",pageData);
+                    dao.delete("wordMapper.deleteAnaly",pageData);
                 }
             }catch(Exception ex){
                 ex.printStackTrace();
@@ -68,16 +106,16 @@ public class WordService {
         }else{
             try{
                 if(tb_word<1){
-                    dao.delete("wordMapper.addAnaly",pageData);
+                    dao.delete("wordMapper.deleteWord",pageData);
                 }
                 if(tb_voice<1){
-                    dao.delete("wordMapper.addAnaly",pageData);
+                    dao.delete("wordMapper.deleteVoice",pageData);
                 }
                 if(tb_word_eg<1){
-                    dao.delete("wordMapper.addAnaly",pageData);
+                    dao.delete("wordMapper.deleteSentence",pageData);
                 }
                 if(tb_analy<1){
-                    dao.delete("wordMapper.addAnaly",pageData);
+                    dao.delete("wordMapper.deleteAnaly",pageData);
                 }
             }catch(Exception ex){
                 ex.printStackTrace();

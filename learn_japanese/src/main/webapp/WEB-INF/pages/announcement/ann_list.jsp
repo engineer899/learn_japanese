@@ -15,7 +15,7 @@
 
         table.render({
             elem: '#test'
-            ,url:'${ctp}/manage/manageAnnController/queryAnnInfoJson'
+            ,url:'${ctp}/manage/annController/queryAnnInfoJson'
             ,cols: [[
                 {type:'numbers',width:'5%', title: '序号'}
                 ,{field:'ann_title',width:'55%', title: '公告标题'}

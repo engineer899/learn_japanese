@@ -1,25 +1,23 @@
-//停用或启用视频
-function enableORstopVideo(id,state){
-    layer.confirm('是否启用？', {icon: 3, title:'提示'}, function(index){
-        //执行启用
+function deleteWordById(id){
+    layer.confirm('是否删除？', {icon: 3, title:'提示'}, function(index){
+        //执行删除
         $.ajax({
-            url : contextPath + '/manage/videoController/enableORstopVideo',
+            url : contextPath + '/manage/wordController/deleteWordById',
             timeout : 300000,
             dataType : "json",
             type : "post",
             data : {
-                "id" : id,
-                "state": state
+                "word_id" : id,
             },
             success : function(data) {
                 if(data.status == "success"){
-                    layer.alert("操作成功",{icon: 1,closeBtn: 0},function(index){
+                    layer.alert("删除成功",{icon: 1,closeBtn: 0},function(index){
                         setTimeout("location.reload()",100); //父页面刷新 必须在关闭iframe之前
                         layer.closeAll('iframe');//关闭弹窗
                     });
-                    //置为启用
+                    //置为删除
                 }else{
-                    layer.alert("操作失败",{icon: 2,closeBtn: 0},function(index){
+                    layer.alert("删除失败",{icon: 2,closeBtn: 0},function(index){
                         setTimeout("location.reload()",100); //父页面刷新 必须在关闭iframe之前
                         layer.closeAll('iframe');//关闭弹窗
                     });

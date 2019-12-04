@@ -57,7 +57,7 @@
 
         layer.load();
         $.ajax({
-            url: contextPath+'/manage/manageAnnController/addAnn',
+            url: contextPath+'/manage/annController/addAnn',
             type: "post",
             data: formData,
             async: false,

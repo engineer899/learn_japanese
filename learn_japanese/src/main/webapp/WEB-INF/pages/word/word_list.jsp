@@ -65,13 +65,10 @@
     });
 </script>
 <script type="text/html" id="caozuo">
-     <a class='layui-btn layui-btn-xs' onclick="queryVideoDetails('{{d.id }}')">详情</a>
-     <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="updateVideo('{{d.id }}')">编辑</a>
-     {{# if(d.state == '0'){ }}
-     <a class='layui-btn layui-btn-xs layui-btn-danger'  onclick="enableORstopVideo('{{d.id}}','1')">停用</a>
-     {{# }else{ }}
-     <a class='layui-btn layui-btn-xs' onclick="enableORstopVideo('{{d.id}}','0')">启用</a>
-     {{# } }}
+     <a class='layui-btn layui-btn-xs' onclick="queryVideoDetails('{{d.word_id}}')">详情</a>
+     <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="updateVideo('{{d.word_id}}')">编辑</a>
+     <a class='layui-btn layui-btn-xs layui-btn-danger'  onclick="deleteWordById('{{d.word_id}}')">删除</a>
+
 
 </script>
 

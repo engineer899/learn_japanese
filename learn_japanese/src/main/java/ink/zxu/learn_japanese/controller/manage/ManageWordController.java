@@ -76,6 +76,25 @@ public class ManageWordController  extends BaseController {
         return mv;
     }
 
+    /**
+     * 删除单词
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/deleteWordById", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String deleteWordById() throws Exception {
+        Map<String, String> resultMap = new HashMap<>();
+        PageData pageData=this.getPageData();
+        int result= wordService.deleteWordById(pageData);
+        if(result==0){
+            resultMap.put("status", "success");
+        }else{
+            resultMap.put("status", "fail");
+        }
+        return new Gson().toJson(resultMap);
+    }
+
 
     /**
      *视频信息列表查询

@@ -30,14 +30,17 @@ server:
 
 upload:
   serverPrefix: https://zxu.ink/learn
-  image_path:  #配置默认文件保存位置
+  image_path:  #配置图片保存位置
     windows: C:/springboot-upload/image/
     linux: /dreamhai/springboot-upload/image/
-  course_path:  #配置默认文件保存位置
+  course_path:  #配置课程保存位置
     windows: C:/springboot-upload/course/
     linux: /dreamhai/springboot-upload/course/
-  video_path:  #配置默认文件保存位置
+  video_path:  #配置视频保存位置
     windows: C:/springboot-upload/video/
     linux: /dreamhai/springboot-upload/video/
+  voice_path:  #配置音频保存位置
+    windows: C:/springboot-upload/voice/
+    linux: /dreamhai/springboot-upload/voice/
   maxFileSize: 10240KB #单个文件最大KB/MB
   maxRequestSize: 102400KB   #设置总上传数据总大小
