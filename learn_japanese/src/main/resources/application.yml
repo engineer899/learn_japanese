@@ -29,7 +29,7 @@ server:
 
 
 upload:
-  serverPrefix: https://zxu.ink/learn
+  serverPrefix: https://localhost/learn
   image_path:  #配置图片保存位置
     windows: C:/springboot-upload/image/
     linux: /dreamhai/springboot-upload/image/

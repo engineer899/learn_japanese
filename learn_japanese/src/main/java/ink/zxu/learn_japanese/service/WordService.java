@@ -3,6 +3,7 @@ package ink.zxu.learn_japanese.service;
 import ink.zxu.learn_japanese.dao.DaoSupport;
 import ink.zxu.learn_japanese.utils.Page;
 import ink.zxu.learn_japanese.utils.PageData;
+import ink.zxu.learn_japanese.utils.UUIDUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,7 +40,28 @@ public class WordService {
      * @throws Exception
      */
     public List<PageData> queryWordTitle(PageData pageData) throws Exception {
-        return (List<PageData>) dao.findForList("wordMapper.queryWordTitle", pageData);
+        PageData result;
+        List<PageData> pageDataList=(List<PageData>) dao.findForList("wordMapper.queryWordTitle", pageData);
+        for(int i=0;i<pageDataList.size();i++){
+            String word_title=pageDataList.get(i).getString("word_title");
+            pageData.put("word_title",word_title);
+            result=(PageData) dao.findForObject("wordMapper.queryWordTestIsEnd",pageData);
+            if(result==null){
+                pageDataList.get(i).put("is_end","0");
+                pageDataList.get(i).put("record_id","null");
+            }else{
+                String is_end=result.getString("is_end");
+                String record_id=result.getString("record_id");
+                if(is_end.equals("0")){
+                    pageDataList.get(i).put("is_end",0);
+                    pageDataList.get(i).put("record_id",record_id);
+                }else {
+                    pageDataList.get(i).put("is_end",1);
+                    pageDataList.get(i).put("record_id",record_id);
+                }
+            }
+        }
+        return pageDataList;
     }
 
 
@@ -70,6 +92,25 @@ public class WordService {
     }
 
 
+
+    public List<PageData> clickWordTest(PageData pageData) throws Exception {
+        int flag=0;
+        List<PageData> pageDataList=null;
+        if(pageData.getString("record_id").equals("null")){
+            pageData.put("record_id",UUIDUtil.getUid());
+            flag=(int)dao.save("wordMapper.addWordTest",pageData);
+        }else{
+            dao.findForList("wordMapper.queryWordRecord");
+        }
+        Page page=new Page();
+        page.setPd(pageData);
+        pageDataList=(List<PageData>)dao.findForList("queryWordInfoListPage",page);
+        for(int i=0;i<pageDataList.size();i++){
+            List<PageData> select=(List<PageData>)dao.findForList("queryAnalyRand",pageDataList.get(i));
+            pageDataList.get(i).put("select",select);
+        }
+        return pageDataList;
+    }
 
 
     public int addWord(PageData pageData) {
