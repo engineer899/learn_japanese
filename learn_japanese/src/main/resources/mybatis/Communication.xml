@@ -4,7 +4,7 @@
 <mapper namespace="communicationMapper">
 
     <select id="showContent" parameterType="PageData" resultType="PageData">
-     select nick_name,avatar_url,id,content,date_format(addtime,"%Y-%m-%d %T") as addtime,browse_num,comment_num,zan_num
+     select nick_name,avatar_url,id,content,date_format(RequestMapping,"%Y-%m-%d %T") as addtime,browse_num,comment_num,zan_num
      from tb_content a join users b on a.openid=b.openid order by addtime desc
     </select>
 

@@ -40,8 +40,6 @@
      delete from tb_word_eg where eg_id=#{eg_id}
     </delete>
 
-
-
     <delete id="deleteAnalyByWordId" parameterType="PageData" >
      delete from tb_analy where word_id=#{word_id}
     </delete>
@@ -55,7 +53,55 @@
     (select c.* from (select b.voice_id from tb_word a join  tb_voice b on a.voice_id=b.voice_id where a.word_id=#{word_id}) c)
     </delete>
 
+    <!--查询某类单词库单词总数-->
+    <select id="queryWordCount" parameterType="PageData" resultType="PageData">
+        select count(*) as count
+        from tb_word where word_title=#{word_title}
+    </select>
 
+    <!--查询某次测试单词答题数-->
+    <select id="queryWordRecordCount" parameterType="PageData" resultType="PageData">
+        select count(*) as count
+        from tb_word_record where record_id=#{record_id}
+    </select>
+
+    <!--查询某个单词答题信息-->
+    <select id="queryWordRecordInfoById" parameterType="PageData" resultType="PageData">
+        select *  from tb_word_record where record_id=#{record_id} and word_id=#{word_id}
+    </select>
+
+    <!--查询某个单词是否回答过-->
+    <select id="queryWordRecordById" parameterType="PageData" resultType="PageData">
+        select count(*) as count
+        from tb_word_record where record_id=#{record_id} and word_id=#{word_id}
+    </select>
+
+
+    <!--更改答题记录-->
+    <update id="updateAnswerWord" parameterType="PageData">
+        update  tb_word_record
+        <if test="flag==1">
+            set true_num=true_num+1
+        </if>
+        <if test="flag==0">
+            set false_num=false_num+1
+        </if>
+        where record_id=#{record_id} and  word_id=#{word_id} and state='0'
+    </update>
+
+    <!--增加答题记录-->
+    <insert id="addAnswerWord" parameterType="PageData">
+       insert   into tb_word_record(record_id,word_id,true_num,false_num)
+       values(#{record_id},#{word_id},#{true_num},#{false_num})
+    </insert>
+
+    <!--更改测试记录-->
+    <update id="updateTestInfo" parameterType="PageData">
+        update  tb_word_test
+          set   is_end='0',
+                end_time=#{end_time}
+         where record_id=#{record_id} and  user_id=#{user_id} and state='0'
+    </update>
 
 
     <!--单词分页查询-->
@@ -118,7 +164,7 @@
         select * from  tb_word_record where record_id=#{record_id}
     </select>
 
-    <!--查询单词测试列表-->
+    <!--查询单词测试列表 最近一次记录是否结束 记录表id-->
     <select id="queryWordTestIsEnd" parameterType="PageData" resultType="PageData">
         select is_end,record_id from (
         select * from  tb_word_test where user_id=#{user_id} and word_title=#{word_title}
@@ -127,6 +173,8 @@
 
     </select>
 
+
+    <!--随机生成三个干扰项-->
     <select id="queryAnalyRand" parameterType="PageData" resultType="PageData">
         select chinese,attribute from tb_analy where analy_id !=#{analy_id} order by rand() limit 3;
     </select>
