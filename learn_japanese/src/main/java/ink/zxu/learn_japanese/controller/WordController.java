@@ -32,7 +32,7 @@ public class WordController extends BaseController {
         PageData pd=this.getPageData();
         String   token=pd.getString("token");
         HttpSession session= SessionManager.getSession(token);
-        String user_id=(String)session.getAttribute("openid");
+        String user_id=(String)session.getAttribute("openid");//获取用户openid
         pd.put("user_id",user_id);
         List<PageData> pageDataList=null;
         pageDataList=wordService.queryWordTitle(pd);
@@ -46,7 +46,7 @@ public class WordController extends BaseController {
         PageData pd=this.getPageData();
         String   token=pd.getString("token");
         HttpSession session= SessionManager.getSession(token);
-        String user_id=(String)session.getAttribute("openid");
+        String user_id=(String)session.getAttribute("openid");//获取用户openid
         pd.put("user_id",user_id);
         Map<String,Object> resultMap=null;
         resultMap=wordService.clickWordTest(pd);
