@@ -25,6 +25,7 @@ public class WordController extends BaseController {
     private WordService wordService;
 
 
+    //查询单词库的单词
     @ResponseBody
     @RequestMapping("/queryWordTitle")
     public String queryWordTitle() throws Exception {
@@ -38,6 +39,7 @@ public class WordController extends BaseController {
         return new Gson().toJson(pageDataList);
     }
 
+    //点击开始答题记录
     @ResponseBody
     @RequestMapping("/clickWordTest")
     public String clickWordTest() throws Exception {
@@ -52,6 +54,7 @@ public class WordController extends BaseController {
         return new Gson().toJson(resultMap);
     }
 
+    //增加单词答题记录
     @ResponseBody
     @RequestMapping("/addAnswerRecord")
     public String addAnswerRecord() throws Exception {
