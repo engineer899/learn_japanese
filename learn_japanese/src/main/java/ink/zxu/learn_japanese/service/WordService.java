@@ -45,22 +45,24 @@ public class WordService {
     public List<PageData> queryWordTitle(PageData pageData) throws Exception {
         PageData result;
         List<PageData> pageDataList=(List<PageData>) dao.findForList("wordMapper.queryWordTitle", pageData);
-        for(int i=0;i<pageDataList.size();i++){
+        for(int i=0;i<pageDataList.size();i++){//遍历单词库名
             String word_title=pageDataList.get(i).getString("word_title");
             pageData.put("word_title",word_title);
+            //    <!--查询单词测试列表 最近一次记录是否结束 记录表id-->
             result=(PageData) dao.findForObject("wordMapper.queryWordTestIsEnd",pageData);
-            if(result==null){
-                pageDataList.get(i).put("is_end","0");
-                pageDataList.get(i).put("record_id","null");
+            if(result==null){//从未答过题
+                pageDataList.get(i).put("is_end","0");//标记为未结束
+                pageDataList.get(i).put("record_id","null");//最近一次单词练习记录为空
             }else{
+                //有答题记录
                 String is_end=result.getString("is_end");
                 String record_id=result.getString("record_id");
-                if(is_end.equals("0")){
-                    pageDataList.get(i).put("is_end","0");
-                    pageDataList.get(i).put("record_id",record_id);
+                if(is_end.equals("0")){//判断是否为未结束
+                    pageDataList.get(i).put("is_end","0");//标记为未结束
+                    pageDataList.get(i).put("record_id",record_id);//获取最近一次答题记录id
                 }else {
-                    pageDataList.get(i).put("is_end","1");
-                    pageDataList.get(i).put("record_id",record_id);
+                    pageDataList.get(i).put("is_end","1");//标记为已经结束
+                    pageDataList.get(i).put("record_id",record_id);//获取最近一次答题记录id
                 }
             }
         }
@@ -156,7 +158,7 @@ public class WordService {
         Integer index=0;
         Double true_num=0.0;
         Double false_num=0.0;
-        DecimalFormat df = new DecimalFormat("0.00");//设置小数点位数
+        DecimalFormat df = new DecimalFormat("0.0");//设置小数点位数
         Double true_rate=0.0;
         Map<String,Object> resultMap=new HashMap<>();
         Page page=new Page();
@@ -192,7 +194,7 @@ public class WordService {
         resultMap.put("had_learn",index);
         resultMap.put("not_learn",testDataList.size()-index);
         resultMap.put("true_rate",df.format(true_rate));
-        resultMap.put("index",index-1);
+        resultMap.put("index",index);
         resultMap.put("testDataList",testDataList);
         return resultMap;
     }
