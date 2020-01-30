@@ -166,7 +166,7 @@
     </select>
 
     <!--查询单词测试列表 最近一次记录是否结束 记录表id-->
-    <select id="queryWordTestIsEnd" parameterType="PageData" >
+    <select id="queryWordTestIsEnd" parameterType="PageData"  resultType="PageData">
         select count(1)  as count from  tb_word_test where user_id=#{user_id} and word_title=#{word_title}
         and is_end=3
     </select>
