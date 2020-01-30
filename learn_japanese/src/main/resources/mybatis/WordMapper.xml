@@ -103,7 +103,13 @@
          where record_id=#{record_id} and  user_id=#{user_id} and state='0'
     </update>
 
-
+    <select id="queryWordRandom" parameterType="PageData" resultType="PageData">
+    select a.word_id,a.voice_id,a.analy_id,japanese,word_title,kana,date_format(add_time,"%Y-%m-%d %T") as add_time,state,chinese,attribute,type,voice_url,sentence,translate
+    from tb_word a join tb_analy b on a.analy_id=b.analy_id
+    join tb_voice c on a.voice_id=c.voice_id
+    join tb_word_eg d on a.word_id=d.word_id
+     ORDER BY  RAND() LIMIT #{randnum}
+    </select>
     <!--单词分页查询-->
     <select id="queryWordInfoListPage" parameterType="Page" resultType="PageData">
         select a.word_id,a.voice_id,a.analy_id,japanese,word_title,kana,date_format(add_time,"%Y-%m-%d %T") as add_time,state,chinese,attribute,type,voice_url,sentence,translate
@@ -137,12 +143,7 @@
 
     <!--单词类别查询-->
     <select id="queryWordTitle" parameterType="PageData" resultType="PageData">
-        select word_title,date_format(add_time,"%Y-%m-%d") as add_time
-        from tb_word a join tb_analy b on a.analy_id=b.analy_id
-        join tb_voice c on a.voice_id=c.voice_id
-        join tb_word_eg d on a.word_id=d.word_id
-        where 1=1 group by word_title
-        order by add_time desc
+        select word_title from tb_word group by word_title
     </select>
 
     <!--创建单词测试列表-->
@@ -165,12 +166,9 @@
     </select>
 
     <!--查询单词测试列表 最近一次记录是否结束 记录表id-->
-    <select id="queryWordTestIsEnd" parameterType="PageData" resultType="PageData">
-        select is_end,record_id from (
-        select * from  tb_word_test where user_id=#{user_id} and word_title=#{word_title}
-        order by start_time desc
-        ) a LIMIT 1
-
+    <select id="queryWordTestIsEnd" parameterType="PageData" >
+        select count(1)  as count from  tb_word_test where user_id=#{user_id} and word_title=#{word_title}
+        and is_end=3
     </select>
 
 
