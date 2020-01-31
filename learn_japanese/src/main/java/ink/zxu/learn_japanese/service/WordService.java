@@ -43,14 +43,14 @@ public class WordService {
      * @throws Exception
      */
     public List<PageData> queryWordTitle(PageData pageData) throws Exception {
-        Integer count;
+        PageData pd;
         List<PageData> pageDataList=(List<PageData>) dao.findForList("wordMapper.queryWordTitle", pageData);
         for(int i=0;i<pageDataList.size();i++){//遍历单词库名
             String word_title=pageDataList.get(i).getString("word_title");
             pageData.put("word_title",word_title);
             //    查询单词测试列表 当前章节是否达标
-            count=(Integer) dao.findForObject("wordMapper.queryWordTestIsEnd",pageData);
-            pageDataList.get(i).put("count",count);//达标次数
+            pd=(PageData) dao.findForObject("wordMapper.queryWordTestIsEnd",pageData);
+            pageDataList.get(i).put("count",pd.get("count"));//达标次数
         }
         return pageDataList;
     }
@@ -169,47 +169,26 @@ public class WordService {
     public Map<String, Object> clickWordTest(PageData pageData) throws Exception {
         Integer flag=0;
         Integer index=0;
-        Double true_num=0.0;
-        Double false_num=0.0;
+        Double true_num=0.0;//答对次数
+        Double false_num=0.0;//答错次数
         DecimalFormat df = new DecimalFormat("0.0");//设置小数点位数
-        Double true_rate=0.0;
-        Map<String,Object> resultMap=new HashMap<>();
+        Double true_rate=0.0;//准确率
+        Map<String,Object> resultMap=new HashMap<>();//结果集
         int randnum=10;//设置每次随机数量
         pageData.put("randnum",randnum);
-        List<PageData>  testDataList=(List<PageData>)dao.findForList("queryWordInfoListPage",pageData);//从单词库随机取出10个单词
-        if(pageData.getString("record_id").equals("null")){ //如果测试表记录为空 即为第一次答题 则创建一条答题记录
-            pageData.put("record_id",UUIDUtil.getUid());
-            flag=(Integer)dao.save("wordMapper.addWordTest",pageData);//新建一条测试记录
-            for(int i=0;i<testDataList.size();i++){
-                List<PageData> select=(List<PageData>)dao.findForList("queryAnalyRand",testDataList.get(i));//在单词解析表随机找出三个中文做干扰项
-                testDataList.get(i).put("select",select);//将干扰项插入单词对象中
-            }
-            List<PageData>  recordDataListId=(List<PageData>)dao.findForList("queryWordRecord",pageData);//已答题库单词列表
-
-        }else{
-            List<PageData>  recordDataListId=(List<PageData>)dao.findForList("queryWordRecord",pageData);//已答题库单词列表
-            for(int i=0;i<testDataList.size();i++){
-                for(int j=0;j<recordDataListId.size();j++){
-                    if(testDataList.get(i).getString("word_id").equals(recordDataListId.get(j).getString("word_id"))){//找到单词库中已经被答的单词
-                        true_num=true_num+(Integer)recordDataListId.get(j).get("true_num");//已答单词的正确次数
-                        false_num=false_num+(Integer)recordDataListId.get(j).get("false_num");//已答单词的错误次数
-                        index++;//上次退出时 单词表单词位置
-                    }
-                }
-                List<PageData> select=(List<PageData>)dao.findForList("queryAnalyRand",testDataList.get(i));//在单词解析表随机找出三个中文做干扰项
-                testDataList.get(i).put("select",select);//将干扰项插入单词对象中
-            }
-            if((true_num+false_num)==0 || true_num==0){
-                true_rate=0.0;
-            }else{
-                true_rate=true_num/(true_num+false_num)*100;
-            }
+        List<PageData>  testDataList=(List<PageData>)dao.findForList("queryWordRandom",pageData);//从单词库随机取出10个单词
+        pageData.put("record_id",UUIDUtil.getUid());
+        flag=(Integer)dao.save("wordMapper.addWordTest",pageData);//新建一条测试记录
+        for(int i=0;i<testDataList.size();i++){
+            List<PageData> select=(List<PageData>)dao.findForList("queryAnalyRand",testDataList.get(i));//在单词解析表随机找出三个中文做干扰项
+            testDataList.get(i).put("select",select);//将干扰项插入单词对象中
         }
+//        List<PageData>  recordDataListId=(List<PageData>)dao.findForList("queryWordRecord",pageData);//已答题库单词列表
 
-        resultMap.put("had_learn",index);
-        resultMap.put("not_learn",testDataList.size()-index);
-        resultMap.put("true_rate",df.format(true_rate));
-        resultMap.put("index",index);
+        resultMap.put("had_learn",0);
+        resultMap.put("not_learn",0);
+        resultMap.put("true_rate",0);
+        resultMap.put("index",0);
         resultMap.put("testDataList",testDataList);
         return resultMap;
     }
