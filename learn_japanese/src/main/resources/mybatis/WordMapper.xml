@@ -53,11 +53,7 @@
     (select c.* from (select b.voice_id from tb_word a join  tb_voice b on a.voice_id=b.voice_id where a.word_id=#{word_id}) c)
     </delete>
 
-    <!--查询某类单词库单词总数-->
-    <select id="queryWordCount" parameterType="PageData" resultType="PageData">
-        select count(*) as count
-        from tb_word where word_title=#{word_title}
-    </select>
+
 
     <!--查询某次测试单词答题数-->
     <select id="queryWordRecordCount" parameterType="PageData" resultType="PageData">
@@ -90,53 +86,78 @@
     </update>
 
     <!--增加答题记录-->
-    <insert id="addAnswerWord" parameterType="PageData">
+    <insert id="addWordRecord" parameterType="PageData">
        insert   into tb_word_record(record_id,word_id,true_num,false_num)
        values(#{record_id},#{word_id},#{true_num},#{false_num})
     </insert>
 
-    <!--更改测试记录-->
-    <update id="updateTestInfo" parameterType="PageData">
-        update  tb_word_test
-          set   is_end='0',
-                end_time=#{end_time}
-         where record_id=#{record_id} and  user_id=#{user_id} and state='0'
-    </update>
+
 
     <select id="queryWordRandom" parameterType="PageData" resultType="PageData">
     select a.word_id,a.voice_id,a.analy_id,japanese,word_title,kana,date_format(add_time,"%Y-%m-%d %T") as add_time,state,chinese,attribute,type,voice_url,sentence,translate
     from tb_word a join tb_analy b on a.analy_id=b.analy_id
     join tb_voice c on a.voice_id=c.voice_id
     join tb_word_eg d on a.word_id=d.word_id
+    where word_title=#{word_title}
      ORDER BY  RAND() LIMIT #{randnum}
     </select>
+    <!--查询某类单词库单词总数-->
+    <select id="queryWordCount" parameterType="PageData" resultType="PageData">
+        select count(*) as count
+        from tb_word a join tb_analy b on a.analy_id=b.analy_id
+        join tb_voice c on a.voice_id=c.voice_id
+        join tb_word_eg d on a.word_id=d.word_id
+        where 1=1
+        <if test="japanese!=null and japanese !=''">
+            and japanese like concat('%', #{japanese},'%')
+        </if>
+        <if test="kana!=null and kana !=''">
+            and kana like concat('%', #{kana},'%')
+        </if>
+        <if test="chinese!=null and chinese !=''">
+            and chinese like concat('%', #{chinese},'%')
+        </if>
+        <if test="word_title!=null and word_title !=''">
+            and word_title like concat('%', #{word_title},'%')
+        </if>
+        <if test="attribute!=null and attribute !=''">
+            and attribute=#{attribute}
+        </if>
+        <if test="type!=null and type !=''">
+            and video_type=#{video_type}
+        </if>
+        <if test="state!=null and state !=''">
+            and state=#{state}
+        </if>
+    </select>
+
     <!--单词分页查询-->
-    <select id="queryWordInfoListPage" parameterType="Page" resultType="PageData">
+    <select id="queryWordInfoListPage" parameterType="PageData" resultType="PageData">
         select a.word_id,a.voice_id,a.analy_id,japanese,word_title,kana,date_format(add_time,"%Y-%m-%d %T") as add_time,state,chinese,attribute,type,voice_url,sentence,translate
         from tb_word a join tb_analy b on a.analy_id=b.analy_id
         join tb_voice c on a.voice_id=c.voice_id
         join tb_word_eg d on a.word_id=d.word_id
         where 1=1
-        <if test="pd.japanese!=null and pd.japanese !=''">
-            and japanese like concat('%', #{pd.japanese},'%')
+        <if test="japanese!=null and japanese !=''">
+            and japanese like concat('%', #{japanese},'%')
         </if>
-        <if test="pd.kana!=null and pd.kana !=''">
-            and kana like concat('%', #{pd.kana},'%')
+        <if test="kana!=null and kana !=''">
+            and kana like concat('%', #{kana},'%')
         </if>
-        <if test="pd.chinese!=null and pd.chinese !=''">
-            and chinese like concat('%', #{pd.chinese},'%')
+        <if test="chinese!=null and chinese !=''">
+            and chinese like concat('%', #{chinese},'%')
         </if>
-        <if test="pd.word_title!=null and pd.word_title !=''">
-            and word_title like concat('%', #{pd.word_title},'%')
+        <if test="word_title!=null and word_title !=''">
+            and word_title like concat('%', #{word_title},'%')
         </if>
-        <if test="pd.attribute!=null and pd.attribute !=''">
-            and attribute=#{pd.attribute}
+        <if test="attribute!=null and attribute !=''">
+            and attribute=#{attribute}
         </if>
-        <if test="pd.type!=null and pd.type !=''">
-            and video_type=#{pd.video_type}
+        <if test="type!=null and type !=''">
+            and video_type=#{video_type}
         </if>
-        <if test="pd.state!=null and pd.state !=''">
-            and state=#{pd.state}
+        <if test="state!=null and state !=''">
+            and state=#{state}
         </if>
         order by add_time desc
     </select>
@@ -152,6 +173,7 @@
         values  (#{record_id},#{user_id},#{word_title})
     </insert>
 
+
     <!--查询单词测试列表-->
     <select id="queryWordTest" parameterType="PageData" resultType="PageData">
         select * from  tb_word_test where user_id=#{user_id} and word_title=#{word_title}
@@ -165,16 +187,30 @@
         select * from  tb_word_record where record_id=#{record_id}
     </select>
 
+    <!--更改测试记录-->
+    <update id="updateWordTest" parameterType="PageData">
+        update  tb_word_test
+          set   is_end=#{is_end},
+                rate=#{true_rate}
+         where record_id=#{record_id} and  user_id=#{user_id} and state='0'
+    </update>
+
     <!--查询单词测试列表 最近一次记录是否结束 记录表id-->
     <select id="queryWordTestIsEnd" parameterType="PageData"  resultType="PageData">
         select count(1)  as count from  tb_word_test where user_id=#{user_id} and word_title=#{word_title}
-        and is_end=3
+        and is_end=1
     </select>
 
 
-    <!--随机生成三个干扰项-->
+    <!--随机生成三个中文做干扰项-->
     <select id="queryAnalyRand" parameterType="PageData" resultType="PageData">
         select chinese,attribute from tb_analy where analy_id !=#{analy_id} order by rand() limit 3;
+    </select>
+
+
+    <!--随机生成三个读音做干扰项-->
+    <select id="queryKanaRand" parameterType="PageData" resultType="PageData">
+        select kana as chinese,'' as attribute from tb_word where word_id !=#{word_id}  order by rand() limit 3;
     </select>
 
 

@@ -1,5 +1,6 @@
 package ink.zxu.learn_japanese.controller.manage;
 
+import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
 import ink.zxu.learn_japanese.service.UploadService;
 import ink.zxu.learn_japanese.service.VideoService;
@@ -97,26 +98,25 @@ public class ManageWordController  extends BaseController {
 
 
     /**
-     *视频信息列表查询
-     * @param page
+     *单词查询列表
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/queryWordInfoJson", produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String queryWordInfoJson(Page page) throws Exception {
-        PageData pd = this.getPageData();
-        // 设置分页
-        page.setPd(pd);
+    public String queryWordInfoJson() throws Exception {
+        PageData pageData=this.getPageData();
+        PageHelper.startPage(Integer.parseInt(pageData.getString("currentPage")),Integer.parseInt(pageData.getString("showCount")));
         // 获取所有数据
-        List<PageData> list = wordService.queryWordInfoListPage(page);
-        PageData userInfo = new PageData();
+        List<PageData> list = wordService.queryWordInfoListPage(pageData);
+        PageData pageCount =wordService.queryWordCount(pageData);
+        PageData pageInfo = new PageData();
         // 设置返回数据和视图
-        userInfo.put("code", 0);
-        userInfo.put("count", page.getTotalResult());
-        userInfo.put("data", list);
-        userInfo.put("msg", "");
-        return new Gson().toJson(userInfo);
+        pageInfo.put("code", 0);
+        pageInfo.put("count", pageCount.get("count"));
+        pageInfo.put("data", list);
+        pageInfo.put("msg", "");
+        return new Gson().toJson(pageInfo);
     }
 
 

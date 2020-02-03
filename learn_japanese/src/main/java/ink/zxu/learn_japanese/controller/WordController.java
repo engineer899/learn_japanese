@@ -1,5 +1,6 @@
 package ink.zxu.learn_japanese.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
 import ink.zxu.learn_japanese.service.WordService;
 import ink.zxu.learn_japanese.utils.BaseController;
@@ -25,7 +26,7 @@ public class WordController extends BaseController {
     private WordService wordService;
 
 
-    //查询单词库的单词
+    //查询单词库
     @ResponseBody
     @RequestMapping("/queryWordTitle")
     public String queryWordTitle() throws Exception {
@@ -38,6 +39,36 @@ public class WordController extends BaseController {
         pageDataList=wordService.queryWordTitle(pd);
         return new Gson().toJson(pageDataList);
     }
+
+    //查询单词表
+    @ResponseBody
+    @RequestMapping("/queryWordList")
+    public String queryWordList() throws Exception {
+        PageData pageData=this.getPageData();
+        PageHelper.startPage(Integer.parseInt(pageData.getString("currentPage")),Integer.parseInt(pageData.getString("showCount")));
+        // 获取所有数据
+        List<PageData> list = wordService.queryWordInfoListPage(pageData);
+        PageData pageCount =wordService.queryWordCount(pageData);
+        PageData pageInfo = new PageData();
+        // 设置返回数据和视图
+        Long along=(Long) pageCount.get("count");
+        Integer count=along.intValue();
+        Integer countPage=0;
+        Integer showCount=Integer.parseInt(pageData.getString("showCount"));
+        if(count!=0){
+            if(count%showCount==0)
+                countPage = count/showCount;
+            else
+                countPage = count/showCount+1;
+        }
+        pageInfo.put("count", count);
+        pageInfo.put("countPage", countPage);
+        pageInfo.put("data", list);
+        return new Gson().toJson(pageInfo);
+    }
+
+
+
 
     //点击开始答题记录
     @ResponseBody
@@ -56,16 +87,31 @@ public class WordController extends BaseController {
 
     //增加单词答题记录
     @ResponseBody
-    @RequestMapping("/addAnswerRecord")
-    public String addAnswerRecord() throws Exception {
+    @RequestMapping("/addWordRecord")
+    public String addWordRecord() throws Exception {
         PageData pd=this.getPageData();
         String   token=pd.getString("token");
         HttpSession session= SessionManager.getSession(token);
         String user_id=(String)session.getAttribute("openid");
         pd.put("user_id",user_id);
         PageData resultMap=null;
-        resultMap=wordService.addAnswerRecord(pd);
+        resultMap=wordService.addWordRecord(pd);
         System.out.println(resultMap);
         return new Gson().toJson(resultMap);
     }
+
+//    //增加单词答题记录
+//    @ResponseBody
+//    @RequestMapping("/addAnswerRecord")
+//    public String addAnswerRecord() throws Exception {
+//        PageData pd=this.getPageData();
+//        String   token=pd.getString("token");
+//        HttpSession session= SessionManager.getSession(token);
+//        String user_id=(String)session.getAttribute("openid");
+//        pd.put("user_id",user_id);
+//        PageData resultMap=null;
+//        resultMap=wordService.addAnswerRecord(pd);
+//        System.out.println(resultMap);
+//        return new Gson().toJson(resultMap);
+//    }
 }

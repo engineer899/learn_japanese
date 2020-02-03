@@ -1,5 +1,9 @@
 package ink.zxu.learn_japanese.service;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import ink.zxu.learn_japanese.dao.DaoSupport;
 import ink.zxu.learn_japanese.utils.Page;
 import ink.zxu.learn_japanese.utils.PageData;
@@ -31,9 +35,21 @@ public class WordService {
      * @return
      * @throws Exception
      */
-    public List<PageData> queryWordInfoListPage(Page page) throws Exception {
-        return (List<PageData>) dao.findForList("wordMapper.queryWordInfoListPage", page);
+    public List<PageData> queryWordInfoListPage(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("wordMapper.queryWordInfoListPage", pageData);
     }
+
+    /**
+     * 日语单词总数
+     * @param page
+     * @return
+     * @throws Exception
+     */
+    public PageData queryWordCount(PageData pageData) throws Exception {
+        return (PageData) dao.findForObject("wordMapper.queryWordCount", pageData);
+    }
+
+
 
 
     /**
@@ -88,52 +104,84 @@ public class WordService {
      * @return
      * @throws Exception
      */
-    public PageData addAnswerRecord(PageData pageData) throws Exception {
-        PageData ResultMap=new PageData();
-        Integer had_learn=0;
-        Integer not_learn=0;
-        Double  true_num=0.0;
-        Double  false_num=0.0;
-        DecimalFormat df = new DecimalFormat("0.00");//设置小数点位数
-        String flag=pageData.getString("flag");
-        if(Integer.parseInt(String.valueOf(((PageData)dao.findForObject("wordMapper.queryWordRecordById", pageData)).get("count")))>0){
-            pageData.put("flag",flag);
-            Integer updateAnswer=(Integer) dao.update("wordMapper.updateAnswerWord", pageData);
-        }else{
-            if(flag.equals("1")){//回答正确
+
+    public PageData addWordRecord(PageData pageData) throws Exception{
+        String record_id=UUIDUtil.getUid();
+        pageData.put("record_id",record_id);
+//        Map<String,Object> resultMap=new HashMap<>();
+        dao.save("wordMapper.addWordTest",pageData);//新建一条测试记录
+        JsonParser parser = new JsonParser();
+        JsonArray Jarray = parser.parse(pageData.getString("result")).getAsJsonArray();
+        for(JsonElement jsonObject:Jarray){
+            String word_id=jsonObject.getAsJsonObject().get("word_id").getAsString();
+            pageData.put("word_id",word_id);
+            if(jsonObject.getAsJsonObject().get("flag").getAsString().equals("1")){
                 pageData.put("true_num",1);
                 pageData.put("false_num",0);
-            }else if(flag.equals("0")){//回答错误
+            }else{
                 pageData.put("true_num",0);
                 pageData.put("false_num",1);
             }
-            Integer addAnswer=(Integer) dao.save("wordMapper.addAnswerWord", pageData);
+            dao.save("wordMapper.addWordRecord", pageData);
         }
-        PageData WordCount=(PageData) dao.findForObject("wordMapper.queryWordCount", pageData);
-        PageData RecordCount=(PageData) dao.findForObject("wordMapper.queryWordRecordCount", pageData);
-        if(String.valueOf(WordCount.get("count")).equals(String.valueOf(RecordCount.get("count")))){
-            had_learn=Integer.parseInt(String.valueOf(RecordCount.get("count")));
-            not_learn=Integer.parseInt(String.valueOf(WordCount.get("count")))-had_learn;
-            Long nowtime=System.currentTimeMillis();
-            Date d=new Date(nowtime);
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String  end_time=sdf.format(d);
-            pageData.put("end_time",end_time);
-            Integer is_end=(Integer) dao.update("wordMapper.updateAnswerWord", pageData);
+        if(pageData.getString("true_rate").equals("100")){
+            pageData.put("is_end",1);
         }else{
-            had_learn=Integer.parseInt(String.valueOf(RecordCount.get("count")));
-            not_learn=Integer.parseInt(String.valueOf(WordCount.get("count")))-had_learn;
+            pageData.put("is_end",0);
         }
-        List<PageData>  recordDataListId=(List<PageData>)dao.findForList("queryWordRecord",pageData);//已答题库单词列表
-        for(int i=0;i<recordDataListId.size();i++){
-            true_num=true_num+(Integer)recordDataListId.get(i).get("true_num");//已答单词的正确次数
-            false_num=false_num+(Integer)recordDataListId.get(i).get("false_num");//已答单词的错误次数
-        }
-        ResultMap.put("had_learn",had_learn);
-        ResultMap.put("not_learn",not_learn);
-        ResultMap.put("true_rate",df.format(true_num/(true_num+false_num)*100));
-        return ResultMap;
+        dao.update("wordMapper.updateWordTest",pageData);//新建一条测试记录
+        System.out.println(pageData);
+        return pageData;
     }
+
+
+
+//    public PageData addAnswerRecord(PageData pageData) throws Exception {
+//        PageData ResultMap=new PageData();
+//        Integer had_learn=0;
+//        Integer not_learn=0;
+//        Double  true_num=0.0;
+//        Double  false_num=0.0;
+//        DecimalFormat df = new DecimalFormat("0.00");//设置小数点位数
+//        String flag=pageData.getString("flag");
+//        if(Integer.parseInt(String.valueOf(((PageData)dao.findForObject("wordMapper.queryWordRecordById", pageData)).get("count")))>0){
+//            pageData.put("flag",flag);
+//            Integer updateAnswer=(Integer) dao.update("wordMapper.updateAnswerWord", pageData);
+//        }else{
+//            if(flag.equals("1")){//回答正确
+//                pageData.put("true_num",1);
+//                pageData.put("false_num",0);
+//            }else if(flag.equals("0")){//回答错误
+//                pageData.put("true_num",0);
+//                pageData.put("false_num",1);
+//            }
+//            Integer addAnswer=(Integer) dao.save("wordMapper.addAnswerWord", pageData);
+//        }
+//        PageData WordCount=(PageData) dao.findForObject("wordMapper.queryWordCount", pageData);
+//        PageData RecordCount=(PageData) dao.findForObject("wordMapper.queryWordRecordCount", pageData);
+//        if(String.valueOf(WordCount.get("count")).equals(String.valueOf(RecordCount.get("count")))){
+//            had_learn=Integer.parseInt(String.valueOf(RecordCount.get("count")));
+//            not_learn=Integer.parseInt(String.valueOf(WordCount.get("count")))-had_learn;
+//            Long nowtime=System.currentTimeMillis();
+//            Date d=new Date(nowtime);
+//            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            String  end_time=sdf.format(d);
+//            pageData.put("end_time",end_time);
+//            Integer is_end=(Integer) dao.update("wordMapper.updateAnswerWord", pageData);
+//        }else{
+//            had_learn=Integer.parseInt(String.valueOf(RecordCount.get("count")));
+//            not_learn=Integer.parseInt(String.valueOf(WordCount.get("count")))-had_learn;
+//        }
+//        List<PageData>  recordDataListId=(List<PageData>)dao.findForList("queryWordRecord",pageData);//已答题库单词列表
+//        for(int i=0;i<recordDataListId.size();i++){
+//            true_num=true_num+(Integer)recordDataListId.get(i).get("true_num");//已答单词的正确次数
+//            false_num=false_num+(Integer)recordDataListId.get(i).get("false_num");//已答单词的错误次数
+//        }
+//        ResultMap.put("had_learn",had_learn);
+//        ResultMap.put("not_learn",not_learn);
+//        ResultMap.put("true_rate",df.format(true_num/(true_num+false_num)*100));
+//        return ResultMap;
+//    }
 
 
 
@@ -165,30 +213,30 @@ public class WordService {
     }
 
 
-
     public Map<String, Object> clickWordTest(PageData pageData) throws Exception {
-        Integer flag=0;
-        Integer index=0;
-        Double true_num=0.0;//答对次数
-        Double false_num=0.0;//答错次数
-        DecimalFormat df = new DecimalFormat("0.0");//设置小数点位数
-        Double true_rate=0.0;//准确率
         Map<String,Object> resultMap=new HashMap<>();//结果集
         int randnum=10;//设置每次随机数量
         pageData.put("randnum",randnum);
         List<PageData>  testDataList=(List<PageData>)dao.findForList("queryWordRandom",pageData);//从单词库随机取出10个单词
-        pageData.put("record_id",UUIDUtil.getUid());
-        flag=(Integer)dao.save("wordMapper.addWordTest",pageData);//新建一条测试记录
+        int hf_size=testDataList.size()/2;
+        System.out.println("测试"+hf_size);
+         pageData.put("record_id",UUIDUtil.getUid());
         for(int i=0;i<testDataList.size();i++){
-            List<PageData> select=(List<PageData>)dao.findForList("queryAnalyRand",testDataList.get(i));//在单词解析表随机找出三个中文做干扰项
-            testDataList.get(i).put("select",select);//将干扰项插入单词对象中
+            if(i<hf_size){ //根据汉字选读音
+//                String chinese=testDataList.get(i).getString("chinese");
+                String kana=testDataList.get(i).getString("kana");
+//                testDataList.get(i).put("japanese",chinese);
+                testDataList.get(i).put("chinese",kana);
+                testDataList.get(i).put("attribute","");
+                List<PageData> select=(List<PageData>)dao.findForList("queryKanaRand",testDataList.get(i));//在单词表随机找出三个读音做干扰项
+                testDataList.get(i).put("select",select);//将干扰项插入单词对象中
+            }else{//根据读音选汉字
+                String kana=testDataList.get(i).getString("kana");
+                testDataList.get(i).put("japanese",kana);
+                List<PageData> select=(List<PageData>)dao.findForList("queryAnalyRand",testDataList.get(i));//在单词解析表随机找出三个中文做干扰项
+                testDataList.get(i).put("select",select);//将干扰项插入单词对象中
+            }
         }
-//        List<PageData>  recordDataListId=(List<PageData>)dao.findForList("queryWordRecord",pageData);//已答题库单词列表
-
-        resultMap.put("had_learn",0);
-        resultMap.put("not_learn",0);
-        resultMap.put("true_rate",0);
-        resultMap.put("index",0);
         resultMap.put("testDataList",testDataList);
         return resultMap;
     }
