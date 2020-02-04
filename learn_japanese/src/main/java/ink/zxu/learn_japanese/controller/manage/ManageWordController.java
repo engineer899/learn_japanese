@@ -1,5 +1,6 @@
 package ink.zxu.learn_japanese.controller.manage;
 
+import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
 import ink.zxu.learn_japanese.service.UploadService;
 import ink.zxu.learn_japanese.service.VideoService;
@@ -20,7 +21,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -43,6 +43,171 @@ public class ManageWordController  extends BaseController {
 
     @Autowired
     private UploadService uploadService;
+
+
+    /**
+     * 跳转课程展示视图
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/course_list")
+    public ModelAndView course_list(){
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = this.getPageData();
+        // 设置返回视图和配置项数据
+        mv.addObject("pd", pd);
+        mv.setViewName("word/course_list");
+        return mv;
+    }
+
+    /**
+     *课程查询列表
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/queryCourseListPage", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String queryCourseListPage() throws Exception {
+        PageData pageData=this.getPageData();
+        PageHelper.startPage(Integer.parseInt(pageData.getString("currentPage")),Integer.parseInt(pageData.getString("showCount")));
+        // 获取所有数据
+        List<PageData> list = wordService.queryCourseListPage(pageData);
+        PageData pageCount =wordService.queryCourseCount(pageData);
+        PageData pageInfo = new PageData();
+        // 设置返回数据和视图
+        pageInfo.put("code", 0);
+        pageInfo.put("count", pageCount.get("count"));
+        pageInfo.put("data", list);
+        pageInfo.put("msg", "");
+        return new Gson().toJson(pageInfo);
+    }
+
+
+
+    /**
+     * 跳转课程添加视图
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/course_add")
+    public ModelAndView course_add(){
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = this.getPageData();
+        // 设置返回视图和配置项数据
+        mv.addObject("pd", pd);
+        mv.setViewName("word/course_add");
+        return mv;
+    }
+
+    /**
+     * 添加课程
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/addCourse")
+    @ResponseBody
+    public String addCourse(MultipartHttpServletRequest Request) throws Exception {
+        Map<String,String> resultMap=new HashMap<>();
+        MultipartFile file= Request.getFile("image_url");
+        System.out.println(file.getOriginalFilename());
+        if(file.getOriginalFilename().equals("")){
+                resultMap.put("message","图片不能为空");
+            }else{
+                try {
+                    System.out.println("上传图片"+file);
+                    PageData pageData=this.getPageData();
+                    //控制台输出 便于测试
+                    for(String key:(Set<String>)pageData.keySet()){
+                        System.out.println(key+":"+pageData.getString(key));
+                    }
+                    Map<String,Object> resultURl=uploadService.courseImageUpload(file);
+                    pageData.put("course_id", UUIDUtil.getUid());
+                    pageData.put("image_url",resultURl.get("url"));
+                    //控制台输出 便于测试
+                    for(String key:(Set<String>)pageData.keySet()){
+                        System.out.println(key+":"+pageData.getString(key));
+                    }
+                    int msg=wordService.addCourse(pageData);
+                    if(msg>0){
+                        resultMap.put("message","success");
+                    }else{
+                        resultMap.put("message","fail");
+                        Path path =(Path)resultURl.get("filePath");
+                        try {
+                            Files.deleteIfExists(path);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }catch(Exception e){
+                    resultMap.put("message","fail");
+                    e.printStackTrace();
+                }
+            }
+        return new Gson().toJson(resultMap);
+    }
+    /**
+     *课程详情
+     * @return
+     * @throws Exception
+     */
+
+    /**
+     * 跳转到视频详情
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/course_details")
+    public ModelAndView course_details() throws Exception {
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = this.getPageData();
+        List<PageData> result= wordService.queryCourseListPage(pd);
+        // 设置返回视图和配置项数据
+        mv.addObject("result", result.get(0));
+        mv.setViewName("word/course_details");
+        return mv;
+    }
+
+
+    /**
+     * 删除课程
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/deleteCourse", produces = "text/html;charset=UTF-8")
+    @ResponseBody
+    public String deleteCourse() throws Exception {
+        Map<String, String> resultMap = new HashMap<>();
+        PageData pageData=this.getPageData();
+        int result= wordService.deleteCourse(pageData);
+        if(result>0){
+            resultMap.put("status", "success");
+        }else{
+            resultMap.put("status", "fail");
+        }
+        return new Gson().toJson(resultMap);
+    }
+
+
+
+
+    /**
+     * 跳转章节列表视图
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/chapter_list")
+    public ModelAndView chapter_list(){
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = this.getPageData();
+        // 设置返回视图和配置项数据
+        mv.addObject("pd", pd);
+        mv.setViewName("word/chapter_list");
+        return mv;
+    }
+
+
+
 
 
     /**
@@ -97,26 +262,25 @@ public class ManageWordController  extends BaseController {
 
 
     /**
-     *视频信息列表查询
-     * @param page
+     *单词查询列表
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/queryWordInfoJson", produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String queryWordInfoJson(Page page) throws Exception {
-        PageData pd = this.getPageData();
-        // 设置分页
-        page.setPd(pd);
+    public String queryWordInfoJson() throws Exception {
+        PageData pageData=this.getPageData();
+        PageHelper.startPage(Integer.parseInt(pageData.getString("currentPage")),Integer.parseInt(pageData.getString("showCount")));
         // 获取所有数据
-        List<PageData> list = wordService.queryWordInfoListPage(page);
-        PageData userInfo = new PageData();
+        List<PageData> list = wordService.queryWordInfoListPage(pageData);
+        PageData pageCount =wordService.queryWordCount(pageData);
+        PageData pageInfo = new PageData();
         // 设置返回数据和视图
-        userInfo.put("code", 0);
-        userInfo.put("count", page.getTotalResult());
-        userInfo.put("data", list);
-        userInfo.put("msg", "");
-        return new Gson().toJson(userInfo);
+        pageInfo.put("code", 0);
+        pageInfo.put("count", pageCount.get("count"));
+        pageInfo.put("data", list);
+        pageInfo.put("msg", "");
+        return new Gson().toJson(pageInfo);
     }
 
 

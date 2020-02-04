@@ -35,6 +35,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
                     addResourceLocations("file:"+uploadConfigure.getVideoBasePath());
             registry.addResourceHandler("/voice/**").
                     addResourceLocations("file:"+uploadConfigure.getVoiceBasePath());
+            registry.addResourceHandler("/c_image/**").
+                    addResourceLocations("file:"+uploadConfigure.getCourseImageBasePath());
         }else{//linux和mac系统
             registry.addResourceHandler("/image/**").
                     addResourceLocations("file:"+uploadConfigure.getImageBasePath());

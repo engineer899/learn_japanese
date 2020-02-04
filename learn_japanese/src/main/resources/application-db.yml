@@ -9,3 +9,9 @@ mybatis:
   type-aliases-package: ink.zxu.learn_japanese.utils
   mapper-locations: classpath:mybatis/*.xml
 
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
