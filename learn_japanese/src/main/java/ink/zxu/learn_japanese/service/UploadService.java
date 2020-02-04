@@ -79,30 +79,48 @@ public class UploadService {
             // E:\springboot-upload\course\20180608\113339
             Path filePath = Files.createDirectories(Paths.get(basePath, folder));
 //            log.info("path01-->{}", filePath);
-
             //写入文件  E:\springboot-upload\course\20180608\113339\FL_eUljOejPseMeDg86h.png
             Path fullPath = Paths.get(basePath, folder, fileName);
 //            log.info("fullPath-->{}", fullPath);
             // E:\springboot-upload\course\20180608\113339\FL_eUljOejPseMeDg86h.png
             Files.write(fullPath, file.getBytes(), StandardOpenOption.CREATE);
-
             String urlSuffix=folder+fileName;
-
             String url=uploadConfigure.getServerPrefix()+"/course"+urlSuffix.replaceAll("\\\\","/");
-
-
             System.out.println(url);
-
             return url;
-
         } catch (Exception e) {
-//            Path path = Paths.get(basePath, folder);
-////            log.error("写入文件异常,删除文件。。。。", e);
-//            try {
-//                Files.deleteIfExists(path);
-//            } catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    public Map<String,Object> courseImageUpload(MultipartFile file){
+        //基础路径  E:/springboot-upload/course/
+        String basePath = uploadConfigure.getCourseImageBasePath();
+        Map<String,Object> resultMap=new HashMap<>();
+        //获取文件保存路径 \20180608\113339\
+        String folder = FileUtils.getFolder();
+        // 获取前缀为"FL_" 长度为20 的文件名  FL_eUljOejPseMeDg86h.png
+        String fileName = FileUtils.getFileName("CI_") + FileUtils.getFileNameSub(file.getOriginalFilename());
+        try {
+            // E:\springboot-upload\course\20180608\113339
+            Path filePath = Files.createDirectories(Paths.get(basePath, folder));
+//            log.info("path01-->{}", filePath);
+            //写入文件  E:\springboot-upload\course\20180608\113339\FL_eUljOejPseMeDg86h.png
+            Path fullPath = Paths.get(basePath, folder, fileName);
+//            log.info("fullPath-->{}", fullPath);
+            // E:\springboot-upload\course\20180608\113339\FL_eUljOejPseMeDg86h.png
+            Files.write(fullPath, file.getBytes(), StandardOpenOption.CREATE);
+            String urlSuffix=folder+fileName;
+            String url=uploadConfigure.getServerPrefix()+"/c_image"+urlSuffix.replaceAll("\\\\","/");
+            System.out.println(url);
+            resultMap.put("filePath",filePath);
+            resultMap.put("url",url);
+            System.out.println(resultMap);
+            return resultMap;
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

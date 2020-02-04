@@ -30,8 +30,7 @@ public class WordService {
 
 
     /**
-     * 日语单词查询
-     * @param page
+     * 日语单词列表查询
      * @return
      * @throws Exception
      */
@@ -41,12 +40,53 @@ public class WordService {
 
     /**
      * 日语单词总数
-     * @param page
      * @return
      * @throws Exception
      */
     public PageData queryWordCount(PageData pageData) throws Exception {
         return (PageData) dao.findForObject("wordMapper.queryWordCount", pageData);
+    }
+
+    /**
+     * 课程总数
+     * @return
+     * @throws Exception
+     */
+    public PageData queryCourseCount(PageData pageData) throws Exception {
+        return (PageData) dao.findForObject("wordMapper.queryCourseCount", pageData);
+    }
+
+
+    /**
+     * 添加课程
+     * @return
+     * @throws Exception
+     */
+    public Integer addCourse(PageData pageData) throws Exception {
+        return  (Integer) dao.save("wordMapper.addCourse",pageData);
+    }
+
+
+    /**
+     * 删除课程
+     * @return
+     * @throws Exception
+     */
+    public Integer deleteCourse(PageData pageData) throws Exception {
+        return  (Integer) dao.update("wordMapper.deleteCourse",pageData);
+    }
+
+
+
+
+
+    /**
+     * 课程列表查询
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> queryCourseListPage(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("wordMapper.queryCourseListPage", pageData);
     }
 
 

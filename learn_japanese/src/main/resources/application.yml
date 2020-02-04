@@ -30,9 +30,14 @@ server:
 
 upload:
   serverPrefix: https://localhost/learn
+
+#  serverPrefix: https://zxu.ink/learn
   image_path:  #配置图片保存位置
     windows: C:/springboot-upload/image/
     linux: /dreamhai/springboot-upload/image/
+  c_image_path:  #配置课程图片保存位置
+      windows: C:/springboot-upload/c_image/
+      linux: /dreamhai/springboot-upload/c_image/
   course_path:  #配置课程保存位置
     windows: C:/springboot-upload/course/
     linux: /dreamhai/springboot-upload/course/

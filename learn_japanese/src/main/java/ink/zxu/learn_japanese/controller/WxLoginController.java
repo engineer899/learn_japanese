@@ -65,7 +65,7 @@ public class WxLoginController extends BaseController {
         newsession.setAttribute("openid",openid);
         newsession.setAttribute("session_key",session_key);
         SessionManager.saveSession(newsession,rd_session);
-        System.out.println(SessionManager.sessionPool.size()+" "+newsession.toString());
+        System.out.println(SessionManager.sessionPool.size());
         return new Gson().toJson(resultMap);
     }
     @ResponseBody

@@ -92,6 +92,7 @@
     </insert>
 
 
+    <!--随机出题-->
 
     <select id="queryWordRandom" parameterType="PageData" resultType="PageData">
     select a.word_id,a.voice_id,a.analy_id,japanese,word_title,kana,date_format(add_time,"%Y-%m-%d %T") as add_time,state,chinese,attribute,type,voice_url,sentence,translate
@@ -101,6 +102,60 @@
     where word_title=#{word_title}
      ORDER BY  RAND() LIMIT #{randnum}
     </select>
+
+
+    <!--课程分页查询-->
+    <select id="queryCourseListPage" parameterType="PageData" resultType="PageData">
+        select  course_id,
+        course_name,
+        type,
+        introduce,
+        state,
+        date_format(add_time,"%Y-%m-%d %T") as add_time,
+        image_url
+        from w_course where state=0
+        <if test="course_id!=null and course_id !=''">
+            and course_id = #{course_id}
+        </if>
+        <if test="type!=null and type !=''">
+            and type = #{type}
+        </if>
+        <if test="course_name!=null and course_name !=''">
+            and course_name like concat('%', #{course_name},'%')
+        </if>
+   </select>
+
+
+    <!--课程总数-->
+    <select id="queryCourseCount" parameterType="PageData" resultType="PageData">
+        select  count(*) as count from w_course where state=0
+        <if test="course_id!=null and course_id !=''">
+            and course_id = #{course_id}
+        </if>
+        <if test="type!=null and type !=''">
+            and type = #{type}
+        </if>
+        <if test="course_name!=null and course_name !=''">
+            and course_name like concat('%', #{course_name},'%')
+        </if>
+    </select>
+
+    <!--增加课程-->
+    <insert id="addCourse" parameterType="PageData" >
+        insert into w_course(course_id,course_name,type,introduce,image_url)
+        values  (#{course_id},#{course_name},#{type},#{introduce},#{image_url})
+    </insert>
+
+    <!--增加课程-->
+    <update id="deleteCourse" parameterType="PageData" >
+        update  w_course set state=1 where course_id=#{course_id}
+    </update>
+
+
+
+
+
+
     <!--查询某类单词库单词总数-->
     <select id="queryWordCount" parameterType="PageData" resultType="PageData">
         select count(*) as count

@@ -19,6 +19,12 @@ public class UploadConfigure {
     private Map<String, String> image_path;
 
 
+    // 获取课程图片存放位置
+    private Map<String, String> c_image_path;
+
+
+
+
     // 获取课程存放位置
     private Map<String, String> course_path;
 
@@ -42,12 +48,22 @@ public class UploadConfigure {
 
     private String serverPrefix;
 
+
+
     public String getServerPrefix() {
         return serverPrefix;
     }
 
     public void setServerPrefix(String serverPrefix) {
         this.serverPrefix = serverPrefix;
+    }
+
+    public Map<String, String> getC_image_path() {
+        return c_image_path;
+    }
+
+    public void setC_image_path(Map<String, String> c_image_path) {
+        this.c_image_path = c_image_path;
     }
 
     public Map<String, String> getVideo_path() {
@@ -98,6 +114,19 @@ public class UploadConfigure {
 
     public void setMaxRequestSize(String maxRequestSize) {
         this.maxRequestSize = maxRequestSize;
+    }
+
+
+
+    public String getCourseImageBasePath() {
+        String path;
+        String os = System.getProperty("os.name");
+        if(os.toLowerCase().startsWith("win")) {
+            path = this.getC_image_path().get("windows");
+        } else {
+            path = this.getC_image_path().get("linux");
+        }
+        return path;
     }
 
 
