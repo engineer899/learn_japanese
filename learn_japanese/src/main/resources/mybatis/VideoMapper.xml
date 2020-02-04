@@ -15,6 +15,7 @@
 
     <select id="showByType" parameterType="java.lang.Integer" resultType="java.util.Map">
      select id,video_url,video_name,date_format(add_time,"%Y-%m-%d %T") as add_time,browse_num,video_type,video_num from tb_video where video_type=${id}
+     order by video_num asc
     </select>
 
 
@@ -50,6 +51,108 @@
     <!--更新视频状态 -->
     <select id="updateVideoState" parameterType="PageData">
         UPDATE tb_video SET state = #{state} WHERE  id=#{id}
+    </select>
+
+    <!-- 显示该视频所有的评论-->
+    <select id="showAllContentById" parameterType="PageData" resultType="PageData">
+      select nick_name,avatar_url,id,content,date_format(time,"%Y-%m-%d %T") as time,a.openid as openid,zan_num,reply_num
+     from tb_videocomment a join users b on a.openid=b.openid where  videoid=#{videoid} order by zan_num desc ;
+    </select>
+
+
+    <!--显示该视频的知识点 -->
+    <select id="showKnowledgeById" parameterType="PageData" resultType="PageData">
+      select video_knowledge
+     from tb_video where  id=#{videoid};
+    </select>
+
+    <!-- 显示当前视频下是否有当前用户点赞过的评论-->
+    <select id="showAlreadyZan"  parameterType="PageData" resultType="PageData">
+    select id from tb_zan where  openid=#{openid};
+    </select>
+
+    <select id="zan"  parameterType="PageData" resultType="PageData">
+    select openid from tb_zan where  id=#{id} and openid=#{openid};
+    </select>
+    <select id="zan7"  parameterType="PageData" resultType="PageData">
+    select openid from tb_zan where  id=#{replyid} and openid=#{openid};
+    </select>
+
+
+    <!--赞加一 -->
+    <select id="addzan1" parameterType="PageData">
+     UPDATE tb_videocomment SET zan_num = zan_num+1 WHERE  id=#{id};
+    </select>
+    <select id="addzan5" parameterType="PageData">
+     UPDATE tb_videoreply SET zan_num = zan_num+1 WHERE  replyid=#{replyid};
+    </select>
+
+
+    <!-- 减少赞-->
+    <select id="addzan3" parameterType="PageData">
+     UPDATE tb_videocomment SET zan_num = zan_num-1 WHERE  id=#{id};
+    </select>
+    <select id="addzan6" parameterType="PageData">
+     UPDATE tb_videoreply SET zan_num = zan_num-1 WHERE  replyid=#{replyid};
+    </select>
+
+    <!-- 加记录赞-->
+    <insert id="addzan2" parameterType="PageData">
+     insert into tb_zan(id,openid)
+     values (#{id},#{openid})
+    </insert>
+    <insert id="addzan8" parameterType="PageData">
+     insert into tb_zan(id,openid)
+     values (#{replyid},#{openid})
+    </insert>
+
+    <!-- 删除记录的赞-->
+    <insert id="addzan4" parameterType="PageData">
+     delete from tb_zan where  id=#{id} and openid=#{openid}
+    </insert>
+    <insert id="addzan9" parameterType="PageData">
+     delete from tb_zan where  id=#{replyid} and openid=#{openid}
+    </insert>
+
+
+
+    <!--增加视频评论 -->
+    <insert id="addVideoContent" parameterType="PageData">
+     insert into tb_videocomment(id,videoid,openid,content,time,zan_num)
+     values (#{id},#{videoid},#{openid},#{content},#{time},0)
+    </insert>
+
+    <!--对视频的评论进行回复 -->
+    <insert id="addVideoContentReply" parameterType="PageData">
+     insert into tb_videoreply(replyid,commentid,openid,content,time,zan_num)
+     values (#{replyid},#{plid},#{openid},#{content},#{time},0)
+    </insert>
+
+    <select id="addVideoContentReplyNum" parameterType="PageData">
+     UPDATE tb_videocomment SET reply_num = reply_num+1 WHERE  id=#{plid};
+    </select>
+
+    <!--显示该评论下的所有回复 -->
+    <select id="showAllContentReply" parameterType="PageData" resultType="PageData">
+     select nick_name,avatar_url,commentid,replyid,a.openid as openid,content,zan_num,date_format(time,"%Y-%m-%d %T") as time
+     from (select * from tb_videoreply where commentid=#{plid})as a left join users b on a.openid=b.openid  order by time asc
+    </select>
+
+    <!--删除指定评论下的  所有  回复-->
+    <insert id="deleteReplyById" parameterType="PageData">
+     delete from tb_videoreply where  commentid=#{plid}
+    </insert>
+    <!--删除指定评论-->
+    <insert id="deleteContentById" parameterType="PageData">
+     delete from tb_videocomment where id=#{id}
+    </insert>
+    <!-- 删除指定回复-->
+    <insert id="deleteOneReplyById" parameterType="PageData">
+     delete from tb_videoreply where replyid=#{replyid}
+    </insert>
+<!--删除回复后。评论数减1 -->
+    <select id="updateReplyNum" parameterType="PageData">
+     UPDATE tb_videocomment SET reply_num = reply_num-1 WHERE  id=#{id};
     </select>
 
 </mapper>

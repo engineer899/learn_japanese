@@ -57,6 +57,7 @@ public class WxLoginController extends BaseController {
         wxLoginService.setLogin(pageData);
         String rd_session = UUIDUtil.getUid();
         resultMap.put("token",rd_session);
+        resultMap.put("openid",openid);
         resultMap.put("message","success");
         if(pageData.getString("token")!=null){
             SessionManager.remove(pageData.getString("token"));
@@ -68,6 +69,10 @@ public class WxLoginController extends BaseController {
         System.out.println(SessionManager.sessionPool.size());
         return new Gson().toJson(resultMap);
     }
+
+
+
+
     @ResponseBody
     @PostMapping(value = "/count")
     public String userCount() throws Exception {
