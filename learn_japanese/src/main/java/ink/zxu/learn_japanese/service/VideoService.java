@@ -90,8 +90,29 @@ public class VideoService {
     public List<PageData> showAllContentById(PageData pageData) throws Exception {
         //①找评论②找知识点③标记当前用户点过赞的评论
         List<PageData> pageData1=(List<PageData>) dao.findForList("videoMapper.showAllContentById", pageData);
+        String openid=pageData.getString("openid");
+        for(int i=0;i<pageData1.size();i++){
+            pageData1.get(i).put("curropenid",openid); //当前使用用户的id
+            if( is_zan( pageData1.get(i) ) ) {
+                pageData1.get(i).put("is_zan",1);   //点过赞了
+            }else{
+                pageData1.get(i).put("is_zan",0);  //没点过
+            }
+        }
         pageData1.add(  (PageData) dao.findForObject("videoMapper.showKnowledgeById", pageData)  );
         return pageData1;
+    }
+
+//判断zan是否
+    public boolean is_zan(PageData pageData) throws Exception {
+        boolean flag =false;
+        long result=(long)dao.findForObject("videoMapper.isZan", pageData);
+        if(result==0){
+            flag=false;
+        }else {
+            flag=true;
+        }
+        return flag;
     }
 
     /**
@@ -143,10 +164,6 @@ public class VideoService {
     }
 
 
-
-
-
-
     /**
      * 查看某条评论的所有回复
      * @param pageData
@@ -154,9 +171,19 @@ public class VideoService {
      * @throws Exception
      */
     public List<PageData> showAllContentReply(PageData pageData) throws Exception {
-        List<PageData> pageDataList=null;
-        List<PageData> pageDataList1=null;
-        pageDataList=(List<PageData>)dao.findForList("videoMapper.showAllContentReply",pageData);
+        List<PageData>  pageDataList=(List<PageData>)dao.findForList("videoMapper.showAllContentReply",pageData);
+        String openid=pageData.getString("openid");
+        for(int i=0;i<pageDataList.size();i++){
+            pageDataList.get(i).put("curropenid",openid);  //当前使用用户的id
+            String id = pageDataList.get(i).getString("replyid");
+            pageDataList.get(i).put("id",id); //replyid转id
+            if( is_zan( pageDataList.get(i) ) ) {
+                pageDataList.get(i).put("is_zan",1);   //点过赞了
+            }else{
+                pageDataList.get(i).put("is_zan",0);  //没点过
+            }
+            pageDataList.get(i).remove("id");  //转的id用完删除
+        }
         return pageDataList;
     }
 

@@ -71,6 +71,10 @@
     select id from tb_zan where  openid=#{openid};
     </select>
 
+
+    <select id="isZan"  parameterType="PageData" resultType="long">
+    select count(id) from tb_zan where  id=#{id} and openid=#{curropenid};
+    </select>
     <select id="zan"  parameterType="PageData" resultType="PageData">
     select openid from tb_zan where  id=#{id} and openid=#{openid};
     </select>
