@@ -118,8 +118,8 @@
 
     <!--增加视频评论 -->
     <insert id="addVideoContent" parameterType="PageData">
-     insert into tb_videocomment(id,videoid,openid,content,time,zan_num)
-     values (#{id},#{videoid},#{openid},#{content},#{time},0)
+     insert into tb_videocomment(id,videoid,openid,content,time,zan_num,reply_num)
+     values (#{id},#{videoid},#{openid},#{content},#{time},0,0)
     </insert>
 
     <!--对视频的评论进行回复 -->
