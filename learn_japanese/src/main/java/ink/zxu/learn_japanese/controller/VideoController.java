@@ -86,8 +86,15 @@ public class VideoController extends BaseController {
         PageData pageData=this.getPageData();
         Map<String,Object> resultMap=new HashMap<>();
         String token=pageData.getString("token");
-        resultMap = videoService.zan(pageData);
-        return  new Gson().toJson(resultMap);
+        HttpSession session=SessionManager.getSession(token);
+        if(session != null){
+            resultMap = videoService.zan(pageData);
+            return  new Gson().toJson(resultMap);
+        }else {
+            resultMap.put("message","relogin");
+            return  new Gson().toJson(resultMap);
+        }
+
     }
 
     /**
@@ -101,8 +108,16 @@ public class VideoController extends BaseController {
         PageData pageData=this.getPageData();
         Map<String,Object> resultMap=new HashMap<>();
         String token=pageData.getString("token");
-        resultMap = videoService.replyZan(pageData);
-        return  new Gson().toJson(resultMap);
+        HttpSession session=SessionManager.getSession(token);
+//        String openid=(String)session.getAttribute("openid");
+        if(session != null){
+            resultMap = videoService.replyZan(pageData);
+            return  new Gson().toJson(resultMap);
+        }else{
+            resultMap.put("message","relogin");
+            return  new Gson().toJson(resultMap);
+        }
+
     }
 
     /**
@@ -117,16 +132,21 @@ public class VideoController extends BaseController {
         Map<String,String> resultMap=new HashMap<>();
         String token=pageData.getString("token");
         HttpSession session=SessionManager.getSession(token);
-        String openid=(String)session.getAttribute("openid");
-        uuid= UUIDUtil.getUid();
-        pageData.put("id",uuid);
-        pageData.put("openid",openid);
-        videoService.addVideoContent(pageData);
-        for(String key:(Set<String>)pageData.keySet()){
-            System.out.println(key+":"+pageData.getString(key));
+        if(session != null){
+            String openid=(String)session.getAttribute("openid");
+            uuid= UUIDUtil.getUid();
+            pageData.put("id",uuid);
+            pageData.put("openid",openid);
+            videoService.addVideoContent(pageData);
+            for(String key:(Set<String>)pageData.keySet()){
+                System.out.println(key+":"+pageData.getString(key));
+            }
+            resultMap.put("message","Success");
+            return  new Gson().toJson(resultMap);
+        }else {
+            resultMap.put("message", "relogin");
+            return new Gson().toJson(resultMap);
         }
-        resultMap.put("message","Success");
-        return  new Gson().toJson(resultMap);
     }
 
     /**
@@ -141,21 +161,27 @@ public class VideoController extends BaseController {
         Map<String,String> resultMap=new HashMap<>();
         String token=pageData.getString("token");
         HttpSession session=SessionManager.getSession(token);
-        String openid=(String)session.getAttribute("openid");
-        uuid= UUIDUtil.getUid();
-        pageData.put("replyid",uuid);
-        pageData.put("openid",openid);
-        int i = videoService.addVideoContentReply(pageData);
-        for(String key:(Set<String>)pageData.keySet()){
-            System.out.println("这是收到的数据:  "+key+":"+pageData.getString(key));
-        }
-        if(i==2){
-            resultMap.put("message","Success");
+        if(session != null){
+            String openid=(String)session.getAttribute("openid");
+            uuid= UUIDUtil.getUid();
+            pageData.put("replyid",uuid);
+            pageData.put("openid",openid);
+            int i = videoService.addVideoContentReply(pageData);
+            for(String key:(Set<String>)pageData.keySet()){
+                System.out.println("这是收到的数据:  "+key+":"+pageData.getString(key));
+            }
+            if(i==2){
+                resultMap.put("message","Success");
+                return  new Gson().toJson(resultMap);
+            }else {  //添加失败
+                resultMap.put("message","fail");
+                return  new Gson().toJson(resultMap);
+            }
+        }else{   //token失效
+            resultMap.put("message","relogin");
             return  new Gson().toJson(resultMap);
-        }else {
-            resultMap.put("message","fail");
-            return  new Gson().toJson(resultMap);
         }
+
     }
 
     /**
@@ -186,9 +212,18 @@ public class VideoController extends BaseController {
     public String deleteContentById() throws Exception {
         PageData pageData=this.getPageData();
         Map<String,String> resultMap=new HashMap<>();
-        videoService.deleteContentById(pageData);
-        resultMap.put("message","Success");
-        return  new Gson().toJson(resultMap);
+        String token=pageData.getString("token");
+        HttpSession session=SessionManager.getSession(token);
+//        String openid=(String)session.getAttribute("openid");
+        if(session != null){
+            videoService.deleteContentById(pageData);
+            resultMap.put("message","Success");
+            return  new Gson().toJson(resultMap);
+        }else{
+            resultMap.put("message","relogin");
+            return  new Gson().toJson(resultMap);
+        }
+
     }
 
     /**
@@ -201,8 +236,16 @@ public class VideoController extends BaseController {
     public String deleteOneReplyById() throws Exception {
         PageData pageData=this.getPageData();
         Map<String,String> resultMap=new HashMap<>();
-        videoService.deleteOneReplyById(pageData);
-        resultMap.put("message","Success");
-        return  new Gson().toJson(resultMap);
+        String token=pageData.getString("token");
+        HttpSession session=SessionManager.getSession(token);
+//        String openid=(String)session.getAttribute("openid");
+        if(session != null){
+            videoService.deleteOneReplyById(pageData);
+            resultMap.put("message","Success");
+            return  new Gson().toJson(resultMap);
+        }else{
+            resultMap.put("message","relogin");
+            return  new Gson().toJson(resultMap);
+        }
     }
 }

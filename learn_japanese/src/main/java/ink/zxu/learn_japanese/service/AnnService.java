@@ -50,7 +50,7 @@ public class AnnService {
 
     /**
      * 查询公告by id
-     * @param page
+     * @param pageData
      * @return
      * @throws Exception
      */
@@ -58,4 +58,13 @@ public class AnnService {
         return (PageData) dao.findForObject("annMapper.queryAnnById", pageData);
     }
 
+    /**
+     * 查询所有公告
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> showAllAnnouncement(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("annMapper.showAllAnnouncement", pageData);
+    }
 }

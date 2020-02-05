@@ -127,7 +127,7 @@
      insert into tb_videoreply(replyid,commentid,openid,content,time,zan_num)
      values (#{replyid},#{plid},#{openid},#{content},#{time},0)
     </insert>
-
+<!-- 增加评论的回复数-->
     <select id="addVideoContentReplyNum" parameterType="PageData">
      UPDATE tb_videocomment SET reply_num = reply_num+1 WHERE  id=#{plid};
     </select>
