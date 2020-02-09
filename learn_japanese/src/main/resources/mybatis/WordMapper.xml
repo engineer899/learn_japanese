@@ -4,8 +4,8 @@
 <mapper namespace="wordMapper">
 
     <insert id="addWord" parameterType="PageData" >
-     insert into tb_word(word_id,voice_id,analy_id,japanese,word_title,kana,add_time,state)
-     values (#{word_id},#{voice_id},#{analy_id},#{japanese},#{word_title},#{kana},STR_TO_DATE(#{add_time},"%Y-%m-%d %T"),#{state})
+     insert into w_word(word_id,chapter_id,voice_url,chinese,attribute,tone,kana,japanese)
+     values (#{word_id},#{chapter_id},#{voice_url},#{chinese},#{attribute},#{tone},#{kana},#{japanese})
     </insert>
 
     <insert id="addAnaly" parameterType="PageData" >
@@ -95,11 +95,8 @@
     <!--随机出题-->
 
     <select id="queryWordRandom" parameterType="PageData" resultType="PageData">
-    select a.word_id,a.voice_id,a.analy_id,japanese,word_title,kana,date_format(add_time,"%Y-%m-%d %T") as add_time,state,chinese,attribute,type,voice_url,sentence,translate
-    from tb_word a join tb_analy b on a.analy_id=b.analy_id
-    join tb_voice c on a.voice_id=c.voice_id
-    join tb_word_eg d on a.word_id=d.word_id
-    where word_title=#{word_title}
+    select * from w_word
+    where chapter_id=#{chapter_id}
      ORDER BY  RAND() LIMIT #{randnum}
     </select>
 
@@ -123,7 +120,7 @@
         <if test="course_name!=null and course_name !=''">
             and course_name like concat('%', #{course_name},'%')
         </if>
-   </select>
+    </select>
 
 
     <!--课程总数-->
@@ -153,38 +150,60 @@
 
 
 
+    <!--查询章节是否存在-->
+    <select id="queryCourseType" parameterType="PageData" resultType="PageData">
+       select type,count(1) count from w_course group  by type
+    </select>
+
+    <!--查询章节是否存在-->
+    <select id="queryChapterByName" parameterType="PageData" resultType="PageData">
+        select  *
+        from w_chapter where state=0
+        and chapter_name = #{chapter_name}
+        and course_id = #{course_id}
+    </select>
+
+    <!--章节分页查询-->
+    <select id="queryChapterListPage" parameterType="PageData" resultType="PageData">
+        select  course_id,
+        chapter_id,
+        chapter_name,
+        state,
+        date_format(add_time,"%Y-%m-%d %T") as add_time
+        from w_chapter where state=0
+        <if test="chapter_id!=null and chapter_id !=''">
+            and chapter_id = #{chapter_id}
+        </if>
+        <if test="chapter_name!=null and chapter_name !=''">
+            and chapter_name like concat('%', #{chapter_name},'%')
+        </if>
+        and course_id = #{course_id}
+
+    </select>
 
 
-
-    <!--查询某类单词库单词总数-->
-    <select id="queryWordCount" parameterType="PageData" resultType="PageData">
-        select count(*) as count
-        from tb_word a join tb_analy b on a.analy_id=b.analy_id
-        join tb_voice c on a.voice_id=c.voice_id
-        join tb_word_eg d on a.word_id=d.word_id
-        where 1=1
-        <if test="japanese!=null and japanese !=''">
-            and japanese like concat('%', #{japanese},'%')
+    <!--章节总数-->
+    <select id="queryChapterCount" parameterType="PageData" resultType="PageData">
+        select  count(*) as count from w_chapter where state=0
+        <if test="course_id!=null and course_id !=''">
+            and course_id = #{course_id}
         </if>
-        <if test="kana!=null and kana !=''">
-            and kana like concat('%', #{kana},'%')
+        <if test="chapter_id!=null and chapter_id !=''">
+            and chapter_id = #{chapter_id}
         </if>
-        <if test="chinese!=null and chinese !=''">
-            and chinese like concat('%', #{chinese},'%')
-        </if>
-        <if test="word_title!=null and word_title !=''">
-            and word_title like concat('%', #{word_title},'%')
-        </if>
-        <if test="attribute!=null and attribute !=''">
-            and attribute=#{attribute}
-        </if>
-        <if test="type!=null and type !=''">
-            and video_type=#{video_type}
-        </if>
-        <if test="state!=null and state !=''">
-            and state=#{state}
+        <if test="chapter_name!=null and chapter_name !=''">
+            and chapter_name like concat('%', #{chapter_name},'%')
         </if>
     </select>
+
+
+
+    <!--增加课程-->
+    <insert id="addChapter" parameterType="PageData" >
+        insert into w_chapter(chapter_id,course_id,chapter_name)
+        values  (#{chapter_id},#{course_id},#{chapter_name})
+    </insert>
+
 
     <!--单词分页查询-->
     <select id="queryWordInfoListPage" parameterType="PageData" resultType="PageData">
@@ -217,9 +236,79 @@
         order by add_time desc
     </select>
 
+
+
+    <!--单词分页查询2-->
+    <select id="queryWordListPage" parameterType="PageData" resultType="PageData">
+        select
+        word_id,
+        chapter_id,
+        voice_url,
+        chinese,
+        attribute,
+        tone,
+        kana,
+        japanese,
+        date_format(add_time,"%Y-%m-%d %T") as add_time,
+        state
+        from w_word
+        where 1=1
+        <if test="word_id!=null and word_id !=''">
+            and word_id =#{word_id}
+        </if>
+        <if test="japanese!=null and japanese !=''">
+            and japanese like concat('%', #{japanese},'%')
+        </if>
+        <if test="kana!=null and kana !=''">
+            and kana like concat('%', #{kana},'%')
+        </if>
+        <if test="chinese!=null and chinese !=''">
+            and chinese like concat('%', #{chinese},'%')
+        </if>
+        <if test="attribute!=null and attribute !=''">
+            and attribute=#{attribute}
+        </if>
+        and  chapter_id=#{chapter_id}
+    </select>
+
+
+    <!--查询某类单词库单词总数-->
+    <select id="queryWordCount" parameterType="PageData" resultType="PageData">
+        select count(*) as count
+        from w_word
+        where 1=1
+        <if test="word_id!=null and word_id !=''">
+            and word_id =#{word_id}
+        </if>
+        <if test="japanese!=null and japanese !=''">
+            and japanese like concat('%', #{japanese},'%')
+        </if>
+        <if test="kana!=null and kana !=''">
+            and kana like concat('%', #{kana},'%')
+        </if>
+        <if test="chinese!=null and chinese !=''">
+            and chinese like concat('%', #{chinese},'%')
+        </if>
+        <if test="attribute!=null and attribute !=''">
+            and attribute=#{attribute}
+        </if>
+        and  chapter_id=#{chapter_id}
+    </select>
+
+
+
     <!--单词类别查询-->
     <select id="queryWordTitle" parameterType="PageData" resultType="PageData">
-        select word_title from tb_word group by word_title
+        SELECT
+        	chapter_id,
+        	course_id,
+        	chapter_name,
+            date_format(add_time,"%Y-%m-%d %T") as add_time,
+        	state
+        FROM
+        	w_chapter
+        WHERE
+            state=0 and course_id = #{course_id}
     </select>
 
     <!--创建单词测试列表-->
@@ -233,7 +322,7 @@
     <select id="queryWordTest" parameterType="PageData" resultType="PageData">
         select * from  tb_word_test where user_id=#{user_id} and word_title=#{word_title}
         <if test="is_end!=null and is_end!=''">
-         and is_end=#{is_end}
+            and is_end=#{is_end}
         </if>
     </select>
 
@@ -252,20 +341,20 @@
 
     <!--查询单词测试列表 最近一次记录是否结束 记录表id-->
     <select id="queryWordTestIsEnd" parameterType="PageData"  resultType="PageData">
-        select count(1)  as count from  tb_word_test where user_id=#{user_id} and word_title=#{word_title}
+        select count(1)  as count from  tb_word_test where user_id=#{user_id} and chapter_id=#{chapter_id}
         and is_end=1
     </select>
 
 
     <!--随机生成三个中文做干扰项-->
     <select id="queryAnalyRand" parameterType="PageData" resultType="PageData">
-        select chinese,attribute from tb_analy where analy_id !=#{analy_id} order by rand() limit 3;
+        select chinese,attribute from w_word where word_id !=#{word_id} and chapter_id=#{chapter_id}  order by rand() limit 3;
     </select>
 
 
     <!--随机生成三个读音做干扰项-->
     <select id="queryKanaRand" parameterType="PageData" resultType="PageData">
-        select kana as chinese,'' as attribute from tb_word where word_id !=#{word_id}  order by rand() limit 3;
+        select kana as chinese,'' as attribute from w_word where word_id !=#{word_id}  and chapter_id=#{chapter_id} order by rand() limit 3;
     </select>
 
 

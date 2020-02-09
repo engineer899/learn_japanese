@@ -13,18 +13,20 @@
 </head>
 <body>
 <form class="layui-form" enctype="multipart/form-data"  method= "post" id="uploadForm">
+    <input type="text" name="chapter_id"  value="${pd.chapter_id}" style="display: none">
+
     <table class="layui-table" style="width:99%;margin:0px 5px 0px 5px;">
         <tr>
-            <td class="tdleft"><span style="color:red;">*</span>单词标题：</td>
-            <td style="width:30%;">
-                <div class='layui-input-block' style='margin-left:0!important;'>
-                    <input type="text" name="word_title" id="word_title" lay-verify="required" autocomplete="off" class="layui-input" value=""  maxlength="30">
-                </div>
-            </td>
             <td class="tdleft"><span style="color:red;">*</span>日本语：</td>
             <td style="width:30%;">
                 <div class='layui-input-block' style='margin-left:0!important;'>
                     <input type="text" name="japanese"    id="japanese" lay-verify="required" autocomplete="off" class="layui-input" value=""  maxlength="30">
+                </div>
+            </td>
+            <td class="tdleft"><span style="color:red;">*</span>中文意思：</td>
+            <td style="width:30%;">
+                <div class='layui-input-block' style='margin-left:0!important;'>
+                    <input type="text" name="chinese" id="chinese" lay-verify="required" autocomplete="off" class="layui-input" value=""  maxlength="30">
                 </div>
             </td>
         </tr>
@@ -36,12 +38,13 @@
                     <input type="text" name="kana" id="kana"    lay-verify="required" autocomplete="off" class="layui-input" value=""  maxlength="30">
                 </div>
             </td>
-            <td class="tdleft"><span style="color:red;">*</span>中文意思：</td>
+            <td class="tdleft"><span style="color:red;">*</span>音调：</td>
             <td style="width:30%;">
                 <div class='layui-input-block' style='margin-left:0!important;'>
-                    <input type="text" name="chinese" id="chinese" lay-verify="required" autocomplete="off" class="layui-input" value=""  maxlength="30">
+                    <input type="text" name="tone" id="tone" lay-verify="required" autocomplete="off" class="layui-input" value=""  maxlength="30">
                 </div>
             </td>
+
         </tr>
         <tr>
             <td class="tdleft"><span style="color:red;">*</span>词性：</td>
@@ -53,33 +56,21 @@
             <td class="tdleft"><span style="color:red;">*</span>音频：</td>
             <td>
                 <div class="layui-input-block" style="margin-left:0!important;">
-                    <input type="file" id="file" name="file" value="" />
+                    <input type="file" id="voice_url" name="voice_url" />
                 </div>
             </td>
         </tr>
-        <tr>
-            <td class="tdleft"><span style="color:red;">*</span>例句1：</td>
-            <td colspan="3">
-                <textarea id="sentence_01" name="sentence_01" style="width:100%;height:50px;"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td class="tdleft"><span style="color:red;">*</span>翻译1：</td>
-            <td colspan="3">
-                <textarea id="translate_01" name="translate_01" style="width:100%;height:50px;"></textarea>
-            </td>
-        </tr>
         <%--<tr>--%>
-            <%--<td class="tdleft"><span style="color:red;">*</span>例句2：</td>--%>
-            <%--<td colspan="3">--%>
-                <%--<textarea id="sentence_02" name="sentence_02" style="width:100%;height:50px;"></textarea>--%>
-            <%--</td>--%>
+        <%--<td class="tdleft"><span style="color:red;">*</span>例句1：</td>--%>
+        <%--<td colspan="3">--%>
+        <%--<textarea id="sentence_01" name="sentence_01" style="width:100%;height:50px;"></textarea>--%>
+        <%--</td>--%>
         <%--</tr>--%>
         <%--<tr>--%>
-            <%--<td class="tdleft"><span style="color:red;">*</span>翻译2：</td>--%>
-            <%--<td colspan="3">--%>
-                <%--<textarea id="translate_02" name="translate_02" style="width:100%;height:50px;"></textarea>--%>
-            <%--</td>--%>
+        <%--<td class="tdleft"><span style="color:red;">*</span>翻译1：</td>--%>
+        <%--<td colspan="3">--%>
+        <%--<textarea id="translate_01" name="translate_01" style="width:100%;height:50px;"></textarea>--%>
+        <%--</td>--%>
         <%--</tr>--%>
     </table>
     <div class="layui-form-item" style="margin-top:15px;text-align: center;">
@@ -95,38 +86,38 @@
     function save(){
         var formData = new FormData($( "#uploadForm" )[0]);
         console.log(formData);
-        if ($('#word_title').val() == '') {
-            layer.alert("单词标题不能为空");
-            return false;
-        }
-        if ($('#japanese').val() == '') {
-            layer.alert("日语单词不能为空");
-            return false;
-        }
-        if ($('#kana').val() == '') {
-            layer.alert("假名不能为空");
-            return false;
-        }
-        if ($('#chinese').val() == '') {
-            layer.alert("中文意思不能为空");
-            return false;
-        }
-        if ($('#attribute').val() == '') {
-            layer.alert("词性不能为空");
-            return false;
-        }
-        if ($('#file').val() == '') {
-            layer.alert("请选择需要上传的音频");
-            return false;
-        }
-        if ($('#sentence_01').val() == '') {
-            layer.alert("例句不能为空");
-            return false;
-        }
-        if ($('#translate_01').val() == '') {
-            layer.alert("翻译不能为空");
-            return false;
-        }
+        // if ($('#word_title').val() == '') {
+        //     layer.alert("单词标题不能为空");
+        //     return false;
+        // }
+        // if ($('#japanese').val() == '') {
+        //     layer.alert("日语单词不能为空");
+        //     return false;
+        // }
+        // if ($('#kana').val() == '') {
+        //     layer.alert("假名不能为空");
+        //     return false;
+        // }
+        // if ($('#chinese').val() == '') {
+        //     layer.alert("中文意思不能为空");
+        //     return false;
+        // }
+        // if ($('#attribute').val() == '') {
+        //     layer.alert("词性不能为空");
+        //     return false;
+        // }
+        // if ($('#file').val() == '') {
+        //     layer.alert("请选择需要上传的音频");
+        //     return false;
+        // }
+        // if ($('#sentence_01').val() == '') {
+        //     layer.alert("例句不能为空");
+        //     return false;
+        // }
+        // if ($('#translate_01').val() == '') {
+        //     layer.alert("翻译不能为空");
+        //     return false;
+        // }
         layer.load();
         $.ajax({
             url: contextPath+'/manage/wordController/addWord',

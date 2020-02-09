@@ -29,8 +29,8 @@ function deleteWordById(id){
 }
 
 
-//打开新增视频页面
-function addWord(){
+//打开新增单词页面
+function addWord(id){
     layer.open({
         type: 2,
         title: '新增视频',
@@ -39,7 +39,7 @@ function addWord(){
         shade: 0.5,  		//笼罩层透明度
         maxmin: false,		//是否显示最大化按钮
         area: ['100%', '100%'],  //大小
-        content: contextPath + '/manage/wordController/word_add'
+        content: contextPath + '/manage/wordController/word_add?chapter_id='+id
     });
 }
 //打开修改视频页面

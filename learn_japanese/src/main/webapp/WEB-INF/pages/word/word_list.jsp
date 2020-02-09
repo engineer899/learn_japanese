@@ -13,16 +13,17 @@
         var form = layui.form;
         // parent.layer.load();
 
+
         table.render({
             elem: '#test'
-            ,url:'${ctp}/manage/wordController/queryWordInfoJson'
+            ,url:'${ctp}/manage/wordController/queryWordInfoJson?chapter_id=${pd.chapter_id}'
             ,cols: [[
                 {type:'numbers',width:'4%', title: '序号'}
-                ,{field:'word_title',width:'10%',  title: '单词标题'}
-                ,{field:'japanese',width:'10%', title: '日语单词'}
+                ,{field:'japanese',width:'10%', title: '日语'}
                 ,{field:'kana',width:'10%', title: '假名'}
+                ,{field:'tone',width:'15%',  title: '音调'}
                 ,{field:'chinese',width:'10%',  title: '中文'}
-                ,{field:'attribute',width:'10%',  title: '词性',templet: '#AUDIT_STATUS'}
+                ,{field:'attribute',width:'10%',  title: '词性'}
                 ,{field:'voice_url',width:'15%',  title: '音频url'}
                 ,{field:'add_time',width:'15%',  title: '添加时间'}
                 ,{title:'操作',width:'15%',templet: '#caozuo', unresize: true}
@@ -34,9 +35,9 @@
                 ,limitName: 'showCount' //每页数据量的参数名，默认：limit
             }
             ,id: 'testReload'
-            ,done: function(){//数据渲染完的回调方法
-                parent.layer.closeAll();
-            }
+            // ,done: function(){//数据渲染完的回调方法
+            //     parent.layer.closeAll();
+            // }
         });
 
         var $ = layui.$, active = {
@@ -63,36 +64,19 @@
             parent.layer.load();
         });
     });
+
+
+
+
 </script>
 <script type="text/html" id="caozuo">
-     <a class='layui-btn layui-btn-xs' onclick="queryVideoDetails('{{d.word_id}}')">详情</a>
-     <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="updateVideo('{{d.word_id}}')">编辑</a>
-     <a class='layui-btn layui-btn-xs layui-btn-danger'  onclick="deleteWordById('{{d.word_id}}')">删除</a>
+    <a class='layui-btn layui-btn-xs' onclick="queryVideoDetails('{{d.word_id}}')">详情</a>
+    <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="updateVideo('{{d.word_id}}')">编辑</a>
+    <a class='layui-btn layui-btn-xs layui-btn-danger'  onclick="deleteWordById('{{d.word_id}}')">删除</a>
 
 
 </script>
 
-<script type="text/html" id="AUDIT_STATUS">
-    {{# if(d.video_type == '0'){ }}
-    <span style="color: #002828;">零基础</span>
-    {{# }else if(d.video_type == '1'){ }}
-    <span style="color: #46990c;">N1级别</span>
-    {{# }else if(d.video_type == '2'){ }}
-    <span style="color: #3838aa;">N2级别</span>
-    {{# }else if(d.video_type == '3'){ }}
-    <span style="color: #cc0000;">N3级别</span>
-    {{# }else{ }}
-    <span style="color: #aaa;">待审核</span>
-    {{# } }}
-</script>
-
-<script type="text/html" id="ENABLE_PLATFORM">
-    {{# if(d.state == '0'){ }}               <!--根据结果设置视频状态 -->
-    <span style="color: #339933;">启用</span><br>
-    {{# }else{ }}
-    <span style="color: #cc0000;">停用</span><br>
-    {{# } }}
-</script>
 
 <body>
 <div class="layui-fluid">
@@ -102,36 +86,37 @@
                 <div class="layui-card-body">
                     <form class="layui-form">
                         <div class="demoTable" style="text-align: right;margin-bottom: 10px;">
-                            <span>&nbsp;&nbsp;视频名称&nbsp;&nbsp;:</span>
+                            <span>&nbsp;&nbsp;中文&nbsp;&nbsp;:</span>
                             <div class="layui-input-inline">
-                                <input  placeholder="请输入视频名称"  name="video_name" id="video_name" class="layui-input">
+                                <input  placeholder="请输入中文"  name="chinese" id="chinese" class="layui-input">
                             </div>
-                            <span>&nbsp;&nbsp;视频类别&nbsp;&nbsp;:</span>
-                            <div class="layui-input-inline" style="text-align: left;width:120px;">
-                                <select id="video_type" name="video_type">
-                                    <option value="">请选择</option>
-<%--                                    <c:forEach var="record" items="${video_type}">--%>
-<%--                                        <option value="${record.SERVICE_TYPE_CODE}">${record.SERVICE_TYPE_NAME}</option>--%>
-<%--                                    </c:forEach>--%>
-                                    <option value="0">零基础</option>
-                                    <option value="1">N1</option>
-                                    <option value="2">N2</option>
-                                    <option value="3">N3</option>
-                                </select>
+                            <span>&nbsp;&nbsp;日语&nbsp;&nbsp;:</span>
+                            <div class="layui-input-inline">
+                                <input  placeholder="请输入日语"  name="japanese" id="japanese" class="layui-input">
                             </div>
-                            <span>&nbsp;&nbsp;视频状态&nbsp;&nbsp;:</span>
-                            <div class="layui-input-inline" style="text-align: left;width:120px;">
-                                <select id="state" name="state">
-                                    <option value="">请选择</option>
-                                    <option value="0">启用</option>
-                                    <option value="1">停用</option>
+                            <span>&nbsp;&nbsp;假名&nbsp;&nbsp;:</span>
+                            <div class="layui-input-inline">
+                                <input  placeholder="请输入假名"  name="kana" id="kana" class="layui-input">
+                            </div>
+                            <span>&nbsp;&nbsp;词性&nbsp;&nbsp;:</span>
+                            <div class="layui-input-inline">
+                                <input  placeholder="请输入词性"  name="attribute" id="attribute" class="layui-input">
+                            </div>
 
-                                </select>
-                            </div>
-                            <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="addWord()" style="float:left;"> <i class="layui-icon layui-icon-add-1"></i>新增</a>
+                            <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="addWord('${pd.chapter_id}')" style="float:left;"> <i class="layui-icon layui-icon-add-1"></i>新增</a>
                             <button type="button" class="layui-btn layui-btn-sm " id="query" data-type="reload"><i class="layui-icon layui-icon-search"></i>查询</button>
                         </div>
                     </form>
+
+                    <form id="upform" enctype='multipart/form-data' style="display:none;">
+                        <div class="form-group">
+                            <label for="upteainput">上传文件</label>
+                            <input id="upteainput" name="file" type="file" class="form-control-file">
+                        </div>
+                    </form>
+                    <button id="uptea" type="button" class="layui-btn layuiadmin-btn-list" >上传excel</button>
+
+
                     <table class="layui-hide" id="test" ></table>
                 </div>
             </div>
@@ -140,3 +125,49 @@
 </div>
 </body>
 </html>
+
+<script>
+
+    $("#uptea").click(function () {
+        $("#upteainput").click();
+    });
+    //下面是ajax上传文件的代码。
+    $("#upteainput").change(function () {//如果上传文件的input内容发生了变化
+        $val = $("#upteainput").val();
+        if ($val != '') {//要上传的文件名不为空
+            $data = new FormData($("#upform")[0]);//创建一个formdata对象
+            $.ajax({
+                url: "${ctp}/manage/wordController/excelImport?chapter_id=${pd.chapter_id}",
+                type: "POST",
+                data: $data,
+                processData: false,
+                contentType: false,
+                dataType: "text",
+                error: function () {
+                    alert('请求错误！');
+                },
+                success: function (data) {//如果调用成功
+                    console.log(data);
+                    if (data != "Successful import") {
+                        window.location.reload();
+                        if (data == 'File format error') {
+                            alert("文件格式错误,请上传xls或xlsx文件！");
+                        } else if(data == 'excel is null'){
+                            alert("文件内容为空！");
+                        }else if(data == 'Import failed'){
+                            alert("系统错误，导入失败！");
+                        }else if(data == "model error"){
+                            alert("请先下载导入模板,用导入模板导入数据！");
+                        }else if(data== 'error msg'){
+                            alert("部分导入，点击返回导入失败数据！");
+                            window.location.href="${pageContext.request.contextPath }/licenceController/returnExcel";
+                        }
+                    }else{
+                        alert("数据导入成功!");
+                    }
+
+                }
+            })
+        }
+    });
+</script>

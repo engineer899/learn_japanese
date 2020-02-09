@@ -44,18 +44,35 @@ function addCourse(){
 }
 
 //打开新增章节页面
-function chapterList(){
+function chapterList(id){
     layer.open({
         type: 2,
-        title: '新增课程',
+        title: '新增章节',
         scrollbar: false, 	//父页面是否有滚动条
         shadeClose: false,  //点击其他区域关闭弹窗
         shade: 0.5,  		//笼罩层透明度
         maxmin: false,		//是否显示最大化按钮
-        area: ['100%', '100%'],  //大小
-        content: contextPath + '/manage/wordController/chapter_list'
+        area: ['95%', '95%'],  //大小
+        content: contextPath + '/manage/wordController/chapter_list?course_id='+id
     });
 }
+
+
+
+//打开单词列表页面
+function wordList(id){
+    layer.open({
+        type: 2,
+        title: '新增章节',
+        scrollbar: false, 	//父页面是否有滚动条
+        shadeClose: false,  //点击其他区域关闭弹窗
+        shade: 0.5,  		//笼罩层透明度
+        maxmin: false,		//是否显示最大化按钮
+        area: ['85%', '85%'],  //大小
+        content: contextPath + '/manage/wordController/word_list?chapter_id='+id
+    });
+}
+
 
 //打开修改课程页面
 function updateCourse(id){
@@ -84,5 +101,19 @@ function queryCourseDetails(id){
     });
 }
 
+
+//打开新增视频页面
+function addChapter(id){
+    layer.open({
+        type: 2,
+        title: '新增章节',
+        scrollbar: false, 	//父页面是否有滚动条
+        shadeClose: false,  //点击其他区域关闭弹窗
+        shade: 0.5,  		//笼罩层透明度
+        maxmin: false,		//是否显示最大化按钮
+        area: ['100%', '100%'],  //大小
+        content: contextPath + '/manage/wordController/chapter_add?course_id='+id
+    });
+}
 
 

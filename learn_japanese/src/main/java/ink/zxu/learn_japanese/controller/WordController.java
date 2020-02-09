@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,27 @@ import java.util.Map;
 public class WordController extends BaseController {
     @Resource
     private WordService wordService;
+
+
+    //查询课程列表
+    @ResponseBody
+    @RequestMapping("/queryCourseList")
+    public String queryCourseList() throws Exception {
+        PageData pageData=this.getPageData();
+        List<Map<String,Object>> result=new ArrayList<>();
+        List<PageData> TypeList=wordService.queryCourseType(pageData);
+        for(PageData temp:TypeList){
+            pageData.put("type",temp.getString("type"));
+            List<PageData> list = new ArrayList<>();
+            Map<String,Object> tempMap=new HashMap<>();
+            tempMap.put("type",temp.getString("type"));
+            list=wordService.queryCourseListPage(pageData);
+            tempMap.put("course",list);
+            result.add(tempMap);
+        }
+        return new Gson().toJson(result);
+    }
+
 
 
     //查询单词库
@@ -47,7 +70,7 @@ public class WordController extends BaseController {
         PageData pageData=this.getPageData();
         PageHelper.startPage(Integer.parseInt(pageData.getString("currentPage")),Integer.parseInt(pageData.getString("showCount")));
         // 获取所有数据
-        List<PageData> list = wordService.queryWordInfoListPage(pageData);
+        List<PageData> list = wordService.queryWordListPage(pageData);
         PageData pageCount =wordService.queryWordCount(pageData);
         PageData pageInfo = new PageData();
         // 设置返回数据和视图

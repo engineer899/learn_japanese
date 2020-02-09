@@ -3,26 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="annMapper">
 
-<!--    <select id="showTypes"  resultType="java.lang.Integer">-->
-<!--     select video_type from tb_video group by  video_type-->
-<!--    </select>-->
-
-<!--    <select id="CountByType"  resultType="java.util.Map">-->
-<!--     select video_type,count(*) count from tb_video group by  video_type-->
-<!--    </select>-->
-
-
-
-<!--    <select id="showByType" parameterType="java.lang.Integer" resultType="java.util.Map">-->
-<!--     select id,video_url,video_name,date_format(add_time,"%Y-%m-%d %T") as add_time,browse_num,video_type,video_num from tb_video where video_type=${id}-->
-<!--    </select>-->
-
-
-<!--    <insert id="addVideo" parameterType="PageData" >-->
-<!--     insert into tb_video(id,video_url,video_name,video_knowledge,add_time,browse_num,video_type,video_num,state)-->
-<!--     values (#{id},#{video_url},#{video_name},#{video_knowledge},STR_TO_DATE(#{add_time},"%Y-%m-%d %T"),0,#{video_type},#{video_num},#{state})-->
-<!--    </insert>-->
-
     <!--公告分页查询-->
     <select id="queryAnnInfoListPage" parameterType="Page" resultType="PageData">
         select id,ann_title, date_format(add_time,"%Y-%m-%d %T") as add_time, ann_content
@@ -41,9 +21,7 @@
         where id=#{id}
     </select>
 
-<!--    &lt;!&ndash;更新视频状态 &ndash;&gt;-->
-<!--    <select id="updateVideoState" parameterType="PageData">-->
-<!--        UPDATE tb_video SET state = #{state} WHERE  id=#{id}-->
+
         <!-- 删除公告-->
         <delete id="deleteAnn" parameterType="String">
             delete from tb_announcement where id=#{id}
@@ -54,6 +32,9 @@
      insert into tb_announcement(id,ann_title,add_time,ann_content)
      values (#{id},#{ann_title},STR_TO_DATE(#{add_time},"%Y-%m-%d %T"),#{ann_content})
     </insert>
-
-
+<!--    查所有公告-->
+    <select id="showAllAnnouncement" parameterType="PageData" resultType="PageData">
+        select id,ann_title,date_format(add_time,"%Y-%m-%d %T") as add_time,ann_content
+        from tb_announcement order by add_time desc
+    </select>
 </mapper>
