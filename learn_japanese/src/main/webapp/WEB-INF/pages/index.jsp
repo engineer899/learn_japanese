@@ -89,12 +89,18 @@
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="button">
-                                <a  lay-href="${pageContext.request.contextPath}/manage/wordController/word_list">单词管理</a>
+                                <a  lay-href="${pageContext.request.contextPath}/manage/wordController/course_list">课程管理</a>
                             </dd>
                         </dl>
+                    </li>
+                    <li data-name="component" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="小知识管理" >
+                            <i class="layui-icon layui-icon-component"></i>
+                            <cite>小知识管理</cite>
+                        </a>
                         <dl class="layui-nav-child">
                             <dd data-name="button">
-                                <a  lay-href="${pageContext.request.contextPath}/manage/wordController/course_list">课程管理</a>
+                                <a  lay-href="${pageContext.request.contextPath}/manage/knowController/type_list">小知识管理</a>
                             </dd>
                         </dl>
                     </li>
