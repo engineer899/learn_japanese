@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="knowMapper">
+
+    <select id="queryTypeList" parameterType="PageData" resultType="PageData">
+        select
+        type_id,
+        type_name,
+        date_format(add_time,"%Y-%m-%d %T") as add_time,
+        state
+        from k_type where state=0
+        <if test="type_id!=null and type_id !=''">
+            and type_id = #{type_id}
+        </if>
+        <if test="type_name!=null and type_name !=''">
+            and type_name like concat('%', #{type_name},'%')
+        </if>
+    </select>
+
+    <select id="queryTypeCount" parameterType="PageData" resultType="PageData">
+        select  count(1) as count
+        from k_type where state=0
+        <if test="type_id!=null and type_id !=''">
+            and type_id = #{type_id}
+        </if>
+        <if test="type_name!=null and type_name !=''">
+            and type_name like concat('%', #{type_name},'%')
+        </if>
+    </select>
+
+    <select id="queryTypeByName" parameterType="PageData" resultType="PageData">
+        select *  from k_type where type_name=#{type_name}
+    </select>
+
+    <insert id="addType" parameterType="PageData">
+        insert into k_type(type_id,type_name)
+        values  (#{type_id},#{type_name})
+    </insert>
+
+
+    <select id="queryKnowByID" parameterType="PageData" resultType="PageData">
+        select  know_id,
+        type_id,
+        title,
+        date_format(add_time,"%Y-%m-%d %T") as add_time,
+        author
+        from k_know where state=0
+        <if test="type_id!=null and type_id !=''">
+            and type_id = #{type_id}
+        </if>
+    </select>
+
+
+    <select id="queryKnowList" parameterType="PageData" resultType="PageData">
+        select  know_id,
+        type_id,
+        title,
+        content,
+        date_format(add_time,"%Y-%m-%d %T") as add_time,
+        author
+        from k_know where state=0
+        <if test="know_id!=null and know_id !=''">
+            and know_id = #{know_id}
+        </if>
+        <if test="type_id!=null and type_id !=''">
+            and type_id = #{type_id}
+        </if>
+        <if test="title!=null and title !=''">
+            and title like concat('%', #{title},'%')
+        </if>
+        <if test="author!=null and author !=''">
+            and author like concat('%', #{author},'%')
+        </if>
+        <if test="content!=null and content !=''">
+            and content like concat('%', #{content},'%')
+        </if>
+    </select>
+
+    <select id="queryKnowCount" parameterType="PageData" resultType="PageData">
+        select  count(1) as count
+        from k_know where state=0
+        <if test="know_id!=null and know_id !=''">
+            and know_id = #{know_id}
+        </if>
+        <if test="type_id!=null and type_id !=''">
+            and type_id = #{type_id}
+        </if>
+        <if test="title!=null and title !=''">
+            and title like concat('%', #{title},'%')
+        </if>
+        <if test="author!=null and author !=''">
+            and author like concat('%', #{author},'%')
+        </if>
+        <if test="content!=null and content !=''">
+            and content like concat('%', #{content},'%')
+        </if>
+    </select>
+
+
+    <insert id="addKnow" parameterType="PageData">
+        insert into k_know(know_id,type_id,title,author,content)
+        values  (#{know_id},#{type_id},#{title},#{author},#{content})
+    </insert>
+
+
+
+
+
+</mapper>
