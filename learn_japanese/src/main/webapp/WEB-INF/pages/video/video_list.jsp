@@ -10,22 +10,19 @@
 <script>
     layui.use(['table','form'], function(){
         var table = layui.table;
-        var form = layui.form;
-        // parent.layer.load();
 
         table.render({
             elem: '#test'
-            ,url:'${ctp}/manage/videoController/queryVideoInfoJson'
+            ,url:'${ctp}/manage/videoController/queryVideoInfoListPage?course_id=${pd.course_id}'
             ,cols: [[
-                {type:'numbers',width:'4%', title: '序号'}
+                {type:'numbers',width:'5%', title: '序号'}
                 ,{field:'video_url',width:'20%',  title: '视频URL'}
                 ,{field:'video_name',width:'15%', title: '视频名称'}
                 ,{field:'add_time',width:'15%', title: '添加时间'}
-                ,{field:'browse_num',width:'8%',  title: '观看次数'}
-                ,{field:'video_type',width:'8%',  title: '视频类型',templet: '#AUDIT_STATUS'}
-                ,{field:'video_num',width:'8%',  title: '视频课时'}
-                ,{field:'state',width:'8%', title: '视频状态',templet: '#ENABLE_PLATFORM'}
-                ,{title:'操作',width:'14%',templet: '#caozuo', unresize: true}
+                ,{field:'browse_num',width:'9%',  title: '观看次数'}
+                ,{field:'video_num',width:'9%',  title: '视频课时'}
+                ,{field:'state',width:'9%', title: '视频状态',templet: '#ENABLE_PLATFORM'}
+                ,{title:'操作',width:'18%',templet: '#caozuo', unresize: true}
             ]]
             ,page: true //开启分页
             ,limit:10 //每页最大数
@@ -34,15 +31,14 @@
                 ,limitName: 'showCount' //每页数据量的参数名，默认：limit
             }
             ,id: 'testReload'
-            ,done: function(){//数据渲染完的回调方法
-                parent.layer.closeAll();
-            }
+            // ,done: function(){//数据渲染完的回调方法
+            //     // parent.layer.closeAll();
+            // }
         });
-
         var $ = layui.$, active = {
             reload: function(){
                 var video_name = $('#video_name').val();
-                var video_type = $('#video_type').val();
+
                 var state = $('#state').val();
                 //执行重载
                 table.reload('testReload', {
@@ -51,7 +47,7 @@
                     }
                     ,where: {
                         video_name: video_name,
-                        video_type: video_type,
+
                         state: state
                     }
                 });
@@ -65,29 +61,17 @@
     });
 </script>
 <script type="text/html" id="caozuo">
-     <a class='layui-btn layui-btn-xs' onclick="queryVideoDetails('{{d.id }}')">详情</a>
-     <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="updateVideo('{{d.id }}')">编辑</a>
-     {{# if(d.state == '0'){ }}
-     <a class='layui-btn layui-btn-xs layui-btn-danger'  onclick="enableORstopVideo('{{d.id}}','1')">停用</a>
-     {{# }else{ }}
-     <a class='layui-btn layui-btn-xs' onclick="enableORstopVideo('{{d.id}}','0')">启用</a>
-     {{# } }}
-
-</script>
-
-<script type="text/html" id="AUDIT_STATUS">
-    {{# if(d.video_type == '0'){ }}
-    <span style="color: #002828;">零基础</span>
-    {{# }else if(d.video_type == '1'){ }}
-    <span style="color: #46990c;">N1级别</span>
-    {{# }else if(d.video_type == '2'){ }}
-    <span style="color: #3838aa;">N2级别</span>
-    {{# }else if(d.video_type == '3'){ }}
-    <span style="color: #cc0000;">N3级别</span>
+    <a class='layui-btn layui-btn-xs' onclick="queryVideoDetails('{{d.id }}')">详情</a>
+    <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="updateVideo('{{d.id }}')">编辑</a>
+    {{# if(d.state == '0'){ }}
+    <a class='layui-btn layui-btn-xs layui-btn-danger'  onclick="enableORstopVideo('{{d.id}}','1')">停用</a>
     {{# }else{ }}
-    <span style="color: #aaa;">待审核</span>
+    <a class='layui-btn layui-btn-xs' onclick="enableORstopVideo('{{d.id}}','0')">启用</a>
     {{# } }}
+
 </script>
+
+
 
 <script type="text/html" id="ENABLE_PLATFORM">
     {{# if(d.state == '0'){ }}               <!--根据结果设置视频状态 -->
@@ -109,19 +93,7 @@
                             <div class="layui-input-inline">
                                 <input  placeholder="请输入视频名称"  name="video_name" id="video_name" class="layui-input">
                             </div>
-                            <span>&nbsp;&nbsp;视频类别&nbsp;&nbsp;:</span>
-                            <div class="layui-input-inline" style="text-align: left;width:120px;">
-                                <select id="video_type" name="video_type">
-                                    <option value="">请选择</option>
-<%--                                    <c:forEach var="record" items="${video_type}">--%>
-<%--                                        <option value="${record.SERVICE_TYPE_CODE}">${record.SERVICE_TYPE_NAME}</option>--%>
-<%--                                    </c:forEach>--%>
-                                    <option value="0">零基础</option>
-                                    <option value="1">N1</option>
-                                    <option value="2">N2</option>
-                                    <option value="3">N3</option>
-                                </select>
-                            </div>
+
                             <span>&nbsp;&nbsp;视频状态&nbsp;&nbsp;:</span>
                             <div class="layui-input-inline" style="text-align: left;width:120px;">
                                 <select id="state" name="state">
@@ -131,7 +103,7 @@
 
                                 </select>
                             </div>
-                            <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="addVideo()" style="float:left;"> <i class="layui-icon layui-icon-add-1"></i>新增</a>
+                            <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="addVideo('${pd.course_id}')" style="float:left;"> <i class="layui-icon layui-icon-add-1"></i>新增</a>
                             <button type="button" class="layui-btn layui-btn-sm " id="query" data-type="reload"><i class="layui-icon layui-icon-search"></i>查询</button>
                         </div>
                     </form>

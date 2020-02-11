@@ -15,27 +15,75 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author 张伟
- * @date 2019/10/16 22:36
+ * @author 曾焘
+ * @date 2020/02/10 22:36
  */
 @Service
 public class VideoService {
     @Resource(name="daoSupport")
     private DaoSupport dao;
 
+    /**
+     * 添加课程
+     * @return
+     * @throws Exception
+     */
+    public Integer addCourse(PageData pageData) throws Exception {
+        return  (Integer) dao.save("videoMapper.addCourse",pageData);
+    }
+
+    /**
+     * 删除课程
+     * @return
+     * @throws Exception
+     */
+    public Integer deleteCourse(PageData pageData) throws Exception {
+        return  (Integer) dao.update("videoMapper.deleteCourse",pageData);
+    }
+
+
+
+
+
+
     public int addVideo(PageData pageData) throws Exception {
         return (int)dao.save("videoMapper.addVideo",pageData);
     }
 
-    public List<Map<String,String>> countByType(){
-        List<Map<String,String>> resultList;
-        resultList=(List<Map<String,String>>)dao.findForList("videoMapper.CountByType");
-        return resultList;
+
+
+    /**
+     * 后台：视频书名查书id
+     * @return
+     * @throws Exception
+     */
+    public String queryCourseByName(PageData pageData) throws Exception {
+        PageData p=(PageData)dao.findForObject("videoMapper.queryCourseByName", pageData);
+        String course_id;
+        if(p!=null){
+            course_id=p.getString("course_id");
+        }else{
+           course_id=null;
+        }
+        return course_id;
     }
 
-    public List<Map<String,String>> showByType(Integer video_type) throws Exception {
+    /**
+     * 展示该课本下的所有信息
+     * @param course_id
+     * @return
+     * @throws Exception
+     */
+    public List<Map<String,String>> showByCourse_id(String course_id) throws Exception {
         List<Map<String,String>> resultList;
-        resultList=(List<Map<String,String>>)dao.findForList("videoMapper.showByType",video_type);
+        resultList=(List<Map<String,String>>)dao.findForList("videoMapper.showByCourse_id",course_id);
+        for(int i=0;i<resultList.size();i++){
+            String id = resultList.get(i).get("id"); //获取当前 i 视频的id
+            PageData p=(PageData)dao.findForObject("videoMapper.showCommentNum",id); //用该id去评论表查对应的评论id数量
+            Long tempcommentnum=(Long)p.get("commentnum");  //将count结果转成string
+            String commentnum = tempcommentnum.toString();
+            resultList.get(i).put("commentnum",commentnum);
+        }
         return resultList;
     }
 
@@ -51,6 +99,32 @@ public class VideoService {
         return resultMap;
     }
 
+    /**
+     * 课程类别查询
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> queryCourseType(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("videoMapper.queryCourseType", pageData);
+    }
+
+    /**
+     * 课程列表查询
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> queryCourseListPage(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("videoMapper.queryCourseListPage", pageData);
+    }
+
+    /**
+     * 课程总数
+     * @return
+     * @throws Exception
+     */
+    public PageData queryCourseCount(PageData pageData) throws Exception {
+        return (PageData) dao.findForObject("videoMapper.queryCourseCount", pageData);
+    }
 
     /**
      * 微课视频分页查询
@@ -58,9 +132,20 @@ public class VideoService {
      * @return
      * @throws Exception
      */
-    public List<PageData> queryVideoInfoListPage(Page page) throws Exception {
-        return (List<PageData>) dao.findForList("videoMapper.queryVideoInfoListPage", page);
+    public List<PageData> queryVideoInfoListPage(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("videoMapper.queryVideoInfoListPage",pageData);
     }
+
+    /**
+     * 章节总数
+     * @return
+     * @throws Exception
+     */
+    public PageData queryVideoCount(PageData pageData) throws Exception {
+        return (PageData) dao.findForObject("videoMapper.queryVideoCount", pageData);
+    }
+
+
 
     /**
      * 查询视频by id
@@ -81,6 +166,16 @@ public class VideoService {
     public int updateVideoState(PageData pageData) throws Exception {
         return (int) dao.update("videoMapper.updateVideoState",pageData);
     }
+
+    /**
+     * 修改视频
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public int updateVideo(PageData pageData) throws Exception {
+        return (int) dao.update("videoMapper.updateVideo",pageData);
+    }
     /**
      * 查看视频下方所有要素
      * @param pageData
@@ -88,8 +183,10 @@ public class VideoService {
      * @throws Exception
      */
     public List<PageData> showAllContentById(PageData pageData) throws Exception {
-        //①找评论②找知识点③标记当前用户点过赞的评论
+        //①找评论②标记当前用户点过赞的评论③找知识点④浏览数加1
+        //1
         List<PageData> pageData1=(List<PageData>) dao.findForList("videoMapper.showAllContentById", pageData);
+        //2
         String openid=pageData.getString("openid");
         for(int i=0;i<pageData1.size();i++){
             pageData1.get(i).put("curropenid",openid); //当前使用用户的id
@@ -99,7 +196,10 @@ public class VideoService {
                 pageData1.get(i).put("is_zan",0);  //没点过
             }
         }
+        //3
         pageData1.add(  (PageData) dao.findForObject("videoMapper.showKnowledgeById", pageData)  );
+        //4
+        dao.update("videoMapper.updateVideoBrowseNum", pageData);
         return pageData1;
     }
 

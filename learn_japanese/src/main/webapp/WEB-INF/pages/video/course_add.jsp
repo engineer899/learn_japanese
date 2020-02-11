@@ -15,42 +15,40 @@
 <form class="layui-form" enctype="multipart/form-data"  method= "post" id="uploadForm">
     <table class="layui-table" style="width:99%;margin:0px 5px 0px 5px;">
         <tr>
-            <td class="tdleft"><span style="color:red;">*</span>视频名称：</td>
+            <td class="tdleft"><span style="color:red;">*</span>课程类型：</td>
             <td style="width:30%;">
                 <div class='layui-input-block' style='margin-left:0!important;'>
-                    <!-- 内容 -->
-                    <textarea style="display:none"   id="divdata"></textarea>
-                    <input type="text" name="video_name" id="video_name" lay-verify="required" autocomplete="off" class="layui-input" value="${result.video_name}"  maxlength="30">
+                    <input type="text" name="type"   id="type" lay-verify="required" autocomplete="off" class="layui-input" value=""  maxlength="30">
                 </div>
             </td>
 
-            <td class="tdleft"><span style="color:red;">*</span>视频课时：</td>
-            <td>
-                <div class="layui-input-block" style="margin-left:0!important;">
-                    <input type="text"   name="video_num" id="video_num"
-                           lay-verify="required" autocomplete="off" class="layui-input"   maxlength="30">
+            <td class="tdleft"><span style="color:red;">*</span>课程名称：</td>
+            <td style="width:30%;">
+                <div class='layui-input-block' style='margin-left:0!important;'>
+                    <input type="text" name="course_name" id="course_name" lay-verify="required" autocomplete="off" class="layui-input" value=""  maxlength="30">
                 </div>
             </td>
-</tr>
-
-<tr>
-            <td class="tdleft"><span style="color:red;">*</span>上传视频：</td>
-            <td>
-                <div class="layui-input-block" style="margin-left:0!important;">
-                    <input type="file" id="file" name="file"  />
-                </div>
-            </td>
-
         </tr>
+
         <tr>
-            <td class="tdleft"><span style="color:red;">*</span>课程知识点：</td>
+            <td class="tdleft"><span style="color:red;"></span>课程介绍：</td>
             <td colspan="3">
-                <textarea id="video_knowledge" name="video_knowledge" style="width:100%;height:400px;"></textarea>
+                <textarea id="introduce" name="introduce" style="width:100%;height:200px;"></textarea>
             </td>
         </tr>
+
+        <tr>
+            <td class="tdleft"><span style="color:red;">*</span>课程图片：</td>
+            <td style="width:30%;">
+                <div class='layui-input-block' style='margin-left:0!important;'>
+                    <input type="file" name="image_url" id="image_url"    lay-verify="required" autocomplete="off" class="layui-input" value=""  maxlength="30">
+                </div>
+            </td>
+        </tr>
+
     </table>
     <div class="layui-form-item" style="margin-top:15px;text-align: center;">
-        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="save('${pd.course_id}');" type="button"><i class="layui-icon layui-icon-form"></i>保存</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="save();" type="button"><i class="layui-icon layui-icon-form"></i>保存</button>
         <button class="layui-btn layui-btn-sm" onclick="parent.layer.closeAll();" type="button"><i class="layui-icon layui-icon-close"></i>取消</button>
     </div>
 </form>
@@ -59,24 +57,12 @@
     layui.use(['form','laydate'], function(){
     });
 
-    function save(id){
+    function save(){
         var formData = new FormData($( "#uploadForm" )[0]);
         console.log(formData);
-        if ($('#video_name').val() == '') {
-            layer.alert("视频名称不能为空");
-            return false;
-        }
-        if ($('#video_num').val() == '') {
-            layer.alert("视频课时不能为空");
-            return false;
-        }
-        if ($('#file').val() == '') {
-            layer.alert("请选择需要上传的视频");
-            return false;
-        }
-        layer.load();
+        // layer.load();
         $.ajax({
-            url: contextPath+'/manage/videoController/addVideo?course_id='+id,
+            url: contextPath+'/manage/videoController/addCourse',
             type: "post",
             data: formData,
             async: false,
@@ -92,16 +78,14 @@
                     parent.layer.alert("保存成功",{icon: 1,closeBtn: 0},function(index) {
                         parent.location.reload();
                     });
-                } else{
-                    parent.layer.alert("保存失败",{icon: 2,closeBtn: 0},function(index) {
+                }else{
+                    parent.layer.alert(jsondata.message,{icon: 2,closeBtn: 0},function(index) {
                         parent.location.reload();
                     });
                 }
             }
         })
     }
-
-
 </script>
 
 

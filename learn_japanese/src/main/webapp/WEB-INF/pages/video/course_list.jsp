@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>课程列表</title>
     <%@ include file="../allresource.jsp"%>
-    <script src="${ctp}/static/scripts/myjs/course.js"></script>
+    <script src="${ctp}/static/scripts/myjs/v_course.js"></script>
 </head>
 <script>
     layui.use(['table','form'], function(){
@@ -14,7 +14,7 @@
         parent.layer.load();
         table.render({
             elem: '#test'
-            ,url:'${ctp}/manage/wordController/queryCourseListPage'
+            ,url:'${ctp}/manage/videoController/queryCourseListPage'
             ,cols: [[
                 {type:'numbers',width:'5%', title: '序号'}
                 ,{field:'course_name',width:'15%',  title: '课程名字'}
@@ -63,7 +63,7 @@
     <a class='layui-btn layui-btn-xs' onclick="queryCourseDetails('{{d.course_id}}')">详情</a>
     <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="updateCourse('{{d.course_id}}')">编辑</a>
     <a class='layui-btn layui-btn-xs layui-btn-danger'  onclick="deleteCourse('{{d.course_id}}')">删除</a>
-    <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="chapterList('{{d.course_id}}')">添加章节</a>
+    <a class='layui-btn layui-btn-normal layui-btn-xs' onclick="videoList('{{d.course_id}}')">添加视频</a>
 
 
 
@@ -118,12 +118,12 @@
                             </div>
                             <%--<span>&nbsp;&nbsp;课程状态&nbsp;&nbsp;:</span>--%>
                             <%--<div class="layui-input-inline" style="text-align: left;width:120px;">--%>
-                                <%--<select id="state" name="state">--%>
-                                    <%--<option value="">请选择</option>--%>
-                                    <%--<option value="0">正常</option>--%>
-                                    <%--<option value="1">已删除</option>--%>
+                            <%--<select id="state" name="state">--%>
+                            <%--<option value="">请选择</option>--%>
+                            <%--<option value="0">正常</option>--%>
+                            <%--<option value="1">已删除</option>--%>
 
-                                <%--</select>--%>
+                            <%--</select>--%>
                             <%--</div>--%>
                             <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="addCourse()" style="float:left;"> <i class="layui-icon layui-icon-add-1"></i>新增</a>
                             <button type="button" class="layui-btn layui-btn-sm " id="query" data-type="reload"><i class="layui-icon layui-icon-search"></i>查询</button>

@@ -23,15 +23,17 @@
                     <input type="text" name="video_name" id="video_name" lay-verify="required" autocomplete="off" class="layui-input" value="${result.video_name}"  maxlength="30">
                 </div>
             </td>
-            <td class="tdleft"><span style="color:red;">*</span>视频类型：</td>
+            <td class="tdleft"><span style="color:red;">*</span>视频系列：</td>
             <td style="width:30%;">
-                <select id="video_type" name="video_type" lay-verify="required">
-                    <option value="">请选择课程类型</option>
-                    <option <c:if test="${result.video_type == '0'}">SELECTED</c:if> value="0">零基础</option>
-                    <option <c:if test="${result.video_type == '1'}">SELECTED</c:if> value="1">N1</option>
-                    <option <c:if test="${result.video_type == '2'}">SELECTED</c:if> value="2">N2</option>
-                    <option <c:if test="${result.video_type == '3'}">SELECTED</c:if> value="3">N3</option>
-                </select>
+                <input type="text"   name="series" id="series"
+                       lay-verify="required" autocomplete="off" class="layui-input" value="${result.series}"  maxlength="30">
+<%--                <select id="video_type" name="video_type" lay-verify="required">--%>
+<%--                    <option value="">请选择课程类型</option>--%>
+<%--                    <option <c:if test="${result.video_type == '0'}">SELECTED</c:if> value="0">零基础</option>--%>
+<%--                    <option <c:if test="${result.video_type == '1'}">SELECTED</c:if> value="1">N1</option>--%>
+<%--                    <option <c:if test="${result.video_type == '2'}">SELECTED</c:if> value="2">N2</option>--%>
+<%--                    <option <c:if test="${result.video_type == '3'}">SELECTED</c:if> value="3">N3</option>--%>
+<%--                </select>--%>
             </td>
         </tr>
 
@@ -39,15 +41,26 @@
             <td class="tdleft"><span style="color:red;">*</span>视频课时：</td>
             <td>
                 <div class="layui-input-block" style="margin-left:0!important;">
-                    <select id="video_num" name="video_num" lay-verify="required">
-                        <option value="">请选择课时</option>
-                        <option <c:if test="${result.video_num == '1'}">SELECTED</c:if> value="1">第一课时</option>
-                        <option <c:if test="${result.video_num == '2'}">SELECTED</c:if> value="2">第二课时</option>
-                        <option <c:if test="${result.video_num == '3'}">SELECTED</c:if> value="3">第三课时</option>
-                        <option <c:if test="${result.video_num == '4'}">SELECTED</c:if> value="4">第四课时</option>
-                    </select>
+                    <input type="text"   name="video_num" id="video_num"
+                           lay-verify="required" autocomplete="off" class="layui-input" value="第${result.video_num}课时"  maxlength="30">
+<%--                    <select id="video_num" name="video_num" lay-verify="required">--%>
+<%--                        <option value="">请选择课时</option>--%>
+<%--                        <option <c:if test="${result.video_num == '1'}">SELECTED</c:if> value="1">第一课时</option>--%>
+<%--                        <option <c:if test="${result.video_num == '2'}">SELECTED</c:if> value="2">第二课时</option>--%>
+<%--                        <option <c:if test="${result.video_num == '3'}">SELECTED</c:if> value="3">第三课时</option>--%>
+<%--                        <option <c:if test="${result.video_num == '4'}">SELECTED</c:if> value="4">第四课时</option>--%>
+<%--                    </select>--%>
                 </div>
             </td>
+
+            <td class="tdleft"><span style="color:red;">*</span>视频书名：</td>
+            <td>
+                <div class="layui-input-block" style="margin-left:0!important;">
+                    <input type="text" id="book_name" name="book_name"   lay-verify="required" autocomplete="off" class="layui-input"   value="${result.book_name}" />
+                </div>
+            </td>
+        </tr>
+        <tr>
             <td class="tdleft"><span style="color:red;">*</span>上传视频：</td>
             <td>
                 <div class="layui-input-block" style="margin-left:0!important;">
@@ -79,8 +92,12 @@
             layer.alert("视频名称不能为空");
             return false;
         }
-        if ($('#video_type').val() == '') {
-            layer.alert("视频类型不能为空");
+        if ($('#series').val() == '') {
+            layer.alert("视频系列不能为空");
+            return false;
+        }
+        if ($('#book_name').val() == '') {
+            layer.alert("视频书名不能为空");
             return false;
         }
         if ($('#video_num').val() == '') {
@@ -93,7 +110,7 @@
         // }
         layer.load();
         $.ajax({
-            url: contextPath+'/video/add',
+            url: contextPath+'/manage/videoController/editVideo',
             type: "post",
             data: formData,
             async: false,

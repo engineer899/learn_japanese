@@ -78,7 +78,7 @@
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="nav">
-                                <a  lay-href="${pageContext.request.contextPath}/manage/videoController/video_list">视频管理</a>
+                                <a  lay-href="${pageContext.request.contextPath}/manage/videoController/course_list">视频管理</a>
                             </dd>
                         </dl>
                     </li>
@@ -175,7 +175,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="${pageContext.request.contextPath}/manage/videoController/video_list" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="${pageContext.request.contextPath}/manage/videoController/course_list" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 

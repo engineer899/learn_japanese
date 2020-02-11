@@ -25,13 +25,15 @@
             </td>
             <td class="tdleft"><span style="color:red;">*</span>视频类型：</td>
             <td style="width:30%;">
-                <select id="video_type" name="video_type" lay-verify="required">
+                <input type="text"  readonly="readonly"  name="series" id="series"
+                       lay-verify="required" autocomplete="off" class="layui-input" value="${result.series}"  maxlength="30">
+<%--                <select id="video_type" name="video_type" lay-verify="required">--%>
 
-                    <c:if test="${result.video_type == '0'}"> <option  value="0">零基础</option></c:if>
-                    <c:if test="${result.video_type == '1'}"> <option  value="0">N1</option></c:if>
-                    <c:if test="${result.video_type == '2'}"> <option  value="0">N2</option></c:if>
-                    <c:if test="${result.video_type == '3'}"> <option  value="0">N3</option></c:if>
-                </select>
+<%--                    <c:if test="${result.video_type == '0'}"> <option  value="0">零基础</option></c:if>--%>
+<%--                    <c:if test="${result.video_type == '1'}"> <option  value="0">N1</option></c:if>--%>
+<%--                    <c:if test="${result.video_type == '2'}"> <option  value="0">N2</option></c:if>--%>
+<%--                    <c:if test="${result.video_type == '3'}"> <option  value="0">N3</option></c:if>--%>
+<%--                </select>--%>
             </td>
         </tr>
 
@@ -39,12 +41,15 @@
             <td class="tdleft"><span style="color:red;">*</span>视频课时：</td>
             <td>
                 <div class="layui-input-block" style="margin-left:0!important;">
-                    <select id="video_num" name="video_num" lay-verify="required">
-                        <c:if test="${result.video_num == '1'}"><option  value="1">第一课时</option></c:if>
-                        <c:if test="${result.video_num == '2'}"><option  value="1">第二课时</option></c:if>
-                        <c:if test="${result.video_num == '3'}"><option  value="1">第三课时</option></c:if>
-                        <c:if test="${result.video_num == '4'}"><option  value="1">第四课时</option></c:if>
-                    </select>
+                    <input type="text"  readonly="readonly"  name="video_num" id="video_num"
+                           lay-verify="required" autocomplete="off" class="layui-input" value="第${result.video_num}课时"  maxlength="30">
+<%--                        <c:forEach  items="${result.video_num}"  var="i"  begin="1">--%>
+<%--                        <c:if test="${result.video_num== i}">i课时</c:if>--%>
+<%--                        </c:forEach>--%>
+<%--                        <c:if test="${result.video_num == '2'}"><option  value="1">第二课时</option></c:if>--%>
+<%--                        <c:if test="${result.video_num == '3'}"><option  value="1">第三课时</option></c:if>--%>
+<%--                        <c:if test="${result.video_num == '4'}"><option  value="1">第四课时</option></c:if>--%>
+
                 </div>
             </td>
             <td class="tdleft"><span style="color:red;">*</span>上传视频：</td>

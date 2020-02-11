@@ -1,7 +1,10 @@
 package ink.zxu.learn_japanese.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import ink.zxu.learn_japanese.service.VideoService;
+
 import ink.zxu.learn_japanese.utils.BaseController;
 import ink.zxu.learn_japanese.utils.PageData;
 import ink.zxu.learn_japanese.utils.SessionManager;
@@ -12,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author 张伟
@@ -27,6 +28,7 @@ import java.util.Set;
 public class VideoController extends BaseController {
     @Autowired
     private VideoService videoService;
+
     private static String uuid;
 
     @RequestMapping(value = "/upload_view")
@@ -38,22 +40,41 @@ public class VideoController extends BaseController {
         return mv;
     }
 
-
-
-    @RequestMapping(value="/countByType")
+    /**
+     * 展示视频系列和视频书名
+     * @return
+     */
+    @RequestMapping(value="/showAllSeries")
     @ResponseBody
-    public String countByType(){
-        List<Map<String,String>> resultList;
-        resultList=videoService.countByType();
-        return new Gson().toJson(resultList);
+    public String showAllSeries() throws Exception {
+        PageData pageData=this.getPageData();
+        List<Map<String,Object>> result=new ArrayList<>();
+        List<PageData> TypeList=videoService.queryCourseType(pageData);
+        for(PageData temp:TypeList){
+            pageData.put("type",temp.getString("type"));
+            List<PageData> list = new ArrayList<>();
+            Map<String,Object> tempMap=new HashMap<>();
+            tempMap.put("type",temp.getString("type"));
+            list=videoService.queryCourseListPage(pageData);
+            tempMap.put("course",list);
+            result.add(tempMap);
+        }
+        return new Gson().toJson(result);
     }
 
-    @RequestMapping(value="/showByType")
+
+
+    /**
+     * 通过书id展示书内的所有视频的所有信息
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/showByCourse_id")
     @ResponseBody
-    public String showByType() throws Exception {
+    public String showByName() throws Exception {
         PageData pageData=this.getPageData();
         List<Map<String,String>> resultList;
-        resultList=videoService.showByType(Integer.parseInt(pageData.getString("video_type")));
+        resultList=videoService.showByCourse_id((pageData.getString("course_id")));
         return new Gson().toJson(resultList);
     }
 
