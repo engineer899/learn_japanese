@@ -95,6 +95,29 @@ public class VideoController extends BaseController {
         return new Gson().toJson(pageDataList);
     }
 
+    /**
+     * 查看视频下方的所有应有的信息
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/addBrowseNum")
+    public String addBrowseNum() throws Exception {
+        PageData pageData=this.getPageData();
+        int i=videoService.addBrowseNum(pageData);
+        Map<String,String> resultMap=new HashMap<>();
+        if(i!=0){
+            resultMap.put("message","addBrowseNum");
+            return new Gson().toJson(resultMap);
+        }else {
+            resultMap.put("message","failAddBrowseNum");
+            return new Gson().toJson(resultMap);
+        }
+
+    }
+
+
+
 
     /**
      * 评论赞

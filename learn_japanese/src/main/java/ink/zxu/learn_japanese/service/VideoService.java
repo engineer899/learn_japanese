@@ -128,7 +128,7 @@ public class VideoService {
 
     /**
      * 微课视频分页查询
-     * @param page
+     * @param
      * @return
      * @throws Exception
      */
@@ -183,7 +183,7 @@ public class VideoService {
      * @throws Exception
      */
     public List<PageData> showAllContentById(PageData pageData) throws Exception {
-        //①找评论②标记当前用户点过赞的评论③找知识点④浏览数加1
+        //①找评论②标记当前用户点过赞的评论③找知识点
         //1
         List<PageData> pageData1=(List<PageData>) dao.findForList("videoMapper.showAllContentById", pageData);
         //2
@@ -198,9 +198,12 @@ public class VideoService {
         }
         //3
         pageData1.add(  (PageData) dao.findForObject("videoMapper.showKnowledgeById", pageData)  );
-        //4
-        dao.update("videoMapper.updateVideoBrowseNum", pageData);
         return pageData1;
+    }
+
+
+    public int addBrowseNum(PageData pageData) throws Exception {
+       return (int)dao.update("videoMapper.updateVideoBrowseNum",pageData);
     }
 
 //判断zan是否
