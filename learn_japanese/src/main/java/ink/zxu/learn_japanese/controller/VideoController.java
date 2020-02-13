@@ -292,4 +292,22 @@ public class VideoController extends BaseController {
             return  new Gson().toJson(resultMap);
         }
     }
+
+    /**
+     * 今日视频推荐
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/showTodayRecommended")
+    public String showTodayRecommended() throws Exception {
+        PageData pageData=this.getPageData();
+        List<PageData> pageDataList=null;
+        pageDataList=videoService.showTodayRecommended(pageData);
+        for(String key:(Set<String>)pageData.keySet()){
+            System.out.println(key+":"+pageData.getString(key));
+        }
+        return new Gson().toJson(pageDataList);
+    }
+
 }

@@ -9,10 +9,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author 曾焘
@@ -346,6 +343,29 @@ public class VideoService {
         dao.delete("videoMapper.deleteOneReplyById",pageData);
         dao.update("videoMapper.updateReplyNum",pageData);
         return 1;
+    }
+
+    /**
+     * 今日视频推荐
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> showTodayRecommended(PageData pageData) throws Exception {
+        //1 最新视频，2 最多浏览 ，3 最多评论，4 随机推荐一个视频
+        List<PageData> pageData1=new ArrayList<PageData> ();
+        PageData List1 = (PageData) dao.findForObject("videoMapper.showTodayLatest", pageData);
+        PageData List2 = (PageData) dao.findForObject("videoMapper.showTodayTopNum", pageData);
+        PageData tempList3 = (PageData) dao.findForObject("videoMapper.showTodayTopComment1", pageData);
+        String videoid = tempList3.getString("videoid");
+        pageData.put("videoid",videoid);
+        PageData List3 = (PageData) dao.findForObject("videoMapper.showTodayTopComment2", pageData);
+        PageData List4 = (PageData) dao.findForObject("videoMapper.showTodayRand", pageData);
+        pageData1.add(List1);
+        pageData1.add(List2);
+        pageData1.add(List3);
+        pageData1.add(List4);
+        return pageData1;
     }
 
 }

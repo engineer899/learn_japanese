@@ -69,6 +69,7 @@
     select COUNT(id) as commentnum from tb_videocomment  where videoid=#{id}
     </select>
 
+<!--    更新浏览数-->
     <update id="updateVideoBrowseNum"  parameterType="PageData" >
        UPDATE tb_video SET browse_num = browse_num+1 WHERE  id=#{videoid}
     </update>
@@ -230,6 +231,27 @@
 <!--删除回复后。评论数减1 -->
     <select id="updateReplyNum" parameterType="PageData">
      UPDATE tb_videocomment SET reply_num = reply_num-1 WHERE  id=#{id};
+    </select>
+
+<!--    以下5个 今日视频推荐 TodayRecommended-->
+    <select id="showTodayLatest" parameterType="PageData" resultType="PageData">
+        select  id,video_url,video_name,date_format(add_time,"%Y-%m-%d %T") as add_time,browse_num,video_num
+         from tb_video where state=0 order by add_time desc limit 0,1
+    </select>
+    <select id="showTodayTopNum" parameterType="PageData" resultType="PageData">
+        select  id,video_url,video_name,date_format(add_time,"%Y-%m-%d %T") as add_time,browse_num,video_num
+         from tb_video where state=0 order by browse_num desc limit 0,1
+    </select>
+    <select id="showTodayTopComment1" parameterType="PageData" resultType="PageData">
+        select videoid,COUNT(id) as commentnum from tb_videocomment  order by commentnum desc limit 0,1
+    </select>
+    <select id="showTodayTopComment2" parameterType="PageData" resultType="PageData">
+        select  id,video_url,video_name,date_format(add_time,"%Y-%m-%d %T") as add_time,browse_num,video_num
+        from tb_video where id=#{videoid}
+    </select>
+    <select id="showTodayRand" parameterType="PageData" resultType="PageData">
+        select  id,video_url,video_name,date_format(add_time,"%Y-%m-%d %T") as add_time,browse_num,video_num
+        from tb_video where state=0   order by rand() limit 1;
     </select>
 
 </mapper>
