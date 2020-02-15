@@ -38,6 +38,7 @@ public class KnowledgeController extends BaseController {
         String token=pd.getString("token");
         HttpSession session= SessionManager.getSession(token);
         pd.put("user_id",session.getAttribute("openid"));
+        pd.put("status","1");
         List<PageData> list = knowService.queryTypeList(pd);
         for(int i=0;i<list.size();i++){
             pd.put("type_id",list.get(i).getString("type_id"));
