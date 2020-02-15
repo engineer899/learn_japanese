@@ -3,6 +3,128 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="knowMapper">
 
+
+    <insert id="addZan" parameterType="PageData">
+        insert into k_zan(item_id,type,user_id)
+        values  (#{item_id},#{type},#{user_id})
+    </insert>
+
+    <insert id="addComment" parameterType="PageData">
+        insert into k_comment(comment_id,article_id,content,user_id)
+        values  (#{comment_id},#{article_id},#{content},#{user_id})
+    </insert>
+
+
+    <insert id="addReply" parameterType="PageData">
+        insert into k_reply(reply_id,comment_id,toreply_id,reply_type,content,from_userid,to_userid)
+        values  (#{reply_id},#{comment_id},#{toreply_id},#{reply_type},#{content},#{from_userid},#{to_userid})
+    </insert>
+
+
+    <update id="updateZan" parameterType="PageData">
+        UPDATE k_zan
+        SET status = #{status}
+        WHERE
+        	item_id = #{item_id}
+        AND user_id = #{user_id}
+    </update>
+
+    <select id="queryIsZan" parameterType="PageData" resultType="PageData">
+        select * from k_zan where item_id=#{item_id} and user_id=#{user_id}
+        <if test="status!=null and status !=''">
+            and status = #{status}
+        </if>
+    </select>
+
+    <select id="queryZanNum" parameterType="PageData" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM
+        	k_zan
+        WHERE
+        	item_id = #{item_id}
+        	and status='1'
+    </select>
+
+    <select id="queryReplyNum" parameterType="PageData" resultType="java.lang.Integer">
+            SELECT count(1)
+        FROM
+        	k_reply
+        WHERE
+        	comment_id = #{comment_id}
+   </select>
+
+
+    <select id="queryReply" parameterType="PageData" resultType="PageData">
+        SELECT
+        	c.*, d.nick_name AS b_nick_name,
+        	d.avatar_url AS b_avatar_url
+        FROM
+        	(
+        		SELECT
+        		a.reply_id,
+			    a.comment_id,
+			    a.toreply_id,
+			    a.reply_type,
+			    a.content,
+			    a.from_userid,
+			    a.to_userid,
+			    date_format(a.add_time, "%Y-%m-%d %T") AS add_time,
+			    b.nick_name AS a_nick_name,
+			    b.avatar_url AS a_avatar_url
+        		FROM
+        			k_reply a
+        		LEFT JOIN users b ON a.from_userid = b.openid
+        		where comment_id=#{comment_id}
+        	    order by a.add_time desc
+        	) AS c
+        LEFT JOIN users d ON c.to_userid = d.openid
+    </select>
+
+
+    <select id="queryComment" parameterType="PageData" resultType="PageData">
+        SELECT
+        	a.comment_id,
+        	a.article_id,
+        	a.content,
+            date_format(a.add_time,"%Y-%m-%d %T") as add_time,
+        	b.openid,
+        	b.nick_name,
+        	b.avatar_url
+        FROM
+        	k_comment a
+        LEFT JOIN users b ON a.user_id = openid
+        WHERE
+        	article_id = #{article_id}
+        order by a.add_time desc
+
+    </select>
+
+
+    <select id="queryCommentNumByArtId" parameterType="PageData" resultType="java.lang.Integer">
+        SELECT count(1) as count
+        FROM
+        	k_comment
+        WHERE
+        	article_id = #{article_id}
+    </select>
+
+    <select id="queryCommentNumById" parameterType="PageData" resultType="java.lang.Integer">
+        SELECT count(1) as count
+        FROM
+        	k_comment
+        WHERE
+        	comment_id = #{item_id}
+    </select>
+
+    <select id="queryReplyNumById" parameterType="PageData" resultType="java.lang.Integer">
+            SELECT count(1) as count
+        FROM
+        	k_reply
+        WHERE
+        	reply_id = #{item_id}
+   </select>
+
+
     <select id="queryTypeList" parameterType="PageData" resultType="PageData">
         select
         type_id,

@@ -18,6 +18,121 @@ public class KnowService {
 
 
 
+
+
+
+
+    /**
+     *查询回复数
+     * @return
+     * @throws Exception
+     */
+    public Integer queryReplyNum(PageData pageData) throws Exception {
+        return (Integer) dao.findForObject("knowMapper.queryReplyNum", pageData);
+    }
+
+    /**
+     * 查询点赞数
+     * @return
+     * @throws Exception
+     */
+    public Integer queryZanNum(PageData pageData) throws Exception {
+        return (Integer) dao.findForObject("knowMapper.queryZanNum", pageData);
+    }
+    /**
+     * 查询点赞数
+     * @return
+     * @throws Exception
+     */
+    public Integer queryCommentNumByArtId(PageData pageData) throws Exception {
+        return (Integer) dao.findForObject("knowMapper.queryCommentNumByArtId", pageData);
+    }
+
+    /**
+     * 查询评论是否存在
+     * @return
+     * @throws Exception
+     */
+    public Integer queryCommentNumById(PageData pageData) throws Exception {
+        return (Integer) dao.findForObject("knowMapper.queryCommentNumById", pageData);
+    }
+
+    /**
+     * 查询回复是否存在
+     * @return
+     * @throws Exception
+     */
+    public Integer queryReplyNumById(PageData pageData) throws Exception {
+        return (Integer) dao.findForObject("knowMapper.queryReplyNumById", pageData);
+    }
+
+
+    /**
+     * 查询评论
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> queryComment(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("knowMapper.queryComment", pageData);
+    }
+    /**
+     * 查询回复
+     * @return
+     * @throws Exception
+     */
+    public PageData queryIsZan(PageData pageData) throws Exception {
+        return (PageData) dao.findForObject("knowMapper.queryIsZan", pageData);
+    }
+
+    /**
+     * 查询回复
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> queryReply(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("knowMapper.queryReply", pageData);
+    }
+
+
+
+    /**
+     * 更新点赞
+     * @return
+     * @throws Exception
+     */
+    public Integer updateZan(PageData pageData) throws Exception {
+        return  (Integer) dao.save("knowMapper.updateZan",pageData);
+    }
+
+    /**
+     * 点赞
+     * @return
+     * @throws Exception
+     */
+    public Integer addZan(PageData pageData) throws Exception {
+        return  (Integer) dao.save("knowMapper.addZan",pageData);
+    }
+
+    /**
+     * 添加评论
+     * @return
+     * @throws Exception
+     */
+    public Integer addComment(PageData pageData) throws Exception {
+        return  (Integer) dao.save("knowMapper.addComment",pageData);
+    }
+    /**
+     * 添加回复
+     * @return
+     * @throws Exception
+     */
+    public Integer addReply(PageData pageData) throws Exception {
+        return  (Integer) dao.save("knowMapper.addReply",pageData);
+    }
+
+
+
+
     /**
      * 类型列表查询
      * @return
