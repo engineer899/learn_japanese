@@ -22,8 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * @author 张伟
- * @date 2019/10/11 21:23
+ * @author 曾焘
+ * @date 2020/02/16 15:23
  */
 @Controller
 @RequestMapping(value = "/course",produces = "text/html;charset=UTF-8")
@@ -34,65 +34,21 @@ public class CourseController extends BaseController {
     @Autowired
     private CourseService courseService;
 
-
-
-    @RequestMapping(value = "/upload_view")
-    public ModelAndView upload() {
-        PageData pd = this.getPageData();
-        ModelAndView mv = this.getModelAndView();
-        mv.addObject("pd", pd);
-        mv.setViewName("pages/course/upload");
-        return mv;
-    }
-
-    @RequestMapping(value="/add")
+    /**
+     * 通过书id展示书内的所有视频的所有信息
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/showByCourse_id")
     @ResponseBody
-    public String addCourse(MultipartHttpServletRequest request) throws Exception {
-        Map<String,String> resultMap=new HashMap<>();
-        List<MultipartFile> files = request.getFiles("file");
-        MultipartFile file = null;
-        for (int i = 0; i < files.size(); ++i) {
-            System.out.println("进入2"+files.size());
-            file=files.get(i);
-            if(file.isEmpty()){
-            resultMap.put("message","file is null");
-            }else{
-                try {
-                PageData pageData=this.getPageData();
-                //控制台输出 便于测试
-                for(String key:(Set<String>)pageData.keySet()){
-                    System.out.println(key+":"+pageData.getString(key));
-                }
-                String course_url=uploadService.courseUpload(file);
-                pageData.put("id", UUIDUtil.getUid());
-                pageData.put("course_url",course_url);
-                Long nowtime=System.currentTimeMillis();
-                Date d=new Date(nowtime);
-                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String  add_time=sdf.format(d);
-                System.out.println(add_time);
-                pageData.put("add_time",add_time);
-                int msg=courseService.addCourse(pageData);
-                if(msg==1){
-                    resultMap.put("message","success");
-                }else{
-                    resultMap.put("message","fail");
-                }
-                }catch(Exception e){
-                    resultMap.put("message","fail");
-                    e.printStackTrace();
-                }
-          }
-        }
-        return new Gson().toJson(resultMap);
+    public String showByName() throws Exception {
+        PageData pageData=this.getPageData();
+        List<Map<String,String>> resultList;
+        resultList=courseService.showByCourse_id((pageData.getString("course_id")));
+        return new Gson().toJson(resultList);
     }
 
-    @RequestMapping(value = "/show")
-    @ResponseBody
-    public String showCourse() throws Exception {
-        Map<String,List<Map<String,Object>>> resultMap;
-        resultMap=courseService.showCourse();
-        return new Gson().toJson(resultMap);
-    }
+
+
 
 }

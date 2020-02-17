@@ -2,20 +2,117 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="courseMapper">
-
-    <select id="showTypes"  resultType="java.lang.Integer">
-     select course_type from tb_course group by  course_type
+    <!--课程分页查询-->
+    <select id="queryCourseListPage" parameterType="PageData" resultType="PageData">
+        select  course_id,
+        course_name,
+        type,
+        introduce,
+        state,
+        date_format(add_time,"%Y-%m-%d %T") as add_time,
+        image_url
+        from c_course where state=0
+        <if test="course_id!=null and course_id !=''">
+            and course_id = #{course_id}
+        </if>
+        <if test="type!=null and type !=''">
+            and type = #{type}
+        </if>
+        <if test="course_name!=null and course_name !=''">
+            and course_name like concat('%', #{course_name},'%')
+        </if>
     </select>
 
-
-    <select id="showByType" parameterType="java.lang.Integer" resultType="java.util.Map">
-     select id,course_url,course_name,date_format(add_time,"%Y-%m-%d %T") as add_time,browse_num,course_type,course_num from tb_course where course_type=${id}
+    <!--课程总数-->
+    <select id="queryCourseCount" parameterType="PageData" resultType="PageData">
+        select  count(*) as count from c_course where state=0
+        <if test="course_id!=null and course_id !=''">
+            and course_id = #{course_id}
+        </if>
+        <if test="type!=null and type !=''">
+            and type = #{type}
+        </if>
+        <if test="course_name!=null and course_name !=''">
+            and course_name like concat('%', #{course_name},'%')
+        </if>
     </select>
 
-
+    <!--增加课程（书本）-->
     <insert id="addCourse" parameterType="PageData" >
-     insert into tb_course(id,course_url,course_name,add_time,browse_num,course_type,course_num)
-     values (#{id},#{course_url},#{course_name},STR_TO_DATE(#{add_time},"%Y-%m-%d %T"),0,#{course_type},#{course_num})
+        insert into c_course(course_id,course_name,type,introduce,image_url)
+        values  (#{course_id},#{course_name},#{type},#{introduce},#{image_url})
     </insert>
+
+    <!--删除课程（书本）-->
+    <update id="deleteCourse" parameterType="PageData" >
+        update  c_course set state=1 where course_id=#{course_id}
+    </update>
+
+
+    <!--课件分页查询-->
+    <select id="queryCourseWareInfoListPage" parameterType="PageData" resultType="PageData">
+        select  id,
+        courseWare_url,
+        courseWare_name,
+        date_format(add_time,"%Y-%m-%d %T") as add_time,
+        courseWare_num,
+        state
+        from tb_courseware where 1=1
+        <if test="course_id!=null and course_id !=''">
+            and course_id = #{course_id}
+        </if>
+        <if test="courseWare_name!=null and courseWare_name !=''">
+            and courseWare_name like concat('%', #{courseWare_name},'%')
+        </if>
+    </select>
+
+    <!--课件总数-->
+    <select id="queryCourseWareCount" parameterType="PageData" resultType="PageData">
+        select  count(*) as count from tb_courseware where state=0
+        <if test="course_id!=null and course_id !=''">
+            and course_id = #{course_id}
+        </if>
+        <if test="courseWare_name!=null and courseWare_name !=''">
+            and course_name like concat('%', #{courseWare_name},'%')
+        </if>
+    </select>
+
+
+    <!--根据id查课件-->
+    <select id="queryCourseWareById" parameterType="PageData" resultType="PageData">
+        select state
+        from  tb_courseWare
+        where id=#{id}
+    </select>
+
+
+    <!--更新课件状态 -->
+    <select id="updateCourseWareState" parameterType="PageData">
+        UPDATE tb_courseWare SET state = #{state} WHERE  id=#{id}
+    </select>
+
+    <!--后台:添加课件 -->
+    <insert id="addCourseWare" parameterType="PageData" >
+     insert into tb_courseWare(id,
+        courseWare_url,
+        courseWare_name,
+        add_time,
+        courseWare_num,
+        state,
+        course_id)
+     values (#{id},#{courseWare_url},#{courseWare_name},STR_TO_DATE(#{add_time},"%Y-%m-%d %T"),#{courseWare_num},#{state},#{course_id})
+    </insert>
+
+
+    <!--    展示所有课件通过course_id-->
+    <select id="showByCourse_id" parameterType="java.lang.String" resultType="java.util.Map">
+     select id,
+        courseWare_url,
+        courseWare_name,
+        add_time,
+        courseWare_num,
+        state from tb_courseWare where course_id=#{course_id} and state=0
+     order by courseWare_num asc
+    </select>
 
 </mapper>

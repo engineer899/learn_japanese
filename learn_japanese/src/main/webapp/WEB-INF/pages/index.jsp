@@ -128,13 +128,7 @@
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="nav">
-                                <a lay-href="data/jkgl.html">添加课程</a>
-                            </dd>
-                            <dd data-name="tabs">
-                                <a lay-href="data/jksq.html">编辑课程</a>
-                            </dd>
-                            <dd data-name="progress">
-                                <a lay-href="data/jkrz.html">课程留言</a>
+                                <a lay-href="${pageContext.request.contextPath}/manage/courseController/course_list">课堂管理</a>
                             </dd>
                         </dl>
                     </li>
