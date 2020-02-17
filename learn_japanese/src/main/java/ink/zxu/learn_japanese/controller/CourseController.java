@@ -48,6 +48,27 @@ public class CourseController extends BaseController {
         return new Gson().toJson(resultList);
     }
 
+    /**
+     * 展示视频系列和视频书名
+     * @return
+     */
+    @RequestMapping(value="/showAllSeries")
+    @ResponseBody
+    public String showAllSeries() throws Exception {
+        PageData pageData=this.getPageData();
+        List<Map<String,Object>> result=new ArrayList<>();
+        List<PageData> TypeList=courseService.queryCourseType(pageData);
+        for(PageData temp:TypeList){
+            pageData.put("type",temp.getString("type"));
+            List<PageData> list = new ArrayList<>();
+            Map<String,Object> tempMap=new HashMap<>();
+            tempMap.put("type",temp.getString("type"));
+            list=courseService.queryCourseListPage(pageData);
+            tempMap.put("course",list);
+            result.add(tempMap);
+        }
+        return new Gson().toJson(result);
+    }
 
 
 

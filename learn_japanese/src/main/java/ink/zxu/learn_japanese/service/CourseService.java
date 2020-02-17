@@ -27,6 +27,15 @@ public class CourseService {
         return (List<PageData>) dao.findForList("courseMapper.queryCourseListPage", pageData);
     }
 
+    /**
+     * 课程类别查询
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> queryCourseType(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("courseMapper.queryCourseType", pageData);
+    }
+
 
     /**
      * 课程总数
