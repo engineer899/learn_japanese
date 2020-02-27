@@ -31,7 +31,7 @@ public class WxLoginController extends BaseController {
     private WxLoginService wxLoginService;
 
 
-    @PostMapping(value = "/login")
+    @RequestMapping(value = "/login")
     @ResponseBody
     public String login() throws Exception {
         PageData pageData=this.getPageData();
@@ -74,7 +74,7 @@ public class WxLoginController extends BaseController {
 
 
     @ResponseBody
-    @PostMapping(value = "/count")
+    @RequestMapping(value = "/count")
     public String userCount() throws Exception {
         Integer count=wxLoginService.userCount();
         return count.toString();

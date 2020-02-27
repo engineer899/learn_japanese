@@ -141,7 +141,7 @@
     </select>
 
     <select id="queryTypeCount" parameterType="PageData" resultType="PageData">
-        select  count(1) as count
+        select count(1) as count
         from k_type where state=0
         <if test="type_id!=null and type_id !=''">
             and type_id = #{type_id}
@@ -162,7 +162,7 @@
 
 
     <select id="queryKnowByID" parameterType="PageData" resultType="PageData">
-        select  know_id,
+        select know_id,
         type_id,
         title,
         date_format(add_time,"%Y-%m-%d %T") as add_time,
@@ -175,7 +175,7 @@
 
 
     <select id="queryKnowList" parameterType="PageData" resultType="PageData">
-        select  know_id,
+        select know_id,
         type_id,
         title,
         content,
@@ -200,7 +200,7 @@
     </select>
 
     <select id="queryKnowCount" parameterType="PageData" resultType="PageData">
-        select  count(1) as count
+        select count(1) as count
         from k_know where state=0
         <if test="know_id!=null and know_id !=''">
             and know_id = #{know_id}
@@ -224,9 +224,6 @@
         insert into k_know(know_id,type_id,title,author,content)
         values  (#{know_id},#{type_id},#{title},#{author},#{content})
     </insert>
-
-
-
 
 
 </mapper>
